@@ -22,6 +22,16 @@ public class Plateau{
 		}
 	}
 
+	public int getHauteur ()
+	{
+		return hauteur;
+	}
+
+	public int getLargeur ()
+	{
+		return largeur;
+	}
+
 	public void Construire(Point posi, int tour)
 	{
 		this.cases[posi.getx()][posi.gety()].ajoutEtage (tour);

@@ -16,6 +16,16 @@ public class Jeu{
 		//this.j = new Joueurs ();
 	}
 
+	public int getHauteurPlateau ()
+	{
+		return p.getHauteur();
+	}
+
+	public int getLargeurPlateau ()
+	{
+		return p.getLargeur();
+	}
+
 	public void AfficherPlateau ()
 	{
 		System.out.println("Afficher plateau : " + this.p);
@@ -54,12 +64,12 @@ public class Jeu{
 
 	public void addTour ()
 	{
-		return t++;
+		this.t++;
 	}
 
 	public void subTour ()
 	{
-		return t++;
+		this.t--;
 	}
 
 }

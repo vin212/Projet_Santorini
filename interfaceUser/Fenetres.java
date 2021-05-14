@@ -3,6 +3,8 @@ package interfaceUser;
 import java.awt.*;
 import javax.swing.*;
 
+import modele.*;
+
 /*public enum EnumFenetre {
 	MENU,MENU_PAUSE,PLATEAU;
 }*/
@@ -10,16 +12,18 @@ import javax.swing.*;
 public class Fenetres {
 	int f;
 
-	/*Jeu j;
-	IA ia1;
+	Jeu j;
+	/*IA ia1;
 	IA ia2;*/
 
 	JFrame frame;
+	AireDeDessin aire;
 
 	//GestionUser g;
 
-	public Fenetres ()
+	public Fenetres (Jeu j)
 	{
+		this.j = j;
 		this.f = 0;
 	}
 
@@ -39,6 +43,10 @@ public class Fenetres {
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setSize(650, 400);
 				frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
+				
+				aire = new AireDeDessin (j);
+				frame.add(aire);
+
 				frame.setVisible(true);
 			break;
 			default :

@@ -3,20 +3,23 @@ package interfaceUser;
 import javax.swing.*;
 import java.util.concurrent.TimeUnit;
 
+import modele.*;
+
 public class Fenetre implements Runnable {
 
 	JFrame frame;
 	Fenetres f;
+	Jeu j;
 
-	public Fenetre ()
+	public Fenetre (Jeu j)
 	{
-		//this.g = g;
+		this.j = j;
 	}
 
 	public void run()
 	{
 
-		f = new Fenetres();
+		f = new Fenetres(j);
 		f.gestionFenetre ();
 
 		try 
