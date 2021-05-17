@@ -43,19 +43,9 @@ public class Jeu{
 		p.detruireEtage(posi);
 	}
 
-	public void reConstruirEtage (Point posi)
-	{
-		p.reConstruirEtage(posi);
-	}
-
 	public boolean Constructible (Point posi)
 	{
 		return p.Constructible (posi);
-	}
-
-	public int getDernierTour (Point posi)
-	{
-		return p.getDernierTour(posi);
 	}
 
 	public int getNbEtage (Point posi)
