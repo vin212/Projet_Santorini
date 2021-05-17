@@ -17,7 +17,8 @@ public class Fenetres {
 	IA ia2;*/
 
 	JFrame frame;
-	PlateauInterface_1 aire;
+	PlateauInterface_1 aire1;
+	PlateauInterface_2 aire2;
 
 	//GestionUser g;
 
@@ -44,8 +45,20 @@ public class Fenetres {
 				frame.setSize(400, 700);
 				frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
 				
-				aire = new PlateauInterface_1 (j);
-				frame.add(aire);
+				aire1 = new PlateauInterface_1 (j);
+				frame.add(aire1);
+
+				frame.setVisible(true);
+
+
+				tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
+				frame = new JFrame("Test plateau");
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setSize(500, 500);
+				frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
+				
+				aire2 = new PlateauInterface_2 (j);
+				frame.add(aire2);
 
 				frame.setVisible(true);
 			break;
