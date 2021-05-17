@@ -11,6 +11,12 @@ public class Point
 		this.y = y;
 	}
 
+	public void modifValeur (int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+
 	public int getx()
 	{
 		return this.x;

@@ -7,10 +7,10 @@ public class Batiment {
 
 	public Batiment ()
 	{
-		this.etages = new Etage[3];
+		this.etages = new Etage[4];
 		this.nbEtage = 0;
 
-		for (int i = 0; i< 3; i++)
+		for (int i = 0; i< 4; i++)
 		{
 			this.etages[i] = new Etage();
 		}

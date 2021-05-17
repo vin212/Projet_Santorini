@@ -57,6 +57,11 @@ public class Plateau{
 		return this.cases[posi.getx()][posi.gety()].getDernierTour();
 	}
 
+	public int getNbEtage (Point posi)
+	{
+		return this.cases[posi.getx()][posi.gety()].getNbEtage();
+	}
+
 	public void afficher_CMD ()
 	{
 		for (int i = 0; i < hauteur; i++)
