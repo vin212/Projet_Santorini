@@ -6,6 +6,8 @@ public class Jeu{
 	Plateau p;
 	int t;
 	Joueur []joueurs;
+	int joueurEnJeu;
+
 
 	public Jeu ()
 	{
@@ -102,6 +104,21 @@ public class Jeu{
 	Point [] getPosiPions (int nbPerso)
 	{
 			return this.joueurs[nbPerso -1].getPosiPions();
+	}
+
+	public Action getAction (int nbPerso)
+	{
+		return this.joueurs[nbPerso-1].getAction();
+	}
+
+	public int getJoueurEnJeu ()
+	{
+		return joueurEnJeu;
+	}
+
+	public void calculJoueurEnJeu ()
+	{
+		joueurEnJeu = t % 2 + 1;
 	}
 
 

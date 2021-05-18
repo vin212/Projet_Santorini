@@ -56,6 +56,25 @@ public class PlateauInterface_2 extends JComponent {
 		//counter = 1;
 	}
 
+	public void FaireActionUser (int x, int y)
+	{
+		int width = getSize().width;
+		int height = getSize().height;
+
+		Point positionPremierBatiment = new Point(width/12,height/12);
+
+		int inter_batiment_largeur = width/50; 
+		int inter_batiment_hauteur = height/50;
+
+		int taille_hauteur = height/6-height/65;
+		int taille_largeur = width/6 - width/65;
+
+		int x_calcul = ((x-positionPremierBatiment.getx()) / (inter_batiment_largeur + taille_largeur));
+		int y_calcul =((y-positionPremierBatiment.gety())/ (inter_batiment_hauteur + taille_hauteur));
+
+		System.out.println( x_calcul+ "," + y_calcul);
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D drawable = (Graphics2D) g;

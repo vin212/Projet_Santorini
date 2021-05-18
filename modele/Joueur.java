@@ -2,6 +2,7 @@ package	modele;
 
 import structure.*;
 
+
 public class Joueur {
 	
 	int nbPersoPlacer;
@@ -9,9 +10,12 @@ public class Joueur {
 	Point perso1;
 	Point perso2;
 
+	Action actionEnCours;
+
 	public Joueur()
 	{
 		nbPersoPlacer = 0;
+		actionEnCours =  Action.AFK;
 	}
 
 	public void placerPerso (Point p)
@@ -75,5 +79,10 @@ public class Joueur {
 		retour[0]  = perso1;
 		retour[1] = perso2;
 		return retour;
+	}
+
+	public Action getAction ()
+	{
+		return actionEnCours;
 	}
 }

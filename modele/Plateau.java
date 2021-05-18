@@ -9,15 +9,20 @@ public class Plateau{
 	Case [][] cases;
 
 	public Plateau (int hauteur, int largeur) {
-		this.hauteur = hauteur;
-		this.largeur = largeur;
-		this.cases = new Case[largeur][hauteur];
 
-		for (int i = 0; i < largeur; i++)
+		if (hauteur > 0 && largeur > 0)
 		{
-			for (int j = 0; j < hauteur; j++)
+			this.hauteur = hauteur;
+			this.largeur = largeur;
+			this.cases = new Case[largeur][hauteur];
+
+
+			for (int i = 0; i < largeur; i++)
 			{
-				this.cases[i][j] = new Case();
+				for (int j = 0; j < hauteur; j++)
+				{
+					this.cases[i][j] = new Case();
+				}
 			}
 		}
 	}
