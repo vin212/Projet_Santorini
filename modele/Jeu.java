@@ -5,6 +5,9 @@ import structure.*;
 public class Jeu{
 	Plateau p;
 	int t;
+	Joueur []joueurs;
+	int joueurEnJeu;
+
 
 	public Jeu ()
 	{
@@ -12,7 +15,14 @@ public class Jeu{
 
 		System.out.println("Init plateau : " + this.p);
 		this.t = 0;
-		//this.j = new Joueurs ();
+		this.joueurs = new Joueur [2];
+		if (joueurs != null)
+		{
+			for (int i = 0; i < 2 ; i++)
+			{
+				this.joueurs[i] = new Joueur();
+			}
+		}
 	}
 
 	public int getHauteurPlateau ()
@@ -31,19 +41,24 @@ public class Jeu{
 		this.p.afficher_CMD();
 	}
 
-	public void Construire(Point posi)
+	public int Construire(Point posi)
 	{
-		p.Construire(posi,t);
+		return p.Construire(posi);
 	}
 
-	public void detruireEtage (Point posi)
+	public int detruireEtage (Point posi)
 	{
-		p.detruireEtage(posi);
+		return p.detruireEtage(posi);
 	}
 
 	public boolean Constructible (Point posi)
 	{
 		return p.Constructible (posi);
+	}
+
+	public boolean peutPoserUnPerso (Point posi)
+	{
+		return p.peutPoserUnPerso (posi);
 	}
 
 	public int getNbEtage (Point posi)
@@ -61,9 +76,19 @@ public class Jeu{
 		this.t++;
 	}
 
-	public void subTour ()
+	public int subTour ()
 	{
-		this.t--;
+		int retour;
+		if (t > 0)
+		{
+			this.t--;
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+		return retour;
 	}
 
 	public boolean aPersonnage (Point posi)
@@ -71,19 +96,84 @@ public class Jeu{
 		return p.aPersonnage(posi);
 	}
 
-	public void poserPersonnage (Point posi_final, int nbPerso)
+	public int poserPersonnage (Point posi_final, int nbPerso)
 	{
-		p.poserPersonnage(posi_final,nbPerso);
+		int retour;
+		if (nbPerso >= 1 && nbPerso <= 2)
+		{
+			retour = this.joueurs[nbPerso-1].placerPerso (posi_final);
+			retour = p.poserPersonnage(posi_final,nbPerso) + retour ;
+		}
+		else
+		{	
+			retour = -1;
+		}
+
+		if (retour < 0)
+		{
+			retour = -1;
+		}
+
+		return retour;
 	}
 
-	public void deplacerPersonnage (Point posi_init, Point posi_final)
+	public int deplacerPersonnage (Point posi_init, Point posi_final)
 	{
-		p.deplacerPersonnage(posi_init,posi_final);
+		int retour;
+		if (joueurs != null)
+		{
+			retour = this.joueurs[0].deplacerPerso(posi_init,posi_final);
+			retour = this.joueurs[1].deplacerPerso(posi_init,posi_final) + retour;
+			retour = p.deplacerPersonnage(posi_init,posi_final) + retour;
+		}
+		else
+		{
+			retour = -1;
+		}
+		if (retour < 0)
+		{
+			retour = -1;
+		}
+
+		return retour;
 	}
 
 	public int quiEstIci (Point posi)
 	{
 		return p.quiEstIci (posi);
 	}
+
+	Point [] getPosiPions (int nbPerso)
+	{
+			return this.joueurs[nbPerso -1].getPosiPions();
+	}
+
+	public Action getAction (int nbPerso)
+	{
+		return this.joueurs[nbPerso-1].getAction();
+	}
+
+	public int getJoueurEnJeu ()
+	{
+		return joueurEnJeu;
+	}
+
+	public int calculJoueurEnJeu ()
+	{
+		int retour = 0;
+		if (t >= 0)
+		{
+			joueurEnJeu = t % 2 + 1;
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+
+		return retour;
+
+	}
+
 
 }

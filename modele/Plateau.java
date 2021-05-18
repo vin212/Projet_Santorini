@@ -9,15 +9,20 @@ public class Plateau{
 	Case [][] cases;
 
 	public Plateau (int hauteur, int largeur) {
-		this.hauteur = hauteur;
-		this.largeur = largeur;
-		this.cases = new Case[largeur][hauteur];
 
-		for (int i = 0; i < largeur; i++)
+		if (hauteur > 0 && largeur > 0)
 		{
-			for (int j = 0; j < hauteur; j++)
+			this.hauteur = hauteur;
+			this.largeur = largeur;
+			this.cases = new Case[largeur][hauteur];
+
+
+			for (int i = 0; i < largeur; i++)
 			{
-				this.cases[i][j] = new Case();
+				for (int j = 0; j < hauteur; j++)
+				{
+					this.cases[i][j] = new Case();
+				}
 			}
 		}
 	}
@@ -32,49 +37,144 @@ public class Plateau{
 		return largeur;
 	}
 
-	public void Construire(Point posi, int tour)
+	public int Construire(Point posi)
 	{
-		this.cases[posi.getx()][posi.gety()].ajoutEtage (tour);
+		int retour;
+		if (this.cases != null && posi.getx() < largeur && posi.gety() < hauteur && posi.getx() >= 0 && posi.gety() >= 0)
+		{
+			this.cases[posi.getx()][posi.gety()].ajoutEtage ();
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+
+		return -1;
 	}
 
-	public void detruireEtage (Point posi)
+	public int detruireEtage (Point posi)
 	{
-		this.cases[posi.getx()][posi.gety()].detruireEtage ();
+		int retour;
+		if (this.cases != null && posi.getx() < largeur && posi.gety() < hauteur && posi.getx() >= 0 && posi.gety() >= 0)
+		{
+			this.cases[posi.getx()][posi.gety()].detruireEtage ();
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+		return retour;
 	}
 
 
 	public boolean Constructible (Point posi)
 	{
-		return this.cases[posi.getx()][posi.gety()].Constructible ();
+		boolean retour;
+		if (this.cases != null && posi.getx() < largeur && posi.gety() < hauteur && posi.getx() >= 0 && posi.gety() >= 0)
+		{
+			retour = this.cases[posi.getx()][posi.gety()].Constructible();
+		}
+		else
+		{
+			retour = false;
+		}
+		return retour;
+		
 	}
 
+	public boolean peutPoserUnPerso (Point posi)
+	{
+		boolean retour;
+		if (this.cases != null && posi.getx() < largeur && posi.gety() < hauteur && posi.getx() >= 0 && posi.gety() >= 0)
+		{
+			retour = this.cases[posi.getx()][posi.gety()].peutPoserUnPerso();
+		}
+		else
+		{
+			retour = false;
+		}
+		return retour;
+	}
 
 	public int getNbEtage (Point posi)
 	{
-		return this.cases[posi.getx()][posi.gety()].getNbEtage();
+		int retour;
+		if (this.cases != null && posi.getx() < largeur && posi.gety() < hauteur && posi.getx() >= 0 && posi.gety() >= 0)
+		{
+			retour = this.cases[posi.getx()][posi.gety()].getNbEtage();
+		}
+		else
+		{
+			retour = -1;
+		}
+		return retour;
 	}
 
-	public void deplacerPersonnage (Point posi_init, Point posi_final)
+	public int deplacerPersonnage (Point posi_init, Point posi_final)
 	{
-		int nbPerso = this.cases[posi_init.getx()][posi_init.gety()].getNbPerso();
-		this.cases[posi_init.getx()][posi_init.gety()].enleverPerso();
-		this.cases[posi_final.getx()][posi_final.gety()].mettrePerso (nbPerso);
+		int retour;
+		if (this.cases != null && posi_init.getx() < largeur && posi_init.gety() < hauteur && posi_init.getx() >= 0 && posi_init.gety() >= 0 && posi_final.getx() < largeur && posi_final.gety() < hauteur && posi_final.getx() >= 0 && posi_final.gety() >= 0)
+		{
+			int nbPerso = this.cases[posi_init.getx()][posi_init.gety()].getNbPerso();
+			this.cases[posi_init.getx()][posi_init.gety()].enleverPerso();
+			this.cases[posi_final.getx()][posi_final.gety()].mettrePerso (nbPerso);
+
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+		return retour;
 
 	}
 
-	public void poserPersonnage (Point posi_final, int nbPerso)
+	public int poserPersonnage (Point posi_final, int nbPerso)
 	{
-		this.cases[posi_final.getx()][posi_final.gety()].mettrePerso (nbPerso);
+		int retour;
+		if (this.cases != null && posi_final.getx() >= 0 && posi_final.gety() >= 0 && posi_final.getx()  < largeur && posi_final.gety() < hauteur && nbPerso <= 2 && nbPerso >= 1  )
+		{
+			this.cases[posi_final.getx()][posi_final.gety()].mettrePerso (nbPerso);
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+
+		return retour;
 	}
 
 	public int quiEstIci (Point posi)
 	{
-		return this.cases[posi.getx()][posi.gety()].getNbPerso();
+		int retour;
+		if (cases != null && posi.getx() >= 0 && posi.gety() >= 0 && posi.getx()  < largeur && posi.gety() < hauteur)
+		{
+			retour = this.cases[posi.getx()][posi.gety()].getNbPerso();
+		}
+		else
+		{
+			retour = -1;
+		}
+
+		return retour;
 	}
 
 	public boolean aPersonnage(Point posi)
 	{
-		return this.cases[posi.getx()][posi.gety()].aPersonnage();
+		Boolean retour;
+		if (cases != null && posi.getx() >= 0 && posi.gety() >= 0 && posi.getx()  < largeur && posi.gety() < hauteur)
+		{
+			retour = this.cases[posi.getx()][posi.gety()].aPersonnage();
+		}
+		else
+		{
+			retour = false;
+		}
+		return retour;
+
 	}
 
 
