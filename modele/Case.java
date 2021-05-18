@@ -2,54 +2,60 @@ package modele;
 
 public class Case {
 
-	Batiment b;
+	int nbEtage;
+	int nbPerso;
 
-	public Case () {
-		b = new Batiment();
-	}
-
-	public int getHauteurBatiment()
-	{	
-		return b.getNbEtage();
-	}
-
-	public void ConstruireEtage (int tour)
+	public Case ()
 	{
-		if (b.Constructible ())
-		{
-			b.ajoutEtage (tour);
-		}
-		else
-		{
-			System.out.println("Tu ne peux pas construire, batiement trop haut");
-		}
+		this.nbEtage = 0;
+		this.nbPerso = 0;
+	}
+
+	public  void ajoutEtage (int tour)
+	{
+		nbEtage ++;
 	}
 
 	public void detruireEtage ()
 	{
-		if (b.getNbEtage () > 0)
-		{
-			b.getNbEtage();
-		}
-		else
-		{
-			System.out.println("impossible de detrurie");
-		}
+		nbEtage--;
 	}
 
-	public void reConstruirEtage ()
-	{
-		b.reConstruirEtage ();
-	}
 
 	public boolean Constructible ()
 	{
-		return b.Constructible();
+		return (nbEtage <= 3);
 	}
 
-	public int getDernierTour ()
+	public int getNbEtage ()
 	{
-		return b.getDernierTour();
+		return nbEtage;
 	}
+
+	public boolean peuPoserUnPerso ()
+	{
+		return nbEtage <= 3;
+	}
+
+	public boolean aPersonnage()
+	{
+		return nbPerso > 0;
+	}
+
+	public void enleverPerso ()
+	{
+		nbPerso = 0;
+	}
+
+	public void mettrePerso (int newNbPerso)
+	{
+		nbPerso = newNbPerso;
+	}
+
+	public int getNbPerso ()
+	{
+		return nbPerso;
+	}
+
 
 }

@@ -22,10 +22,8 @@ public class PlateauInterface_1 extends JComponent {
 	Image etage2;
 	Image coupole;
 	Image P1_J1;
-	Image P2_J1;
 	Image P1_J2;
-	Image P2_J2;
-
+	
 	public PlateauInterface_1(Jeu j) {
 		this.j = j;
 
@@ -48,14 +46,8 @@ public class PlateauInterface_1 extends JComponent {
 		 	in = new FileInputStream("ressource/texture/P1_J1.png");
 		 	P1_J1 = ImageIO.read(in);
 
-		 	in = new FileInputStream("ressource/texture/P2_J1.png");
-		 	P2_J1 = ImageIO.read(in);
-
 		 	in = new FileInputStream("ressource/texture/P1_J2.png");
 		 	P1_J2 = ImageIO.read(in);
-
-		 	in = new FileInputStream("ressource/texture/P2_J2.png");
-		 	P2_J2 = ImageIO.read(in);
 
 		} catch (Exception e) {
 			System.out.print("erreur \n");
@@ -88,8 +80,8 @@ public class PlateauInterface_1 extends JComponent {
 
 
 		drawable.clearRect(0, 0, width, height	);
-		drawable.setColor(new Color(0,120,173));
-		drawable.fillRect(0, 0, width	, height);
+		drawable.setColor(new Color(216,239,253));
+		drawable.fillRect(0, 0, width, height);
 		drawable.drawImage(plateau,0,height/3,taillePlateau.getx(),taillePlateau.gety(),null);
 
 
@@ -116,29 +108,21 @@ public class PlateauInterface_1 extends JComponent {
 
 				if (j.aPersonnage (new Point(i,k)))
 				{
-					Integer [] perso = j.quiEstIci (new Point(i,k));
-					int persoHauteur = j.hauteurPersonnage (perso[0], perso[1]);
-					if (perso[0] == 0 && perso[1] == 0)
+					int perso = j.quiEstIci (new Point(i,k));
+					int persoHauteur = j.getNbEtage (new Point (i,k));
+					if (perso == 1)
 					{	
 						drawable.drawImage(P1_J1, positionPremierBatiment.getx() + taille_largeur*i + inter_batiment_largeur*i, positionPremierBatiment.gety() +taille_hauteur*k - hauteur*persoHauteur - inter_batiment_hauteur*k, taille_largeur,taille_hauteur,null);
 					}
-					else if (perso[0] == 0 && perso[1] == 1)
-					{
-						drawable.drawImage(P2_J1, positionPremierBatiment.getx() + taille_largeur*i + inter_batiment_largeur*i, positionPremierBatiment.gety() +taille_hauteur*k - hauteur*persoHauteur - inter_batiment_hauteur*k, taille_largeur,taille_hauteur,null);
-					}
-					else if (perso[0] == 1 && perso[1] == 0)
+					else if (perso == 2)
 					{
 						drawable.drawImage(P1_J2, positionPremierBatiment.getx() + taille_largeur*i + inter_batiment_largeur*i, positionPremierBatiment.gety() +taille_hauteur*k - hauteur*persoHauteur - inter_batiment_hauteur*k, taille_largeur,taille_hauteur,null);
-					}
-					else if (perso[0] == 1 && perso[1] == 1)
-					{
-						drawable.drawImage(P2_J2, positionPremierBatiment.getx() + taille_largeur*i + inter_batiment_largeur*i, positionPremierBatiment.gety() +taille_hauteur*k - hauteur*persoHauteur - inter_batiment_hauteur*k, taille_largeur,taille_hauteur,null);
 					}
 				}
 			}
 		}
 
-		drawable.drawImage(P1_J1, positionPremierBatiment.getx() + taille_largeur*0 + inter_batiment_largeur*0, positionPremierBatiment.gety() +taille_hauteur*0 - hauteur*0 - inter_batiment_hauteur*0, taille_largeur,taille_hauteur,null);
+		//drawable.drawImage(P1_J1, positionPremierBatiment.getx() + taille_largeur*0 + inter_batiment_largeur*0, positionPremierBatiment.gety() +taille_hauteur*0 - hauteur*0 - inter_batiment_hauteur*0, taille_largeur,taille_hauteur,null);
 
 
 

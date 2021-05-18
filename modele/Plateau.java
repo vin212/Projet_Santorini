@@ -6,18 +6,18 @@ public class Plateau{
 
 	int hauteur;
 	int largeur;
-	Batiment [][] cases;
+	Case [][] cases;
 
 	public Plateau (int hauteur, int largeur) {
 		this.hauteur = hauteur;
 		this.largeur = largeur;
-		this.cases = new Batiment[largeur][hauteur];
+		this.cases = new Case[largeur][hauteur];
 
 		for (int i = 0; i < largeur; i++)
 		{
 			for (int j = 0; j < hauteur; j++)
 			{
-				this.cases[i][j] = new Batiment();
+				this.cases[i][j] = new Case();
 			}
 		}
 	}
@@ -42,25 +42,41 @@ public class Plateau{
 		this.cases[posi.getx()][posi.gety()].detruireEtage ();
 	}
 
-	public void reConstruirEtage (Point posi)
-	{
-		this.cases[posi.getx()][posi.gety()].reConstruirEtage();
-	}
 
 	public boolean Constructible (Point posi)
 	{
 		return this.cases[posi.getx()][posi.gety()].Constructible ();
 	}
 
-	public int getDernierTour (Point posi)
-	{
-		return this.cases[posi.getx()][posi.gety()].getDernierTour();
-	}
 
 	public int getNbEtage (Point posi)
 	{
 		return this.cases[posi.getx()][posi.gety()].getNbEtage();
 	}
+
+	public void deplacerPersonnage (Point posi_init, Point posi_final)
+	{
+		int nbPerso = this.cases[posi_init.getx()][posi_init.gety()].getNbPerso();
+		this.cases[posi_init.getx()][posi_init.gety()].enleverPerso();
+		this.cases[posi_final.getx()][posi_final.gety()].mettrePerso (nbPerso);
+
+	}
+
+	public void poserPersonnage (Point posi_final, int nbPerso)
+	{
+		this.cases[posi_final.getx()][posi_final.gety()].mettrePerso (nbPerso);
+	}
+
+	public int quiEstIci (Point posi)
+	{
+		return this.cases[posi.getx()][posi.gety()].getNbPerso();
+	}
+
+	public boolean aPersonnage(Point posi)
+	{
+		return this.cases[posi.getx()][posi.gety()].aPersonnage();
+	}
+
 
 	public void afficher_CMD ()
 	{
