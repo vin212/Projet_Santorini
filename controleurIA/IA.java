@@ -32,89 +32,54 @@ public abstract class IA {
         return this.active;
     }
 
-    // fonction a Overide
+    // fonction a Override
     public void initialise(){}
 
-    // fonction a reecrire
+    // fonction a Override
     public Coup joue(){
         return null;
     }
 
-    private ArrayList<Point> getVoisinAccessible(Point p, Verificateur v){
-        int x = p.getx(), y = p.gety();
-        int xmax = j.getLargeurPlateau();
-        int ymax = j.getHauteurPlateau();
-        ArrayList<Point> voisins = new ArrayList<Point>(0); 
-        if (0 < x){
-            if (j.peutPoserUnPerso(new Point(x-1, y)))
-                voisins.add(new Point(x-1, y));
-        }
-        if (0 < y){
-            if (j.peutPoserUnPerso(new Point(x, y-1)))
-                voisins.add(new Point(x, y-1));
-        }
-        if (x < xmax){
-            if (j.peutPoserUnPerso(new Point(x+1, y)))
-                voisins.add(new Point(x+1, y));
-        }
-        if (y < ymax){
-            if (j.peutPoserUnPerso(new Point(x, y+1)))
-                voisins.add(new Point(x, y+1));
-        }
-        if (0 < x && 0 < y){
-            if (j.peutPoserUnPerso(new Point(x-1, y-1)))
-                voisins.add(new Point(x-1, y-1));
-        }
-        if (x < xmax && y < ymax){
-            if (j.peutPoserUnPerso(new Point(x+1, y+1)))
-                voisins.add(new Point(x+1, y+1));
-        }
-        if (x < xmax && 0 < y){
-            if (j.peutPoserUnPerso(new Point(x+1, y-1)))
-                voisins.add(new Point(x+1, y-1));
-        }
-        if (0 < x && y < ymax){
-            if (j.peutPoserUnPerso(new Point(x-1, y+1)))
-                voisins.add(new Point(x-1, y+1));
-        }
-        return voisins;
+    // Fonction à Override
+    public Coup debuterPartie(){
+        return null;
     }
 
-    private ArrayList<Point> getVoisinConstructible(Point p, function f){
+    private ArrayList<Point> getVoisin(Point p, Verificateur v){
         int x = p.getx(), y = p.gety();
         int xmax = j.getLargeurPlateau();
         int ymax = j.getHauteurPlateau();
         ArrayList<Point> voisins = new ArrayList<Point>(0); 
         if (0 < x){
-            if (j.Constructible(new Point(x-1, y)))
+            if (v.verifie(new Point(x-1, y)))
                 voisins.add(new Point(x-1, y));
         }
         if (0 < y){
-            if (j.Constructible(new Point(x, y-1)))
+            if (v.verifie(new Point(x, y-1)))
                 voisins.add(new Point(x, y-1));
         }
         if (x < xmax){
-            if (j.Constructible(new Point(x+1, y)))
+            if (v.verifie(new Point(x+1, y)))
                 voisins.add(new Point(x+1, y));
         }
         if (y < ymax){
-            if (j.Constructible(new Point(x, y+1)))
+            if (v.verifie(new Point(x, y+1)))
                 voisins.add(new Point(x, y+1));
         }
         if (0 < x && 0 < y){
-            if (j.Constructible(new Point(x-1, y-1)))
+            if (v.verifie(new Point(x-1, y-1)))
                 voisins.add(new Point(x-1, y-1));
         }
         if (x < xmax && y < ymax){
-            if (j.Constructible(new Point(x+1, y+1)))
+            if (v.verifie(new Point(x+1, y+1)))
                 voisins.add(new Point(x+1, y+1));
         }
         if (x < xmax && 0 < y){
-            if (j.Constructible(new Point(x+1, y-1)))
+            if (v.verifie(new Point(x+1, y-1)))
                 voisins.add(new Point(x+1, y-1));
         }
         if (0 < x && y < ymax){
-            if (j.Constructible(new Point(x-1, y+1)))
+            if (v.verifie(new Point(x-1, y+1)))
                 voisins.add(new Point(x-1, y+1));
         }
         return voisins;
