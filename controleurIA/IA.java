@@ -7,6 +7,7 @@ public abstract class IA {
     public Jeu j;
     private boolean active = false;
 
+    // Instancie l'IA demandé et la renvoie.
     public static IA nouvelle(Jeu j, String classIaString){
         IA instance = null;
 
@@ -19,32 +20,36 @@ public abstract class IA {
         return instance;
     }
     
+    // Active l'IA.
     public final void activeIA(){
         initialise();
         this.active = true;
     }
     
+    // Désactive l'IA.
     public void desactiverIA(){
         this.active = false;
     }
 
+    // Renvoie vrai si l'IA est active.
     public boolean estActive(){
         return this.active;
     }
 
-    // fonction a Override
+    // Fonction a Override pour déclarer via le logger que l'IA est activée.
     public void initialise(){}
 
-    // fonction a Override
-    public Coup joue(){
-        return null;
-    }
-
-    // Fonction à Override
+    // Fonction à Override pour qu'elle pose un pion à un endroit valide.
     public Coup debuterPartie(){
         return null;
     }
 
+    // Fonction a Override pour qu'elle retourne un coup valide.
+    public Coup joue(){
+        return null;
+    }
+
+    // Retourne les voisins p en fonction de v.
     private ArrayList<Point> getVoisin(Point p, Verificateur v){
         int x = p.getx(), y = p.gety();
         int xmax = j.getLargeurPlateau();

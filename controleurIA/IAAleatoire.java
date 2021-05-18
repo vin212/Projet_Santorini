@@ -11,14 +11,14 @@ import structure.Verificateur;
 public class IAAleatoire extends IA {
     Random r;
     
-    public IAaleatoire(Jeu jeu){
+    public IAAleatoire(Jeu jeu){
         r = new Random((long) 0);
         j = jeu;
     }
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log défaillant, IA Aléatoire activée");
+        System.err.println("Systeme de log absent, IA Aléatoire activée");
     }
 
     @Override
@@ -26,7 +26,7 @@ public class IAAleatoire extends IA {
         ArrayList<Point> liste = new ArrayList<Point>(0);
         for(int i = 0; i < j.getHLargeurPlateau(); i++){
             for(int k = 0; k < j.getHauteurPlateau(); k++){
-                if(j.aPersonnage(new Point(i, k))){
+                if(!(j.aPersonnage(new Point(i, k)))){
                     liste.add(new Point(i, k));
                 }
             }
@@ -45,6 +45,7 @@ public class IAAleatoire extends IA {
         Point pion;
         Point deplacement;
         Point construction;
+
         // Pion 1 qui joue
         if (b)
             pion = p[0];
