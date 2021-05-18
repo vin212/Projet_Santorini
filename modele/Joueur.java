@@ -18,41 +18,69 @@ public class Joueur {
 		actionEnCours =  Action.AFK;
 	}
 
-	public void placerPerso (Point p)
+	public int placerPerso (Point p)
 	{
+		int retour;
 		if (nbPersoPlacer == 0)
 		{
 			this.perso1 =p;
 			nbPersoPlacer++;
+			retour = 0;
 		}
 		else if (nbPersoPlacer == 1)
 		{
 			this.perso2 =p;
 			nbPersoPlacer++;
+			retour = 0;
 		}
+		else
+		{
+			retour =  -1;
+		}
+
+		return retour;
 	}
 
-	public void placerPerso1 (Point p)
+	public int placerPerso1 (Point p)
 	{
 		this.perso1 = p;
+		return 0;
 	}
 
-	public void placerPerso2(Point p)
+	public int placerPerso2(Point p)
 	{
 		this.perso2 = p;
+		return 0;
 	}
 
-	public void deplacerPerso (Point posi_init, Point posi_final)
+	public int deplacerPerso (Point posi_init, Point posi_final)
 	{
+		int retour;
 		int perso = checkPerso(posi_init);
-		if (perso == 1)
+
+		if (posi_init.CompareTo(posi_final) != 0)
 		{
-			this.perso1 = posi_final;
+			if (perso == 1)
+			{
+				this.perso1 = posi_final;
+				retour = 0;
+			}
+			else if (perso == 2)
+			{
+				this.perso2 = posi_init;
+				retour = 0;
+			}
+			else
+			{
+				retour = -1;
+			}
 		}
-		else if (perso == 2)
+		else
 		{
-			this.perso2 = posi_init;
+			retour = -1;
 		}
+
+		return retour;
 
 	} 
 
@@ -75,14 +103,30 @@ public class Joueur {
 
 	public Point [] getPosiPions ()
 	{
-		Point [] retour = new Point [2];
-		retour[0]  = perso1;
-		retour[1] = perso2;
+		Point [] retour;
+		if (perso1 != null && perso2 != null)
+		{
+			retour = new Point [2];
+			retour[0]  = perso1;
+			retour[1] = perso2;
+		}
+		else
+		{
+			retour = null;
+		}
 		return retour;
 	}
 
 	public Action getAction ()
 	{
-		return actionEnCours;
+		if (actionEnCours != null)
+		{
+			return actionEnCours;
+		}
+		else 
+		{
+			return null;
+		}
+
 	}
 }
