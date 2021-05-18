@@ -51,9 +51,9 @@ public class Jeu{
 		return p.Constructible (posi);
 	}
 
-	public boolean peuPoserUnPerso (Point posi)
+	public boolean peutPoserUnPerso (Point posi)
 	{
-		return p.peuPoserUnPerso (posi);
+		return p.peutPoserUnPerso (posi);
 	}
 
 	public int getNbEtage (Point posi)

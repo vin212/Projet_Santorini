@@ -32,7 +32,7 @@ public class Case {
 		return nbEtage;
 	}
 
-	public boolean peuPoserUnPerso ()
+	public boolean peutPoserUnPerso ()
 	{
 		return nbEtage <= 3 && nbPerso == 0;
 	}

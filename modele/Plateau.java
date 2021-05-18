@@ -48,9 +48,9 @@ public class Plateau{
 		return this.cases[posi.getx()][posi.gety()].Constructible ();
 	}
 
-	public boolean peuPoserUnPerso (Point posi)
+	public boolean peutPoserUnPerso (Point posi)
 	{
-		return this.cases[posi.getx()][posi.gety()].peuPoserUnPerso	();
+		return this.cases[posi.getx()][posi.gety()].peutPoserUnPerso	();
 	}
 
 	public int getNbEtage (Point posi)
