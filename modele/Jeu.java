@@ -5,7 +5,6 @@ import structure.*;
 public class Jeu{
 	Plateau p;
 	int t;
-	Joueurs j;
 
 	public Jeu ()
 	{
@@ -13,7 +12,6 @@ public class Jeu{
 
 		System.out.println("Init plateau : " + this.p);
 		this.t = 0;
-		j = new Joueurs (2);
 		//this.j = new Joueurs ();
 	}
 
@@ -68,34 +66,24 @@ public class Jeu{
 		this.t--;
 	}
 
-	public int hauteurPersonnage (int nb, int perso)
-	{
-		return j.hauteurPersonnage (nb,perso);
-	}
-
-	public Point posiPerso (int nb, int perso)
-	{
-		return j.posiPerso (nb,perso);
-	}
-
 	public boolean aPersonnage (Point posi)
 	{
-		return j.aPersonnage(posi);
+		return p.aPersonnage(posi);
 	}
 
-	public void deplacerPersonnage (int x, int y,int nb, int perso)
+	public void poserPersonnage (Point posi_final, int nbPerso)
 	{
-		j.deplacerPersonnage(x,y,nb,perso);
+		p.poserPersonnage(posi_final,nbPerso);
 	}
 
-	public Integer [] quiEstIci (Point posi)
+	public void deplacerPersonnage (Point posi_init, Point posi_final)
 	{
-		return j.quiEstIci (posi);
+		p.deplacerPersonnage(posi_init,posi_final);
 	}
 
-	public void setHauteurPersonnage(int hauteur, int nb, int perso)
+	public int quiEstIci (Point posi)
 	{
-		j.setHauteurPersonnage(hauteur,nb,perso);
+		return p.quiEstIci (posi);
 	}
 
 }

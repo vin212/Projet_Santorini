@@ -36,4 +36,26 @@ public class Case {
 	{
 		return nbEtage <= 3;
 	}
+
+	public boolean aPersonnage()
+	{
+		return nbPerso > 0;
+	}
+
+	public void enleverPerso ()
+	{
+		nbPerso = 0;
+	}
+
+	public void mettrePerso (int newNbPerso)
+	{
+		nbPerso = newNbPerso;
+	}
+
+	public int getNbPerso ()
+	{
+		return nbPerso;
+	}
+
+
 }

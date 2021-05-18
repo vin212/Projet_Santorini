@@ -54,6 +54,30 @@ public class Plateau{
 		return this.cases[posi.getx()][posi.gety()].getNbEtage();
 	}
 
+	public void deplacerPersonnage (Point posi_init, Point posi_final)
+	{
+		int nbPerso = this.cases[posi_init.getx()][posi_init.gety()].getNbPerso();
+		this.cases[posi_init.getx()][posi_init.gety()].enleverPerso();
+		this.cases[posi_final.getx()][posi_final.gety()].mettrePerso (nbPerso);
+
+	}
+
+	public void poserPersonnage (Point posi_final, int nbPerso)
+	{
+		this.cases[posi_final.getx()][posi_final.gety()].mettrePerso (nbPerso);
+	}
+
+	public int quiEstIci (Point posi)
+	{
+		return this.cases[posi.getx()][posi.gety()].getNbPerso();
+	}
+
+	public boolean aPersonnage(Point posi)
+	{
+		return this.cases[posi.getx()][posi.gety()].aPersonnage();
+	}
+
+
 	public void afficher_CMD ()
 	{
 		for (int i = 0; i < hauteur; i++)
