@@ -17,7 +17,7 @@ public class Coup {
         return initial;
     }
 
-    public Point getarrive(){
+    public Point getArrive(){
         return arrive;
     }
 
