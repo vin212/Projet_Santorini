@@ -5,7 +5,11 @@ public class Coup {
     Point arrive;
     Point construction;
 
-    public Coup(){}
+    public Coup(Point dep){
+        initial = dep;
+        arrive = null;
+        construction = null;
+    }
 
     public Coup(Point dep, Point arr, Point cons){
         initial = dep;
@@ -23,6 +27,10 @@ public class Coup {
 
     public Point getConstruction(){
         return construction;
+    }
+    
+    public Boolean estDeplacement(){
+        return !(construction == null);
     }
 }
 
