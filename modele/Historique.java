@@ -15,9 +15,12 @@ public class Historique{
             historique.add(c);
             taille ++;
             position ++;
-        } else {
-            historique.removeRange(position, taille);
+       } else {
+            historique.subList(position, taille).clear();
             position = taille = historique.size();
+            historique.add(c);
+            taille ++;
+            position ++;
         }
     }
 
