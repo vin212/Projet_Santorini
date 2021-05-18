@@ -5,6 +5,7 @@ import structure.*;
 public class Jeu{
 	Plateau p;
 	int t;
+	Joueur []joueurs;
 
 	public Jeu ()
 	{
@@ -12,7 +13,11 @@ public class Jeu{
 
 		System.out.println("Init plateau : " + this.p);
 		this.t = 0;
-		//this.j = new Joueurs ();
+		this.joueurs = new Joueur [2];
+		for (int i = 0; i < 2 ; i++)
+		{
+			this.joueurs[i] = new Joueur();
+		}
 	}
 
 	public int getHauteurPlateau ()
@@ -33,7 +38,7 @@ public class Jeu{
 
 	public void Construire(Point posi)
 	{
-		p.Construire(posi,t);
+		p.Construire(posi);
 	}
 
 	public void detruireEtage (Point posi)
@@ -44,6 +49,11 @@ public class Jeu{
 	public boolean Constructible (Point posi)
 	{
 		return p.Constructible (posi);
+	}
+
+	public boolean peuPoserUnPerso (Point posi)
+	{
+		return p.peuPoserUnPerso (posi);
 	}
 
 	public int getNbEtage (Point posi)
@@ -73,11 +83,14 @@ public class Jeu{
 
 	public void poserPersonnage (Point posi_final, int nbPerso)
 	{
+		this.joueurs[nbPerso-1].placerPerso (posi_final);
 		p.poserPersonnage(posi_final,nbPerso);
 	}
 
 	public void deplacerPersonnage (Point posi_init, Point posi_final)
 	{
+		this.joueurs[0].deplacerPerso(posi_init,posi_final);
+		this.joueurs[1].deplacerPerso(posi_init,posi_final);
 		p.deplacerPersonnage(posi_init,posi_final);
 	}
 
@@ -85,5 +98,11 @@ public class Jeu{
 	{
 		return p.quiEstIci (posi);
 	}
+
+	Point [] getPosiPions (int nbPerso)
+	{
+			return this.joueurs[nbPerso -1].getPosiPions();
+	}
+
 
 }

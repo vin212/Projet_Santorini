@@ -11,7 +11,7 @@ public class Case {
 		this.nbPerso = 0;
 	}
 
-	public  void ajoutEtage (int tour)
+	public  void ajoutEtage ()
 	{
 		nbEtage ++;
 	}
@@ -34,7 +34,7 @@ public class Case {
 
 	public boolean peuPoserUnPerso ()
 	{
-		return nbEtage <= 3;
+		return nbEtage <= 3 && nbPerso == 0;
 	}
 
 	public boolean aPersonnage()

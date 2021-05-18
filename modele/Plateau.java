@@ -32,9 +32,9 @@ public class Plateau{
 		return largeur;
 	}
 
-	public void Construire(Point posi, int tour)
+	public void Construire(Point posi)
 	{
-		this.cases[posi.getx()][posi.gety()].ajoutEtage (tour);
+		this.cases[posi.getx()][posi.gety()].ajoutEtage ();
 	}
 
 	public void detruireEtage (Point posi)
@@ -48,6 +48,10 @@ public class Plateau{
 		return this.cases[posi.getx()][posi.gety()].Constructible ();
 	}
 
+	public boolean peuPoserUnPerso (Point posi)
+	{
+		return this.cases[posi.getx()][posi.gety()].peuPoserUnPerso	();
+	}
 
 	public int getNbEtage (Point posi)
 	{
