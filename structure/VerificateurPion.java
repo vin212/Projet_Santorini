@@ -7,6 +7,7 @@ public class VerificateurPion implements Verificateur {
         j = jeu;
     }
 
+    // Retourne l'occupabilité de p.
     @Override
     boolean verifie(Point p){
         return j.peutPoserUnPerso(p);

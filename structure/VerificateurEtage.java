@@ -7,6 +7,7 @@ public class VerificateurEtage implements Verificateur {
         j = jeu;
     }
 
+    // Retourne la constructabilité de p.
     @Override
     boolean verifie(Point p){
         return j.Constructible(p);
