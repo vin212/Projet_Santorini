@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import modele.*;
+import controleur.*;
 
 /*public enum EnumFenetre {
 	MENU,MENU_PAUSE,PLATEAU;
@@ -37,7 +38,10 @@ public class Fenetres {
 	{
 		switch (f)
 		{
-			case 0 :	
+			case 0 :
+				afficherFenetre1 ();
+			break;
+			case 1 :	
 			    //Toolkit.getDefaultToolkit().getScreenSize();
     			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
 				frame = new JFrame("Test plateau");
@@ -49,18 +53,8 @@ public class Fenetres {
 				frame.add(aire1);
 
 				frame.setVisible(true);
-
-
-				tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
-				frame = new JFrame("Test plateau");
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(500, 500);
-				frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
+ 
 				
-				aire2 = new PlateauInterface_2 (j);
-				frame.add(aire2);
-
-				frame.setVisible(true);
 			break;
 			default :
 				frame.setVisible(false);
@@ -70,6 +64,22 @@ public class Fenetres {
 				frame.setVisible(true);
 				frame.repaint();
 		}
+	}
+
+	public void afficherFenetre1 ()
+	{
+		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
+
+		frame = new JFrame("Test plateau");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(500, 500);
+		frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
+				
+		aire2 = new PlateauInterface_2 (j);
+		frame.add(aire2);
+		frame.setVisible(true);
+
+		aire2.addMouseListener(new EcouteurDeSouris(aire2));
 	}
 
 

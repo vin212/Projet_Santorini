@@ -11,14 +11,34 @@ public class Case {
 		this.nbPerso = 0;
 	}
 
-	public  void ajoutEtage (int tour)
+	public  int ajoutEtage ()
 	{
-		nbEtage ++;
+		int retour;
+		if (nbEtage + 1 <= 4)
+		{
+			nbEtage ++;
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+		return retour;
 	}
 
-	public void detruireEtage ()
+	public int detruireEtage ()
 	{
-		nbEtage--;
+		int retour;
+		if (nbEtage == 0)
+		{
+			retour = -1;
+		}
+		else
+		{
+			nbEtage--;
+			retour = 0;
+		}
+		return retour;
 	}
 
 
@@ -32,9 +52,9 @@ public class Case {
 		return nbEtage;
 	}
 
-	public boolean peuPoserUnPerso ()
+	public boolean peutPoserUnPerso ()
 	{
-		return nbEtage <= 3;
+		return nbEtage <= 3 && nbPerso == 0;
 	}
 
 	public boolean aPersonnage()
@@ -42,9 +62,20 @@ public class Case {
 		return nbPerso > 0;
 	}
 
-	public void enleverPerso ()
+	public int enleverPerso ()
 	{
-		nbPerso = 0;
+		int retour;
+		if (nbPerso > 0)
+		{
+			nbPerso = 0;
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+
+		return retour;
 	}
 
 	public void mettrePerso (int newNbPerso)
