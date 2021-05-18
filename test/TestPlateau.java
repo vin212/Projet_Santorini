@@ -15,10 +15,10 @@ public class TestPlateau {
 			Plateau plateauNorm = new Plateau(5, 6);
 			System.out.println(5==plateauNorm.getHauteur());
 			System.out.println(6==plateauNorm.getLargeur());
-			for (int i = 0; i < plateauNorm.largeur; i++) {
-				for (int j = 0; j < hauteur; j++) {
-					if (plateauNorm.cases[i][j]==NULL) {
-						System.out.println("Erreur : Case non initialisée : (", i, ", ", j, ")");
+			for (int i = 0; i < plateauNorm.getLargeur(); i++) {
+				for (int j = 0; j < plateauNorm.getHauteur(); j++) {
+					if (plateauNorm.cases[i][j]==null) {
+						System.out.println("Erreur : Case non initialisée : ("+ i + ", "+ j + ")");
 					}
 				}
 			}

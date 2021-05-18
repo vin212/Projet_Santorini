@@ -6,7 +6,7 @@ public class Plateau{
 
 	int hauteur;
 	int largeur;
-	Case [][] cases;
+	public Case [][] cases;
 
 	public Plateau (int hauteur, int largeur) {
 
