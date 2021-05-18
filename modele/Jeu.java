@@ -16,9 +16,12 @@ public class Jeu{
 		System.out.println("Init plateau : " + this.p);
 		this.t = 0;
 		this.joueurs = new Joueur [2];
-		for (int i = 0; i < 2 ; i++)
+		if (joueurs != null)
 		{
-			this.joueurs[i] = new Joueur();
+			for (int i = 0; i < 2 ; i++)
+			{
+				this.joueurs[i] = new Joueur();
+			}
 		}
 	}
 
@@ -38,14 +41,14 @@ public class Jeu{
 		this.p.afficher_CMD();
 	}
 
-	public void Construire(Point posi)
+	public int Construire(Point posi)
 	{
-		p.Construire(posi);
+		return p.Construire(posi);
 	}
 
-	public void detruireEtage (Point posi)
+	public int detruireEtage (Point posi)
 	{
-		p.detruireEtage(posi);
+		return p.detruireEtage(posi);
 	}
 
 	public boolean Constructible (Point posi)
@@ -73,9 +76,19 @@ public class Jeu{
 		this.t++;
 	}
 
-	public void subTour ()
+	public int subTour ()
 	{
-		this.t--;
+		int retour;
+		if (t > 0)
+		{
+			this.t--;
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+		return retour;
 	}
 
 	public boolean aPersonnage (Point posi)
@@ -83,17 +96,46 @@ public class Jeu{
 		return p.aPersonnage(posi);
 	}
 
-	public void poserPersonnage (Point posi_final, int nbPerso)
+	public int poserPersonnage (Point posi_final, int nbPerso)
 	{
-		this.joueurs[nbPerso-1].placerPerso (posi_final);
-		p.poserPersonnage(posi_final,nbPerso);
+		int retour;
+		if (nbPerso >= 1 && nbPerso <= 2)
+		{
+			retour = this.joueurs[nbPerso-1].placerPerso (posi_final);
+			retour = p.poserPersonnage(posi_final,nbPerso) + retour ;
+		}
+		else
+		{	
+			retour = -1;
+		}
+
+		if (retour < 0)
+		{
+			retour = -1;
+		}
+
+		return retour;
 	}
 
-	public void deplacerPersonnage (Point posi_init, Point posi_final)
+	public int deplacerPersonnage (Point posi_init, Point posi_final)
 	{
-		this.joueurs[0].deplacerPerso(posi_init,posi_final);
-		this.joueurs[1].deplacerPerso(posi_init,posi_final);
-		p.deplacerPersonnage(posi_init,posi_final);
+		int retour;
+		if (joueurs != null)
+		{
+			retour = this.joueurs[0].deplacerPerso(posi_init,posi_final);
+			retour = this.joueurs[1].deplacerPerso(posi_init,posi_final) + retour;
+			retour = p.deplacerPersonnage(posi_init,posi_final) + retour;
+		}
+		else
+		{
+			retour = -1;
+		}
+		if (retour < 0)
+		{
+			retour = -1;
+		}
+
+		return retour;
 	}
 
 	public int quiEstIci (Point posi)
@@ -116,9 +158,21 @@ public class Jeu{
 		return joueurEnJeu;
 	}
 
-	public void calculJoueurEnJeu ()
+	public int calculJoueurEnJeu ()
 	{
-		joueurEnJeu = t % 2 + 1;
+		int retour = 0;
+		if (t >= 0)
+		{
+			joueurEnJeu = t % 2 + 1;
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
+		}
+
+		return retour;
+
 	}
 
 
