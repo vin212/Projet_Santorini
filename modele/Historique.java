@@ -1,7 +1,6 @@
 package modele;
 
 import java.util.ArrayList;
-import structure.Coup;
 
 public class Historique{
     int taille = 0;
