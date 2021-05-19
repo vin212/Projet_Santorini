@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import modele.*;
 import controleur.*;
+import controleurIA.*;
 
 /*public enum EnumFenetre {
 	MENU,MENU_PAUSE,PLATEAU;
@@ -14,8 +15,8 @@ public class Fenetres {
 	int f;
 
 	Jeu j;
-	/*IA ia1;
-	IA ia2;*/
+	IA ia1;
+	IA ia2;
 
 	JFrame frame;
 	PlateauInterface_1 aire1;
@@ -72,8 +73,15 @@ public class Fenetres {
 
 	public void afficherFenetre1 ()
 	{
-		g = new GestionUser( this.j);
+		ia1 = new IAAleatoire();
+		ia1 = ia1.nouvelle(this.j,"controleurIA.IAAleatoire");
+		ia1.activeIA();
+
+		
 		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
+
+		
+
 
 		frame = new JFrame("Test plateau");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,10 +92,12 @@ public class Fenetres {
 		frame.add(aire2);
 		frame.setVisible(true);
 
-		Timer chrono = new Timer( 16, new EvenementTemp(g));
+		this.g = new GestionUser( this.j, ia1, ia2, aire2);
+		Timer chrono = new Timer( 50, new EvenementTemp(g));
 		chrono.start();
 
-		aire2.addMouseListener(new EcouteurDeSouris(aire2));
+
+		aire2.addMouseListener(new EcouteurDeSouris(aire2,g));
 	}
 
 

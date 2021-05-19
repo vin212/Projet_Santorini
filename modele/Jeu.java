@@ -1,6 +1,7 @@
 package modele;
 
 import structure.*;
+import controleurIA.*;
 
 public class Jeu{
 	Plateau p;

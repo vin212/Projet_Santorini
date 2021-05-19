@@ -75,6 +75,10 @@ public class ActionUser {
 					j.setAction (j.getJoueurEnJeu(),Action.A_CONSTRUIRE);
 					this.posi_init = posi_final;
 				}
+				else
+				{
+					System.out.println("Coup INVALIDE !!! " + posi_final+ posi_init);
+				}
 				
 			}
 			else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
@@ -87,12 +91,20 @@ public class ActionUser {
 					this.posi_init = posi_final;
 
 				}
+				else
+				{
+					System.out.println("Coup INVALIDE !!! " + posi_final+ posi_init);
+				}
 			}
 			else if (perso == j.getJoueurEnJeu())
 			{
 				System.out.println("ok select perso");
 				this.posi_init = posi_final;
 			}
+			else
+				{
+					System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
+				}
 		}
 
 	}
@@ -109,6 +121,10 @@ public class ActionUser {
 					j.setAction (j.getJoueurEnJeu(),Action.AFK);
 					j.Construire (posi_final);
 				}
+				else
+				{
+					System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
+				}
 			}
 			else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
 			{
@@ -118,7 +134,15 @@ public class ActionUser {
 					j.setAction (j.getJoueurEnJeu(),Action.AFK);
 					j.Construire (posi_final);
 				}
+				else
+				{
+					System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
+				}
 			}
+			else
+				{
+					System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
+				}
 		}
 	}
 
@@ -128,7 +152,7 @@ public class ActionUser {
 		{
 			if (j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1  )
 			{
-				System.out.println("ok deplacer");
+				System.out.println("ok placer");
 				j.poserPersonnage (posi_final, j.getJoueurEnJeu ());
 				if (a == Action.PREMIER_PLACEMENT)
 				{
