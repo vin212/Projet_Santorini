@@ -12,7 +12,7 @@ public class VerificateurPion implements Verificateur {
 
     // Retourne l'occupabilité de p.
     //@Override
-    public boolean verifie(Point p){
-        return j.peutPoserUnPerso(p);
+    public boolean verifie(Point p, Point p2){
+        return j.peutPoserUnPerso(p, p2);
     }
 }
