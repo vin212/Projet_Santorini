@@ -44,7 +44,7 @@ public class Case {
 
 	public boolean Constructible ()
 	{
-		return (nbEtage <= 3);
+		return (nbEtage <= 3 && nbPerso ==0);
 	}
 
 	public int getNbEtage ()

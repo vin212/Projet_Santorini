@@ -129,4 +129,9 @@ public class Joueur {
 		}
 
 	}
+
+	public void setAction (Action a)
+	{
+		actionEnCours = a;
+	}
 }

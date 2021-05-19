@@ -16,6 +16,7 @@ public class Jeu{
 		System.out.println("Init plateau : " + this.p);
 		this.t = 0;
 		this.joueurs = new Joueur [2];
+		this.joueurEnJeu = 1;
 		if (joueurs != null)
 		{
 			for (int i = 0; i < 2 ; i++)
@@ -156,6 +157,11 @@ public class Jeu{
 	public int getJoueurEnJeu ()
 	{
 		return joueurEnJeu;
+	}
+
+	public void setAction (int nbPerso, Action a)
+	{
+		this.joueurs[nbPerso-1].setAction(a);
 	}
 
 	public int calculJoueurEnJeu ()
