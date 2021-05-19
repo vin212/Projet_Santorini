@@ -67,7 +67,7 @@ public class Joueur {
 			}
 			else if (perso == 2)
 			{
-				this.perso2 = posi_init;
+				this.perso2 = posi_final;
 				retour = 0;
 			}
 			else
@@ -90,7 +90,7 @@ public class Joueur {
 		{
 			return 1;
 		}
-		else if (this.perso1.CompareTo (posi_init) == 1)
+		else if (this.perso2.CompareTo (posi_init) == 0)
 		{
 			return 2;
 		}	
@@ -128,5 +128,10 @@ public class Joueur {
 			return null;
 		}
 
+	}
+
+	public void setAction (Action a)
+	{
+		actionEnCours = a;
 	}
 }

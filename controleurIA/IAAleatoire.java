@@ -11,9 +11,8 @@ import structure.Verificateur;
 public class IAAleatoire extends IA {
     Random r;
     
-    public IAAleatoire(Jeu jeu){
+    public IAAleatoire(){
         r = new Random((long) 0);
-        j = jeu;
     }
 
     @Override

@@ -74,6 +74,12 @@ public class PlateauInterface_2 extends JComponent {
 		int y_calcul =((y-positionPremierBatiment.gety())/ (inter_batiment_hauteur + taille_hauteur));
 
 		System.out.println( x_calcul+ "," + y_calcul);
+
+		if (x >= positionPremierBatiment.getx() && y >= positionPremierBatiment.gety())
+		{
+			actionUser.jouerAction(new Point(x_calcul,y_calcul));
+			this.repaint();
+		}
 	}
 
 	@Override
