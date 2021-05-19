@@ -143,7 +143,7 @@ public class Jeu{
 		return p.quiEstIci (posi);
 	}
 
-	Point [] getPosiPions (int nbPerso)
+	public Point [] getPosiPions (int nbPerso)
 	{
 			return this.joueurs[nbPerso -1].getPosiPions();
 	}

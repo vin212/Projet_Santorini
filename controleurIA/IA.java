@@ -2,6 +2,7 @@ package controleurIA;
 
 import modele.Jeu;
 import structure.*;
+import java.util.ArrayList;
 
 public abstract class IA {
     public Jeu j;
@@ -50,7 +51,7 @@ public abstract class IA {
     }
 
     // Retourne les voisins p en fonction de v.
-    private ArrayList<Point> getVoisin(Point p, Verificateur v){
+    public ArrayList<Point> getVoisin(Point p, Verificateur v){
         int x = p.getx(), y = p.gety();
         int xmax = j.getLargeurPlateau();
         int ymax = j.getHauteurPlateau();

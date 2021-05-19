@@ -1,5 +1,8 @@
 package structure;
 
+import modele.Jeu;
+
+
 public class VerificateurPion implements Verificateur {
     Jeu j;
 
@@ -8,8 +11,8 @@ public class VerificateurPion implements Verificateur {
     }
 
     // Retourne l'occupabilité de p.
-    @Override
-    boolean verifie(Point p){
+    //@Override
+    public boolean verifie(Point p){
         return j.peutPoserUnPerso(p);
     }
 }
