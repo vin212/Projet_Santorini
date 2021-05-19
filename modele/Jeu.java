@@ -75,6 +75,7 @@ public class Jeu{
 	public void addTour ()
 	{
 		this.t++;
+		calculJoueurEnJeu ();
 	}
 
 	public boolean peutPoserUnPerso (Point posi_init,Point posi_final)
@@ -176,10 +177,12 @@ public class Jeu{
 		for (int i = 0; i < 2; i++)
 		{
 			posiPions = this.joueurs[i].getPosiPions();
-
-			for (int j = 0; j < posiPions.length; j++)
+			if (posiPions != null)
 			{
-				retour = retour || p.getNbEtage (posiPions[j]) == 3;
+				for (int j = 0; j < posiPions.length; j++)
+				{	
+					retour = retour || p.getNbEtage (posiPions[j]) == 3;
+				}
 			}
 		}
 
@@ -191,7 +194,8 @@ public class Jeu{
 		int retour = 0;
 		if (t >= 0)
 		{
-			joueurEnJeu = t % 2 + 1;
+			joueurEnJeu = t % 2;
+			joueurEnJeu++;
 			retour = 0;
 		}
 		else

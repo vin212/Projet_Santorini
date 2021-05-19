@@ -12,7 +12,7 @@ public class main
 
 		Jeu j = new Jeu();
 
-		j.Construire(new Point(1,1));
+		/*j.Construire(new Point(1,1));
 		j.Construire(new Point(1,1));
 		j.Construire(new Point(1,1));
 		j.Construire(new Point(1,1));
@@ -36,7 +36,7 @@ public class main
 		j.poserPersonnage (new Point (0,1), 1);
 		j.poserPersonnage (new Point (2,2), 2);
 		j.poserPersonnage (new Point (1,3), 2);
-		//j.deplacerPersonnage(new Point(1,2), new Point(1,3));
+		//j.deplacerPersonnage(new Point(1,2), new Point(1,3));*/
 
 		SwingUtilities.invokeLater(new Fenetre(j));
 		///j.setAction (1,Action.PREMIER_PLACEMENT);

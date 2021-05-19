@@ -19,24 +19,27 @@ public class ActionUser {
 	{
 		Action a = j.getAction (j.getJoueurEnJeu());
 
-		switch (a)
+		if (!j.estGagnant())
 		{
-			case A_DEPLACER :
-				selectionnerPerso(posi_final);
-			break;
-			case EN_COURS_DE_DEPLACEMENT :
-				avancerPerso (posi_final);
-			break;
-			case A_CONSTRUIRE :
-				construireIci (posi_final);
-			break;
-			case PREMIER_PLACEMENT :
-				placerPerso (posi_final,a);
-			break;
-			case DEXIEME_PLACEMENT :
-				placerPerso (posi_final,a);
-			break;
+			switch (a)
+			{
+				case A_DEPLACER :
+					selectionnerPerso(posi_final);
+				break;
+				case EN_COURS_DE_DEPLACEMENT :
+					avancerPerso (posi_final);
+				break;
+				case A_CONSTRUIRE :
+					construireIci (posi_final);
+				break;
+				case PREMIER_PLACEMENT :
+					placerPerso (posi_final,a);
+				break;
+				case DEXIEME_PLACEMENT :
+					placerPerso (posi_final,a);
+				break;
 
+			}
 		}
 		//avancerPerso (posi_final);
 	}

@@ -21,7 +21,7 @@ public class Fenetres {
 	PlateauInterface_1 aire1;
 	PlateauInterface_2 aire2;
 
-	//GestionUser g;
+	GestionUser g;
 
 	public Fenetres (Jeu j)
 	{
@@ -43,6 +43,7 @@ public class Fenetres {
 			break;
 			case 1 :	
 			    //Toolkit.getDefaultToolkit().getScreenSize();
+				
     			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
 				frame = new JFrame("Test plateau");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,6 +51,9 @@ public class Fenetres {
 				frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
 				
 				aire1 = new PlateauInterface_1 (j);
+
+				
+
 				frame.add(aire1);
 
 				frame.setVisible(true);
@@ -68,6 +72,7 @@ public class Fenetres {
 
 	public void afficherFenetre1 ()
 	{
+		g = new GestionUser( this.j);
 		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
 
 		frame = new JFrame("Test plateau");
@@ -78,6 +83,9 @@ public class Fenetres {
 		aire2 = new PlateauInterface_2 (j);
 		frame.add(aire2);
 		frame.setVisible(true);
+
+		Timer chrono = new Timer( 16, new EvenementTemp(g));
+		chrono.start();
 
 		aire2.addMouseListener(new EcouteurDeSouris(aire2));
 	}
