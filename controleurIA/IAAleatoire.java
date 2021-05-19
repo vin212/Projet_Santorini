@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import modele.Jeu;
+import modele.Coup;
 import structure.*;
 import structure.Verificateur;
 
