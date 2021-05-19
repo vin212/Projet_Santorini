@@ -6,28 +6,22 @@ public class Coup {
     Point initial;
     Point arrive;
     Point construction;
-    Joueur j;
+    int joueur;
 
     // Crée un coup de positionnement.
-    public Coup(Point dep){
+    public Coup(Point dep, int j){
         initial = dep;
         arrive = null;
         construction = null;
+        joueur = j;
     }
 
     // Crée un coup de déplacement.
-    public Coup(Point dep, Point arr, Point cons){
+    public Coup(Point dep, Point arr, Point cons, int j){
         initial = dep;
         arrive = arr;
         construction = cons;
-    }
-
-    // Crée un coup de déplacement.
-    public Coup(Point dep, Point arr, Point cons, Joueur joueur){
-        initial = dep;
-        arrive = arr;
-        construction = cons;
-        j = joueur;
+        joueur = j;
     }
 
     // Récupère le point de départ d'un coup.
@@ -48,6 +42,10 @@ public class Coup {
     // Retoure vrai si le coup est un déplacement.
     public Boolean estDeplacement(){
         return !(construction == null);
+    }
+
+    public int getJoueur(){
+        return joueur;
     }
 }
 
