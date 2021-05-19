@@ -93,13 +93,15 @@ public abstract class IA {
     }
 
     public String toString(){
-        String msg;
+        String msg ="";
 
         if (active){
             msg += "L'IA est active et " + j;
         } else {
             msg += "L'IA est désactive et " + j;
         }
+
+        return msg;
     }
 
 }

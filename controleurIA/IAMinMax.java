@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Iterator;
-import java.awt.Point;
 import java.lang.Math;
 
 import modele.Jeu;
@@ -165,9 +164,9 @@ public class IAMinMax extends IA {
                 depl = It1.next();
                 //control.joue(coup);
                 construction = getVoisin(depl, ve);
-                Iterator<Point> It2 = contruction.iterator();
+                Iterator<Point> It2 = construction.iterator();
                 while(It2.hasNext()){
-                    successeur.add(new Coup(p[i], depl, It2.next()));
+                    successeur.add(new Coup(p[i], depl, It2.next(), j.getJoueurEnJeu()));
                 }
                 //control.annulerCoup()
             }

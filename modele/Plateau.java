@@ -190,6 +190,7 @@ public class Plateau{
 			}
 			msg += "|\n";
 		}
+		return msg;
 	}
 
 
