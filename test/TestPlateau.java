@@ -13,15 +13,8 @@ public class TestPlateau {
 
 		try {
 			Plateau plateauNorm = new Plateau(5, 6);
-			System.out.println(5==plateauNorm.getHauteur());
-			System.out.println(6==plateauNorm.getLargeur());
-			for (int i = 0; i < plateauNorm.getLargeur(); i++) {
-				for (int j = 0; j < plateauNorm.getHauteur(); j++) {
-					if (plateauNorm.cases[i][j]==null) {
-						System.out.println("Erreur : Case non initialisée : ("+ i + ", "+ j + ")");
-					}
-				}
-			}
+			System.out.println("Test de la hauteur (5=true) : " + (5==plateauNorm.getHauteur()));
+			System.out.println("Test de la largeur (6=true) : " + (6==plateauNorm.getLargeur()));
 		}
 		catch (Throwable e) {
 			System.out.println("Erreur : Initialisation plateau");
