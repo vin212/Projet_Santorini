@@ -47,5 +47,12 @@ public class Coup {
     public int getJoueur(){
         return joueur;
     }
+
+    public String toString(){
+        if (estDeplacement())
+            return "Joueur : " + joueur + " de " + initial + " vers " + arrive + ". A construit en " + construction;
+        else
+            return "Joueur : " + joueur + " Placé en " + initial;
+    }
 }
 

@@ -5,36 +5,28 @@ public class Case {
 	int nbEtage;
 	int nbPerso;
 
-	public Case ()
-	{
+	public Case (){
 		this.nbEtage = 0;
 		this.nbPerso = 0;
 	}
 
-	public  int ajoutEtage ()
-	{
+	public  int ajoutEtage (){
 		int retour;
-		if (nbEtage + 1 <= 4)
-		{
+		if (nbEtage + 1 <= 4){
 			nbEtage ++;
 			retour = 0;
 		}
-		else
-		{
+		else{
 			retour = -1;
 		}
 		return retour;
 	}
 
-	public int detruireEtage ()
-	{
+	public int detruireEtage (){
 		int retour;
-		if (nbEtage == 0)
-		{
+		if (nbEtage == 0){
 			retour = -1;
-		}
-		else
-		{
+		} else {
 			nbEtage--;
 			retour = 0;
 		}
@@ -42,51 +34,47 @@ public class Case {
 	}
 
 
-	public boolean Constructible ()
-	{
+	public boolean Constructible (){
 		return (nbEtage <= 3);
 	}
 
-	public int getNbEtage ()
-	{
+	public int getNbEtage (){
 		return nbEtage;
 	}
 
-	public boolean peutPoserUnPerso ()
-	{
+	public boolean peutPoserUnPerso (){
 		return nbEtage <= 3 && nbPerso == 0;
 	}
 
-	public boolean aPersonnage()
-	{
+	public boolean aPersonnage(){
 		return nbPerso > 0;
 	}
 
-	public int enleverPerso ()
-	{
+	public int enleverPerso (){
 		int retour;
-		if (nbPerso > 0)
-		{
+		if (nbPerso > 0){
 			nbPerso = 0;
 			retour = 0;
-		}
-		else
-		{
+		} else {
 			retour = -1;
 		}
 
 		return retour;
 	}
 
-	public void mettrePerso (int newNbPerso)
-	{
+	public void mettrePerso (int newNbPerso){
 		nbPerso = newNbPerso;
 	}
 
-	public int getNbPerso ()
-	{
+	public int getNbPerso (){
 		return nbPerso;
 	}
 
+	public String toString(){
+		if (aPersonnage())
+			return ("" + nbEtage + ":" + nbPerso + " ");
+		else
+			return "" + nbEtage + "   ";
+	}
 
 }

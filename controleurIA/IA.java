@@ -91,4 +91,15 @@ public abstract class IA {
         }
         return voisins;
     }
+
+    public String toString(){
+        String msg;
+
+        if (active){
+            msg += "L'IA est active et " + j;
+        } else {
+            msg += "L'IA est désactive et " + j;
+        }
+    }
+
 }

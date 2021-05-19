@@ -55,4 +55,12 @@ public class Historique{
     public Coup obtenirCoup(int n){
         return historique.get(n);
     }
+
+    public String toString(){
+        String msg = "Historique :\n";
+        for(int i = 0; i < taille; i++){
+            msg += historique.get(i) + "\n";
+        }
+        return msg;
+    }
 }
