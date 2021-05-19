@@ -11,7 +11,7 @@ public class VerificateurEtage implements Verificateur {
 
     // Retourne la constructabilité de p.
     //@Override
-    public boolean verifie(Point p){
-        return j.Constructible(p);
+    public boolean verifie(Point p1, Point p2){
+        return j.Constructible(p2);
     }
 }

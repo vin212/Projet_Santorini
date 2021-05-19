@@ -1,7 +1,6 @@
 package modele;
 
 import java.util.ArrayList;
-import structure.Coup;
 
 public class Historique{
     int taille = 0;
@@ -55,5 +54,13 @@ public class Historique{
     // Obtiens le coup n, non robuste.
     public Coup obtenirCoup(int n){
         return historique.get(n);
+    }
+
+    public String toString(){
+        String msg = "Historique :\n";
+        for(int i = 0; i < taille; i++){
+            msg += historique.get(i) + "\n";
+        }
+        return msg;
     }
 }
