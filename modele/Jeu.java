@@ -1,6 +1,7 @@
 package modele;
 
 import structure.*;
+import controleurIA.*;
 
 public class Jeu{
 	Plateau p;
@@ -15,8 +16,11 @@ public class Jeu{
 		System.out.println("Init plateau : " + this.p);
 		this.t = 0;
 		this.joueurs = new Joueur [2];
-		if (joueurs != null){
-			for (int i = 0; i < 2 ; i++){
+		this.joueurEnJeu = 1;
+		if (joueurs != null)
+		{
+			for (int i = 0; i < 2 ; i++)
+			{
 				this.joueurs[i] = new Joueur();
 			}
 		}
@@ -61,6 +65,12 @@ public class Jeu{
 
 	public void addTour (){
 		this.t++;
+		calculJoueurEnJeu ();
+	}
+
+	public boolean peutPoserUnPerso (Point posi_init,Point posi_final)
+	{
+		return this.p.peutPoserUnPerso (posi_init,posi_final);
 	}
 
 	public int subTour (){
@@ -125,10 +135,38 @@ public class Jeu{
 		return joueurEnJeu;
 	}
 
-	public int calculJoueurEnJeu (){
+
+	public void setAction (int nbPerso, Action a)
+	{
+		this.joueurs[nbPerso-1].setAction(a);
+	}
+
+	public boolean estGagnant()
+	{
+		boolean retour = false;
+		Point [] posiPions;
+		for (int i = 0; i < 2; i++)
+		{
+			posiPions = this.joueurs[i].getPosiPions();
+			if (posiPions != null)
+			{
+				for (int j = 0; j < posiPions.length; j++)
+				{	
+					retour = retour || p.getNbEtage (posiPions[j]) == 3;
+				}
+			}
+		}
+
+		return retour;
+	}
+
+	public int calculJoueurEnJeu ()
+	{
 		int retour = 0;
-		if (t >= 0){
-			joueurEnJeu = t % 2 + 1;
+		if (t >= 0)
+		{
+			joueurEnJeu = t % 2;
+			joueurEnJeu++;
 			retour = 0;
 		} else {
 			retour = -1;

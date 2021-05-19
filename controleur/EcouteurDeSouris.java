@@ -8,15 +8,20 @@ import interfaceUser.*;
 public class EcouteurDeSouris extends MouseAdapter {
 
 	PlateauInterface_2 plateau;
+	GestionUser g;
 
-	public EcouteurDeSouris(PlateauInterface_2 plateau)
+	public EcouteurDeSouris(PlateauInterface_2 plateau, GestionUser g)
 	{
 		this.plateau = plateau;
+		this.g = g;
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
-		plateau.FaireActionUser (e.getX(),e.getY());
+		if (!g.iaJoue)
+		{
+			plateau.FaireActionUser (e.getX(),e.getY());
+		}
 	}
 }

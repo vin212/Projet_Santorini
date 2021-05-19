@@ -2,7 +2,7 @@ import interfaceUser.*;
 import modele.*;
 import structure.*;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class main 
 {
@@ -12,39 +12,36 @@ public class main
 
 		Jeu j = new Jeu();
 
-		/*for (int i = 0; i < j.getLargeurPlateau(); i++)
-		{
-			for (int k = 0; k < j.getHauteurPlateau (); k++)
-			{
-				for (int t = 0; t < 4; t++)
-				{
-					j.Construire(new Point(i,k));
-				}
-			}
-		}*/
+		/*j.Construire(new Point(1,1));
 		j.Construire(new Point(1,1));
 		j.Construire(new Point(1,1));
 		j.Construire(new Point(1,1));
-		j.Construire(new Point(1,1));
+		j.Construire(new Point(1,2));
 		j.Construire(new Point(1,2));
 		j.Construire(new Point(1,2));
 		j.Construire(new Point(1,3));
 		j.Construire(new Point(2,2));
+		j.Construire(new Point(2,2));
+		j.Construire(new Point(2,3));
 		j.Construire(new Point(0,0));
 		j.Construire(new Point(0,0));
 		j.Construire(new Point(0,0));
 		j.Construire(new Point(0,0));
 		j.AfficherPlateau ();
 
-		SwingUtilities.invokeLater(new Fenetre(j));
+		//SwingUtilities.invokeLater(new Fenetre(j));
 
 		
 		j.poserPersonnage (new Point (3,3), 1);
 		j.poserPersonnage (new Point (0,1), 1);
-		j.poserPersonnage (new Point (0,2), 2);
-		j.poserPersonnage (new Point (1,2), 2);
-		j.deplacerPersonnage(new Point(1,2), new Point(1,3));
+		j.poserPersonnage (new Point (2,2), 2);
+		j.poserPersonnage (new Point (1,3), 2);
+		//j.deplacerPersonnage(new Point(1,2), new Point(1,3));*/
 
-		System.out.println("qui est ici: " + j.quiEstIci (new Point(0,0)));
+		SwingUtilities.invokeLater(new Fenetre(j));
+		///j.setAction (1,Action.PREMIER_PLACEMENT);
+
+		System.out.println("Gagnant  " + j.estGagnant());
+
 	}	
 }

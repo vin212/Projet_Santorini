@@ -50,8 +50,10 @@ public class Joueur {
 			if (perso == 1){
 				this.perso1 = posi_final;
 				retour = 0;
-			} else if (perso == 2) {
-				this.perso2 = posi_init;
+			}
+			else if (perso == 2)
+			{
+				this.perso2 = posi_final;
 				retour = 0;
 			} else {
 				retour = -1;
@@ -65,7 +67,9 @@ public class Joueur {
 	public int checkPerso (Point posi_init){
 		if (this.perso1.CompareTo (posi_init) == 0){
 			return 1;
-		} else if (this.perso1.CompareTo (posi_init) == 1) {
+		}
+		else if (this.perso2.CompareTo (posi_init) == 0)
+		{
 			return 2;
 		} else {
 			return -1;
@@ -94,5 +98,10 @@ public class Joueur {
 
 	public String toString(){
 		return "Etat : " + actionEnCours + "Pion 1 : " + perso1 + "\n Pion 2 : " + perso2;
+	}
+
+	public void setAction (Action a)
+	{
+		actionEnCours = a;
 	}
 }

@@ -1,6 +1,7 @@
 package modele;
 
 import structure.*;
+import java.lang.*;
 
 public class Plateau{
 
@@ -73,8 +74,45 @@ public class Plateau{
 		}
 		return retour;
 	}
+	public boolean peutPoserUnPerso (Point posi_init,Point posi_final)
+	{
+		if (posi_init.getx() >= 0 && posi_init.gety() >= 0 && posi_final.getx() >= 0 &&  posi_final.gety() >= 0)
+		{
+			if (posi_init.getx() < largeur && posi_init.gety() < hauteur && posi_final.getx() < largeur && posi_final.gety() < hauteur)
+			{
+				if (Math.abs(posi_final.getx() - posi_init.getx()) + Math.abs(posi_final.gety() - posi_init.gety()) == 1 )
+				{
+					if (peutPoserUnPerso (posi_final) && getNbEtage (posi_final) - getNbEtage (posi_init) <= 1  )
+					{
+						return true;
+					}
+				}
+				else if (Math.abs(posi_final.getx() - posi_init.getx()) == 1 && Math.abs(posi_final.gety() - posi_init.gety()) == 1 )
+				{
+					if (peutPoserUnPerso (posi_final) && getNbEtage (posi_final) - getNbEtage (posi_init) <= 1  )
+					{
+						return true;
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+		return false;
+	}
 
-	public int getNbEtage (Point posi){
+	public int getNbEtage (Point posi)
+	{
 		int retour;
 		if (this.cases != null && posi.getx() < largeur && posi.gety() < hauteur && posi.getx() >= 0 && posi.gety() >= 0){
 			retour = this.cases[posi.getx()][posi.gety()].getNbEtage();
@@ -153,5 +191,7 @@ public class Plateau{
 			msg += "|\n";
 		}
 	}
+
+
 
 }
