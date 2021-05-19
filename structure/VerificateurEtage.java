@@ -1,5 +1,7 @@
 package structure;
 
+import modele.Jeu;
+
 public class VerificateurEtage implements Verificateur {
     Jeu j;
 
@@ -8,8 +10,8 @@ public class VerificateurEtage implements Verificateur {
     }
 
     // Retourne la constructabilité de p.
-    @Override
-    boolean verifie(Point p){
+    //@Override
+    public boolean verifie(Point p){
         return j.Constructible(p);
     }
 }

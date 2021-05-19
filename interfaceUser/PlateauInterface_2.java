@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import modele.*;
 import structure.*;
+import controleur.*;
 
 public class PlateauInterface_2 extends JComponent {
 
@@ -24,8 +25,11 @@ public class PlateauInterface_2 extends JComponent {
 	Image J2;
 	Image J1;
 
+	ActionUser actionUser;
+
 	public PlateauInterface_2(Jeu j) {
 		this.j = j;
+		actionUser = new ActionUser (j);
 
 		try {
 			InputStream in = new FileInputStream("ressource/texture/rdc_2D.png");
