@@ -1,9 +1,12 @@
-package structure;
+package modele;
+
+import structure.*;
 
 public class Coup {
     Point initial;
     Point arrive;
     Point construction;
+    Joueur j;
 
     // Crée un coup de positionnement.
     public Coup(Point dep){
@@ -17,6 +20,14 @@ public class Coup {
         initial = dep;
         arrive = arr;
         construction = cons;
+    }
+
+    // Crée un coup de déplacement.
+    public Coup(Point dep, Point arr, Point cons, Joueur joueur){
+        initial = dep;
+        arrive = arr;
+        construction = cons;
+        j = joueur;
     }
 
     // Récupère le point de départ d'un coup.
