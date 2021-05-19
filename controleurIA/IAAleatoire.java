@@ -12,9 +12,8 @@ import structure.Verificateur;
 public class IAAleatoire extends IA {
     Random r;
     
-    public IAAleatoire(Jeu jeu){
+    public IAAleatoire(){
         r = new Random((long) 0);
-        j = jeu;
     }
 
     @Override
@@ -73,8 +72,11 @@ public class IAAleatoire extends IA {
         }
         deplacement = liste.get(r.nextInt(taille));
         liste = getVoisin(deplacement, ve);
-        taille = liste.size(); 
-        // Si on a pu bouger, c'est qu'on peut poser de là d'où on vient. Donc liste ne peut pas être vide
+        taille = liste.size();
+        // Si on a pu bouger, c'est qu'on peut poser de là d'où on vient.
+        if (taille == 0){
+            return new Coup(pion, deplacement, pion, j.getJoueurEnJeu());
+        }
         construction = liste.get(r.nextInt(taille));
 
         return new Coup(pion, deplacement, construction, j.getJoueurEnJeu());

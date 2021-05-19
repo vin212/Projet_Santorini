@@ -15,9 +15,8 @@ import structure.Verificateur;
 public class IAMinMax extends IA {
     Random r;
     
-    public IAMinMax(Jeu jeu){
+    public IAMinMax(){
         r = new Random((long) 0);
-        j = jeu;
     }
 
     @Override
