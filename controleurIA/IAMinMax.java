@@ -35,7 +35,7 @@ public class IAMinMax extends IA {
                 }
             }
         }
-        return new Coup(liste.get(r.nextInt(liste.size())));
+        return new Coup(liste.get(r.nextInt(liste.size())), j.getJoueurEnJeu());
     }
 
     @Override
@@ -98,8 +98,7 @@ public class IAMinMax extends IA {
         // Si on a pu bouger, c'est qu'on peut poser de là d'où on vient. Donc liste ne peut pas être vide
         construction = liste.get(r.nextInt(taille));
 
-        //return new Coup(pion, deplacement, construction, j.getJoueurEnJeu());
-        return new Coup(pion, deplacement, construction);
+        return new Coup(pion, deplacement, construction, j.getJoueurEnJeu());
         */
     }
 
