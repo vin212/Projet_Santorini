@@ -10,12 +10,15 @@ import interfaceUser.*;
 public class GestionBouton extends JButton implements ActionListener
 {
 	Bouton type;
-	Jeu j;
+	//Jeu j;
+	PlateauInterface_2 aire2;
+	ActionUser action;
 
 	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type)
 	{
 		this.type = type;
-		this.j = j;
+		this.action = new ActionUser(j);
+		this.aire2 = aire2;
 	}
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -25,22 +28,24 @@ public class GestionBouton extends JButton implements ActionListener
 			case RETOUR :
 				try
 				{
-					j.histoAnnulerCoup();
+					action.annulerCoup();
 				}
-				catch (ArrayIndexOutOfBoundsException except)
+				catch (IndexOutOfBoundsException except)
 				{
 					System.err.println("Impossible d'annuler");
 				}
+				aire2.repaint();
 			break;
 			case RETABLIR :
 				try
 				{
-					j.histoRetablir();
+					action.retablirCoup();
 				}
-				catch (ArrayIndexOutOfBoundsException except)
+				catch (IndexOutOfBoundsException except)
 				{
 					System.err.println("Impossible de rétablir");
 				}
+				aire2.repaint();
 			break;
 			case PAUSE :
 			break;

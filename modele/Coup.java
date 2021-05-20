@@ -8,6 +8,15 @@ public class Coup {
     Point construction;
     int joueur;
 
+    // Crée un coup vide.
+    public Coup ()
+    {
+        initial = null;
+        arrive = null;
+        construction = null;
+        joueur = 0;
+    }
+
     // Crée un coup de positionnement.
     public Coup(Point dep, int j){
         initial = dep;
@@ -46,6 +55,23 @@ public class Coup {
 
     public int getJoueur(){
         return joueur;
+    }
+
+    // Permet de mettre un deplacement dans un coup.
+    public void setDeplacement (Point initial, Point arrive){
+        this.initial = initial;
+        this.arrive = arrive;
+
+    }
+
+    // Permet de mettre le point de construction dans un coup.
+    public void setConstruction (Point construction){
+        this.construction = construction;
+    }
+
+    // Permet de mettre le numero d'un joueur dans un coup.
+    public void setJoueur (int joueur){
+        this.joueur = joueur;
     }
 
     public String toString(){

@@ -74,8 +74,9 @@ public class Fenetres {
 	public void afficherFenetre1 ()
 	{
 		ia1 = IA.nouvelle(this.j,"controleurIA.IAAleatoire");
-		ia1.activeIA();
-
+		//ia1.activeIA();
+		aire2 = new PlateauInterface_2 (j);
+		
 		JButton boutonRetour = new JButton("<");
 		JButton boutonPause = new JButton("||");
 		JButton boutonRetablir = new JButton(">");
@@ -115,7 +116,7 @@ public class Fenetres {
 		frame.setSize(700, 500);
 		frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
 				
-		aire2 = new PlateauInterface_2 (j);
+		
 		frame.add(aire2,BorderLayout.CENTER);
 		frame.add(containerEst,BorderLayout.EAST);
 		frame.setVisible(true);
