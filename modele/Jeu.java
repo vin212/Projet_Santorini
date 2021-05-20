@@ -8,6 +8,7 @@ public class Jeu{
 	int t;
 	Joueur []joueurs;
 	int joueurEnJeu;
+	Historique historique;
 
 
 	public Jeu (){
@@ -26,15 +27,15 @@ public class Jeu{
 		}
 	}
 
-	public int getHauteurPlateau (){
+	public int getHauteurPlateau(){
 		return p.getHauteur();
 	}
 
-	public int getLargeurPlateau (){
+	public int getLargeurPlateau(){
 		return p.getLargeur();
 	}
 
-	public void AfficherPlateau (){
+	public void AfficherPlateau(){
 		System.out.println("Afficher plateau : " + this.p);
 		this.p.afficher_CMD();
 	}
@@ -43,7 +44,7 @@ public class Jeu{
 		return p.Construire(posi);
 	}
 
-	public int detruireEtage (Point posi){
+	public int detruireEtage(Point posi){
 		return p.detruireEtage(posi);
 	}
 
@@ -59,21 +60,32 @@ public class Jeu{
 		return p.getNbEtage(posi);
 	}
 
-	public int getTour (){
+	public int getTour(){
 		return t;
 	}
 
-	public void addTour (){
+	public void addTour(){
 		this.t++;
-		calculJoueurEnJeu ();
+		calculJoueurEnJeu();
 	}
 
-	public boolean peutPoserUnPerso (Point posi_init,Point posi_final)
-	{
-		return this.p.peutPoserUnPerso (posi_init,posi_final);
+	public void histoAjouterCoup(Coup c){
+		historique.ajouteCoup(c);
 	}
 
-	public int subTour (){
+	public Coup histoAnnulerCoup(){
+		return historique.annuler();
+	}
+
+	public Coup histoRetablir(){
+		return historique.retablir();
+	}
+
+	public boolean peutPoserUnPerso(Point posi_init,Point posi_final){
+		return this.p.peutPoserUnPerso(posi_init,posi_final);
+	}
+
+	public int subTour(){
 		int retour;
 		if (t > 0){
 			this.t--;
@@ -84,7 +96,7 @@ public class Jeu{
 		return retour;
 	}
 
-	public boolean aPersonnage (Point posi){
+	public boolean aPersonnage(Point posi){
 		return p.aPersonnage(posi);
 	}
 
@@ -96,7 +108,6 @@ public class Jeu{
 		} else {	
 			retour = -1;
 		}
-
 		if (retour < 0){
 			retour = -1;
 		}
@@ -115,7 +126,6 @@ public class Jeu{
 		if (retour < 0){
 			retour = -1;
 		}
-
 		return retour;
 	}
 
@@ -136,42 +146,33 @@ public class Jeu{
 	}
 
 
-	public void setAction (int nbPerso, Action a)
-	{
+	public void setAction (int nbPerso, Action a){
 		this.joueurs[nbPerso-1].setAction(a);
 	}
 
-	public boolean estGagnant()
-	{
+	public boolean estGagnant(){
 		boolean retour = false;
 		Point [] posiPions;
-		for (int i = 0; i < 2; i++)
-		{
+		for (int i = 0; i < 2; i++){
 			posiPions = this.joueurs[i].getPosiPions();
-			if (posiPions != null)
-			{
-				for (int j = 0; j < posiPions.length; j++)
-				{	
+			if (posiPions != null){
+				for (int j = 0; j < posiPions.length; j++){
 					retour = retour || p.getNbEtage (posiPions[j]) == 3;
 				}
 			}
 		}
-
 		return retour;
 	}
 
-	public int calculJoueurEnJeu ()
-	{
+	public int calculJoueurEnJeu (){
 		int retour = 0;
-		if (t >= 0)
-		{
+		if (t >= 0){
 			joueurEnJeu = t % 2;
 			joueurEnJeu++;
 			retour = 0;
 		} else {
 			retour = -1;
 		}
-
 		return retour;
 	}
 
