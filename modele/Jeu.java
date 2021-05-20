@@ -73,6 +73,16 @@ public class Jeu{
 		return this.p.peutPoserUnPerso (posi_init,posi_final);
 	}
 
+	public int eleverPerso (Point posi)
+	{
+		int retour =0;
+		retour += this.p.eleverPerso(posi);
+		retour += joueurs[0].enleverPerso(posi);
+		retour += joueurs[1].enleverPerso(posi);
+
+		return retour;
+	}
+
 	public int subTour (){
 		int retour;
 		if (t > 0){
