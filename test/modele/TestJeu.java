@@ -118,7 +118,10 @@ public class TestJeu {
     @Test
     public void testPeutPoserUnPerso() {
         jeu.poserPersonnage(new Point(1,1), 1);
-        jeu.poserPersonnage(new Point(3,3), 2);
+        jeu.poserPersonnage(new Point(3,3), 1);
+
+        jeu.poserPersonnage(new Point(2,3), 2);
+        jeu.poserPersonnage(new Point(4,4), 2);
 
 
         //check if person can be placed after poserPersonnage
@@ -144,11 +147,14 @@ public class TestJeu {
     @Test
     public void testAPersonnage() {
         jeu.poserPersonnage(new Point(2,1), 1);
-        jeu.poserPersonnage(new Point(1,3), 2);
+        jeu.poserPersonnage(new Point(1,3), 1);
+
+        jeu.poserPersonnage(new Point(2,2), 2);
+        jeu.poserPersonnage(new Point(4,3), 2);
 
         //check if there is a person
         Assertions.assertTrue(jeu.aPersonnage(new Point(2,1)));
-        Assertions.assertTrue(jeu.aPersonnage(new Point(1,3)));
+        Assertions.assertTrue(jeu.aPersonnage(new Point(4,3)));
         Assertions.assertFalse(jeu.aPersonnage(new Point(1,2)));
 
         // change position of the person
@@ -158,7 +164,7 @@ public class TestJeu {
         Assertions.assertTrue(jeu.aPersonnage(new Point(2,2)));
 
         //checks new position
-        Assertions.assertFalse(jeu.aPersonnage(new Point(1,3)));
+        Assertions.assertFalse(jeu.aPersonnage(new Point(1,4)));
 
         // check for out of border
         Assertions.assertFalse(jeu.aPersonnage(new Point(7,7)));
@@ -167,15 +173,18 @@ public class TestJeu {
         Assertions.assertFalse(jeu.aPersonnage(new Point(-1,-3)));
     }
 
+    // TODO CHECK FOR nbPerso2
     @Test
     public void testDeplacerEtPoserPersonnage() {
         jeu.poserPersonnage(new Point(3,1),1);
-        jeu.poserPersonnage(new Point(2,1),2);
+        jeu.poserPersonnage(new Point(2,1),1);
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,5),2);
 
         jeu.deplacerPersonnage(new Point(2,1),new Point(2,2));
 
         Assertions.assertEquals(0, jeu.quiEstIci(new Point(2,1)));
-        Assertions.assertEquals(2,jeu.quiEstIci(new Point(2,2)));
         Assertions.assertEquals(1,jeu.quiEstIci(new Point(3,1)));
     }
 
