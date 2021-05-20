@@ -27,7 +27,7 @@ public class GestionBouton extends JButton implements ActionListener
 				{
 					j.histoAnnulerCoup();
 				}
-				catch (ArrayIndexOutOfBoundsException e)
+				catch (ArrayIndexOutOfBoundsException except)
 				{
 					System.err.println("Impossible d'annuler");
 				}
@@ -37,7 +37,7 @@ public class GestionBouton extends JButton implements ActionListener
 				{
 					j.histoRetablir();
 				}
-				catch (ArrayIndexOutOfBoundsException e)
+				catch (ArrayIndexOutOfBoundsException except)
 				{
 					System.err.println("Impossible de rétablir");
 				}

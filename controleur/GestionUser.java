@@ -2,7 +2,7 @@ package controleur;
 
 
 import controleurIA.*;
-//import javax.swing.*;
+import javax.swing.*;
 
 import modele.*;
 import interfaceUser.*;
