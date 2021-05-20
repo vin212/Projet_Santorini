@@ -76,9 +76,9 @@ public class Jeu{
 	public int eleverPerso (Point posi)
 	{
 		int retour =0;
-		retour += this.p.eleverPerso(posi);
-		retour += joueurs[0].enleverPerso(posi);
-		retour += joueurs[1].enleverPerso(posi);
+		retour = this.p.eleverPerso(posi);
+		joueurs[0].enleverPerso(posi);
+		joueurs[1].enleverPerso(posi);
 
 		return retour;
 	}
