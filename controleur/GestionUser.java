@@ -1,16 +1,11 @@
 package controleur;
 
 
-import java.util.concurrent.TimeUnit;
 import controleurIA.*;
-//import javax.swing.*;
-
-import modele.*;
-import structure.*;
-import interfaceUser.*;
 import javax.swing.*;
 
-
+import modele.*;
+import interfaceUser.*;
 
 public class GestionUser
 {
@@ -24,7 +19,10 @@ public class GestionUser
 
 	PlateauInterface_2 aire1;
 
-	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1)
+	JLabel leJoueur;
+	JLabel gagnant;
+
+	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1, JLabel leJoueur, JLabel gagnant)
 	{
 		this.j = j;
 		this.commencer = false;
@@ -33,6 +31,9 @@ public class GestionUser
 		this.humainJoue = true;
 
 		this.aire1 = aire1;
+
+		this.leJoueur = leJoueur;
+		this.gagnant = gagnant;
 
 	}
 
@@ -43,7 +44,8 @@ public class GestionUser
 		modele.Action action;
 		numJoueur = j.getJoueurEnJeu();
 		//System.out.println("ici");
-		if (j != null && !j.estGagnant())
+		int quiGagne = j.quiGagnant() ;
+		if (j != null && quiGagne == 0)
 		{
 			if (numJoueur == 1)
 			{
@@ -90,22 +92,20 @@ public class GestionUser
 				System.out.println("A l'ia de jouer");
 				JouerIA ();
 			}
+			action = j.getAction(numJoueur);
+			System.out.println(" Au joueur : " + numJoueur + " de " + action);
+			leJoueur.setText("Au joueur : " + numJoueur + " de " + action);
+			System.out.println(" Au joueur : " + (numJoueur%2 +1) + " de " + j.getAction(numJoueur%2 +1));
 		}
 		else
 		{
 			numJoueur = j.getJoueurEnJeu();
-			System.out.println(" Le Joueur : " + numJoueur + " A gagnée ! ");
+			System.out.println(" Le Joueur " + quiGagne + " a gagné ! ");
+			leJoueur.setText("Le Joueur " + quiGagne + " a gagné ! ");
 
 		}
-		action = j.getAction(numJoueur);
-		System.out.println(" Au joueur : " + numJoueur + " de " + action);
-		System.out.println(" Au joueur : " + (numJoueur%2 +1) + " de " + j.getAction(numJoueur%2 +1));
+		
 		aire1.repaint();
-	}
-
-	private void JouerJoueur()
-	{
-
 	}
 
 	private void JouerIA()

@@ -1,13 +1,13 @@
 package modele;
 
 import structure.*;
-import controleurIA.*;
 
 public class Jeu{
 	Plateau p;
 	int t;
 	Joueur []joueurs;
 	int joueurEnJeu;
+	Historique historique;
 
 
 	public Jeu (){
@@ -26,15 +26,15 @@ public class Jeu{
 		}
 	}
 
-	public int getHauteurPlateau (){
+	public int getHauteurPlateau(){
 		return p.getHauteur();
 	}
 
-	public int getLargeurPlateau (){
+	public int getLargeurPlateau(){
 		return p.getLargeur();
 	}
 
-	public void AfficherPlateau (){
+	public void AfficherPlateau(){
 		System.out.println("Afficher plateau : " + this.p);
 		this.p.afficher_CMD();
 	}
@@ -43,7 +43,7 @@ public class Jeu{
 		return p.Construire(posi);
 	}
 
-	public int detruireEtage (Point posi){
+	public int detruireEtage(Point posi){
 		return p.detruireEtage(posi);
 	}
 
@@ -59,18 +59,44 @@ public class Jeu{
 		return p.getNbEtage(posi);
 	}
 
-	public int getTour (){
+	public int getTour(){
 		return t;
 	}
 
-	public void addTour (){
+	public void addTour(){
 		this.t++;
-		calculJoueurEnJeu ();
+		calculJoueurEnJeu();
 	}
 
-	public boolean peutPoserUnPerso (Point posi_init,Point posi_final)
+	public void histoAjouterCoup(Coup c){
+		historique.ajouteCoup(c);
+	}
+
+	public Coup histoAnnulerCoup() throws ArrayIndexOutOfBoundsException{
+		return historique.annuler();
+	}
+
+	public Coup histoRetablir() throws ArrayIndexOutOfBoundsException{
+		return historique.retablir();
+	}
+
+	public int histoPosition(){
+		return historique.positionnement();
+	}
+
+	public boolean peutPoserUnPerso(Point posi_init,Point posi_final){
+		return this.p.peutPoserUnPerso(posi_init,posi_final);
+	}
+
+
+	public int enleverPerso (Point posi)
 	{
-		return this.p.peutPoserUnPerso (posi_init,posi_final);
+		int retour =0;
+		retour = this.p.eleverPerso(posi);
+		joueurs[0].enleverPerso(posi);
+		joueurs[1].enleverPerso(posi);
+
+		return retour;
 	}
 
 	public int subTour (){
@@ -84,7 +110,7 @@ public class Jeu{
 		return retour;
 	}
 
-	public boolean aPersonnage (Point posi){
+	public boolean aPersonnage(Point posi){
 		return p.aPersonnage(posi);
 	}
 
@@ -96,7 +122,6 @@ public class Jeu{
 		} else {	
 			retour = -1;
 		}
-
 		if (retour < 0){
 			retour = -1;
 		}
@@ -115,7 +140,6 @@ public class Jeu{
 		if (retour < 0){
 			retour = -1;
 		}
-
 		return retour;
 	}
 
@@ -136,15 +160,41 @@ public class Jeu{
 	}
 
 
-	public void setAction (int nbPerso, Action a)
-	{
+	public void setAction (int nbPerso, Action a){
 		this.joueurs[nbPerso-1].setAction(a);
 	}
 
-	public boolean estGagnant()
-	{
+	public boolean estGagnant(){
 		boolean retour = false;
 		Point [] posiPions;
+		int totVoisin= 0;
+		Verificateur v = new VerificateurPion(this);
+		for (int i = 0; i < 2; i++)
+		{
+			posiPions = this.joueurs[i].getPosiPions();
+			if (posiPions != null){
+				for (int j = 0; j < posiPions.length; j++){
+					retour = retour || p.getNbEtage (posiPions[j]) == 3;
+					totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
+				}
+
+				retour = (totVoisin == 0) || retour;
+				System.out.println("totVoisin : " + totVoisin+ "-------------------------");
+				totVoisin = 0;
+
+			}
+		}
+
+		return retour;
+	}
+
+	public int quiGagnant()
+	{
+		int retour = 0
+		;
+		Point [] posiPions;
+		int totVoisin= 0;
+		Verificateur v = new VerificateurPion(this);
 		for (int i = 0; i < 2; i++)
 		{
 			posiPions = this.joueurs[i].getPosiPions();
@@ -152,31 +202,42 @@ public class Jeu{
 			{
 				for (int j = 0; j < posiPions.length; j++)
 				{	
-					retour = retour || p.getNbEtage (posiPions[j]) == 3;
+					if (retour == 0 && p.getNbEtage (posiPions[j]) == 3)
+					{
+						retour = i+1;
+					}
+					totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
 				}
+				if (retour == 0 && totVoisin == 0)
+				{
+					retour = ((i+1)%2) + 1;
+				}
+				totVoisin = 0;
+
 			}
 		}
-
 		return retour;
 	}
 
-	public int calculJoueurEnJeu ()
-	{
+	public int calculJoueurEnJeu (){
 		int retour = 0;
-		if (t >= 0)
-		{
+		if (t >= 0){
 			joueurEnJeu = t % 2;
 			joueurEnJeu++;
 			retour = 0;
 		} else {
 			retour = -1;
 		}
-
 		return retour;
 	}
 
+	public int getNbVoisin(Point posi, Verificateur v)
+	{
+		return p.getNbVoisin(posi,v);
+	}
+
 	public String toString(){
-		return ("Au joueur " + joueurEnJeu + " a joue sur le plateau :\n" + p);
+		return ("Au joueur " + joueurEnJeu + " de jouer sur le plateau :\n" + p);
 	}
 
 }

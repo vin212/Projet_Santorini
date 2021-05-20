@@ -1,15 +1,16 @@
 package controleurIA;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
+
+
 import java.util.Iterator;
 import java.lang.Math;
 
+import controleur.ActionUser;
 import modele.Jeu;
 import modele.Coup;
 import structure.*;
-import structure.Verificateur;
 
 public class IAMinMax extends IA {
     Random r;
@@ -38,10 +39,9 @@ public class IAMinMax extends IA {
 
     @Override
     public Coup joue(){
-        //Controleur control = new Controleur(this.j);
+        ActionUser control = new ActionUser(this.j);
         ArrayList<Coup> successeur = successeur(j);
         ListGagnant gagnant = new ListGagnant();
-        Point[] p = j.getPosiPions(j.getJoueurEnJeu());
         Iterator<Coup> I = successeur.iterator();
         int taille = successeur.size();
         int valeur; 
@@ -58,52 +58,18 @@ public class IAMinMax extends IA {
 
         while(I.hasNext()){
             c = I.next();
-            //control.tour(c);
+            control.tour(c);
             valeur = calcul_toi(j, horizon, Integer.MAX_VALUE);
             gagnant.ajouter(valeur, c);
-            //control.annulerTour();
+            control.annulerCoup();
         }
         return gagnant.extraire();
-
-        /*
-        // Pion 1 qui joue
-        if (b)
-            pion = p[0];
-        // Pion 2 qui joue
-        else
-            pion = p[1];
-        liste = getVoisin(pion, vp);
-        taille = liste.size();
-        if(taille == 0){
-            // On regarde l'autre pion
-            // Si il n'a pas de voisin possible
-            // C'est qu'il n'y a pas de coup possible et donc une erreur
-            b = !b;
-            if (b)
-                pion = p[0];
-            else
-                pion = p[1];
-            liste = getVoisin(pion, vp);
-            taille = liste.size();
-            if (taille == 0){
-                // Ne devrait pas arriver. Seul le futur nous dira si c'est vrai ou pas.
-                System.err.println("Mouvement impossible. Doit être traité avant");
-            }
-        }
-        deplacement = liste.get(r.nextInt(taille));
-        liste = getVoisin(deplacement, ve);
-        taille = liste.size(); 
-        // Si on a pu bouger, c'est qu'on peut poser de là d'où on vient. Donc liste ne peut pas être vide
-        construction = liste.get(r.nextInt(taille));
-
-        return new Coup(pion, deplacement, construction, j.getJoueurEnJeu());
-        */
     }
 
     // Max
     private int calcul_moi(Jeu j, int horizon, int maximum){
         // Si il renvoie supérieur au max en argument, ça ne sert à rien.
-        //Controleur control = new Controleur(j);
+        ActionUser control = new ActionUser(j);
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
         int chiffrage = Integer.MIN_VALUE;
@@ -116,9 +82,9 @@ public class IAMinMax extends IA {
 
         while(I.hasNext() || (maximum >= chiffrage)){
             c = I.next();
-            //control.tour(c);
+            control.tour(c);
             chiffrage = Math.max(chiffrage, calcul_toi(j, horizon - 1, chiffrage));
-            //control.annulerTour();
+            control.annulerCoup();
         }
         return chiffrage;
 
@@ -126,23 +92,21 @@ public class IAMinMax extends IA {
 
     // Min
     private int calcul_toi(Jeu j, int horizon, int maximum){
-        //Controle control = new Controleur(j);
+        ActionUser control = new ActionUser(j);
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
         int chiffrage = Integer.MAX_VALUE;
         Coup c;
 
-        if(j.estGagnant()){
-            return -chiffrage(j);
-        } else if (horizon == 0) {
+        if(j.estGagnant() || horizon == 0){
             return -chiffrage(j);
         }
 
         while(I.hasNext() || (maximum >= chiffrage)){
             c = I.next();
-            //control.tour(c);
-            chiffrage = Math.max(chiffrage, calcul_toi(j, horizon - 1, chiffrage));
-            //control.annulerTour();
+            control.tour(c);
+            chiffrage = Math.max(chiffrage, calcul_moi(j, horizon - 1, chiffrage));
+            control.annulerCoup();
         }
         return -chiffrage;
     }
@@ -154,7 +118,6 @@ public class IAMinMax extends IA {
         VerificateurPion vp = new VerificateurPion(j);
         VerificateurEtage ve = new VerificateurEtage(j);
         Point[] p = j.getPosiPions(j.getJoueurEnJeu());
-        // Controle control = new Controleur(j);
         
         for(int i = 0; i< 2; i++){
             deplacement = getVoisin(p[i], vp);
@@ -162,13 +125,11 @@ public class IAMinMax extends IA {
             Point depl;
             while(It1.hasNext()){
                 depl = It1.next();
-                //control.joue(coup);
                 construction = getVoisin(depl, ve);
                 Iterator<Point> It2 = construction.iterator();
                 while(It2.hasNext()){
                     successeur.add(new Coup(p[i], depl, It2.next(), j.getJoueurEnJeu()));
                 }
-                //control.annulerCoup()
             }
         }
 
