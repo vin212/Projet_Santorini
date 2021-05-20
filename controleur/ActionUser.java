@@ -65,7 +65,7 @@ public class ActionUser {
 		perso = j.quiEstIci (posi_final);
 		if (posi_final.getx() >= 0 && posi_final.getx() < j.getLargeurPlateau () && posi_final.gety() >= 0 && posi_final.gety() < j.getHauteurPlateau ())
 		{
-			if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
+			if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 && perso != j.getJoueurEnJeu())
 			{
 
 				if (j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1  )
@@ -77,11 +77,11 @@ public class ActionUser {
 				}
 				else
 				{
-					System.out.println("Coup INVALIDE !!! " + posi_final+ posi_init);
+					System.out.println("Coup INVALIDE deplacer !!! " + posi_final+ posi_init);
 				}
 				
 			}
-			else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
+			else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 && perso != j.getJoueurEnJeu())
 			{
 				if (j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1 )
 				{
@@ -93,7 +93,7 @@ public class ActionUser {
 				}
 				else
 				{
-					System.out.println("Coup INVALIDE !!! " + posi_final+ posi_init);
+					System.out.println("Coup INVALIDE deplacer!!! " + posi_final+ posi_init);
 				}
 			}
 			else if (perso == j.getJoueurEnJeu())
@@ -103,7 +103,7 @@ public class ActionUser {
 			}
 			else
 				{
-					System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
+					System.out.println("Coup INVALIDE autre!!! " + posi_final + posi_init);
 				}
 		}
 

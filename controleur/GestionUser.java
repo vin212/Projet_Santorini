@@ -43,7 +43,8 @@ public class GestionUser
 		modele.Action action;
 		numJoueur = j.getJoueurEnJeu();
 		//System.out.println("ici");
-		if (j != null && !j.estGagnant())
+		int quiGagne = j.quiGagnant() ;
+		if (j != null && quiGagne == 0)
 		{
 			if (numJoueur == 1)
 			{
@@ -94,7 +95,7 @@ public class GestionUser
 		else
 		{
 			numJoueur = j.getJoueurEnJeu();
-			System.out.println(" Le Joueur : " + numJoueur + " A gagnée ! ");
+			System.out.println(" Le Joueur : " + quiGagne + " A gagnée ! ");
 
 		}
 		action = j.getAction(numJoueur);
