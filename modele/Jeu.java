@@ -88,7 +88,18 @@ public class Jeu{
 		return this.p.peutPoserUnPerso(posi_init,posi_final);
 	}
 
-	public int subTour(){
+
+	public int enleverPerso (Point posi)
+	{
+		int retour =0;
+		retour = this.p.eleverPerso(posi);
+		joueurs[0].enleverPerso(posi);
+		joueurs[1].enleverPerso(posi);
+
+		return retour;
+	}
+
+	public int subTour (){
 		int retour;
 		if (t > 0){
 			this.t--;
@@ -156,12 +167,53 @@ public class Jeu{
 	public boolean estGagnant(){
 		boolean retour = false;
 		Point [] posiPions;
-		for (int i = 0; i < 2; i++){
+		int totVoisin= 0;
+		Verificateur v = new VerificateurPion(this);
+		for (int i = 0; i < 2; i++)
+		{
 			posiPions = this.joueurs[i].getPosiPions();
 			if (posiPions != null){
 				for (int j = 0; j < posiPions.length; j++){
 					retour = retour || p.getNbEtage (posiPions[j]) == 3;
+					totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
 				}
+
+				retour = (totVoisin == 0) || retour;
+				System.out.println("totVoisin : " + totVoisin+ "-------------------------");
+				totVoisin = 0;
+
+			}
+		}
+
+		return retour;
+	}
+
+	public int quiGagnant()
+	{
+		int retour = 0
+		;
+		Point [] posiPions;
+		int totVoisin= 0;
+		Verificateur v = new VerificateurPion(this);
+		for (int i = 0; i < 2; i++)
+		{
+			posiPions = this.joueurs[i].getPosiPions();
+			if (posiPions != null)
+			{
+				for (int j = 0; j < posiPions.length; j++)
+				{	
+					if (retour == 0 && p.getNbEtage (posiPions[j]) == 3)
+					{
+						retour = i+1;
+					}
+					totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
+				}
+				if (retour == 0 && totVoisin == 0)
+				{
+					retour = ((i+1)%2) + 1;
+				}
+				totVoisin = 0;
+
 			}
 		}
 		return retour;
@@ -177,6 +229,11 @@ public class Jeu{
 			retour = -1;
 		}
 		return retour;
+	}
+
+	public int getNbVoisin(Point posi, Verificateur v)
+	{
+		return p.getNbVoisin(posi,v);
 	}
 
 	public String toString(){

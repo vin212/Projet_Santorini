@@ -14,6 +14,8 @@ public class Joueur {
 	public Joueur(){
 		nbPersoPlacer = 0;
 		actionEnCours =  Action.AFK;
+		this.perso1 = null;
+		this.perso2 = null;
 	}
 
 	public int placerPerso (Point p){
@@ -28,6 +30,28 @@ public class Joueur {
 			retour = 0;
 		} else {
 			retour =  -1;
+		}
+		return retour;
+	}
+
+	public int enleverPerso (Point p) 
+	{
+		int retour = 0;
+		if (this.perso2 != null && p.CompareTo(this.perso2) == 0 )
+		{
+			nbPersoPlacer--;
+			this.perso2 = null;
+			retour = 0;
+		}
+		else if (this.perso1 != null && p.CompareTo(this.perso1) == 0)
+		{
+			nbPersoPlacer--;
+			this.perso1 = null;
+			retour = 0;
+		}
+		else
+		{
+			retour = -1;
 		}
 		return retour;
 	}

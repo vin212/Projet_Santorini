@@ -146,6 +146,27 @@ public class Plateau{
 		return retour;
 	}
 
+	public int eleverPerso (Point posi)
+	{
+		int retour = 0;
+		if (this.cases != null && posi.getx() >= 0 && posi.getx() < largeur && posi.gety() >= 0 && posi.gety() < hauteur)
+		{
+			if (this.cases[posi.getx()][posi.gety()].aPersonnage())
+			{
+				retour = this.cases[posi.getx()][posi.gety()].enleverPerso();
+			}
+			else
+			{
+				retour = -1;
+			}
+		}
+		else
+		{
+			retour =-1;
+		}
+		return retour;
+	}
+
 	public int quiEstIci (Point posi){
 		int retour;
 		if (cases != null && posi.getx() >= 0 && posi.gety() >= 0 && posi.getx()  < largeur && posi.gety() < hauteur){
@@ -165,6 +186,46 @@ public class Plateau{
 		}
 		return retour;
 	}
+
+	public int getNbVoisin(Point posi, Verificateur v){
+        int x = posi.getx(), y = posi.gety();
+        int xmax = largeur;
+        int ymax = hauteur;
+        int voisins = 0;
+        if (0 < x){
+            if (v.verifie(posi, new Point(x-1, y)))
+                voisins++;
+        }
+        if (0 < y){
+            if (v.verifie(posi, new Point(x, y-1)))
+                voisins++;
+        }
+        if (x < xmax){
+            if (v.verifie(posi, new Point(x+1, y)))
+                voisins++;
+        }
+        if (y < ymax){
+            if (v.verifie(posi, new Point(x, y+1)))
+                voisins++;
+        }
+        if (0 < x && 0 < y){
+            if (v.verifie(posi, new Point(x-1, y-1)))
+                voisins++;
+        }
+        if (x < xmax && y < ymax){
+            if (v.verifie(posi, new Point(x+1, y+1)))
+                voisins++;
+        }
+        if (x < xmax && 0 < y){
+            if (v.verifie(posi, new Point(x+1, y-1)))
+                voisins++;
+        }
+        if (0 < x && y < ymax){
+            if (v.verifie(posi, new Point(x-1, y+1)))
+                voisins++;
+        }
+        return voisins;
+    }
 
 
 	public void afficher_CMD (){
