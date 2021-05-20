@@ -46,6 +46,11 @@ public class Historique{
         return position < taille;
     }
 
+    // Retourne la position dans l'historique.
+    public int positionnement(){
+        return position;
+    }
+
     // Vérifie l'existence d'un coup.
     public boolean existeCoup(int n){
         return n < taille;
