@@ -35,7 +35,7 @@ public class ActionUser {
 				case PREMIER_PLACEMENT :
 					placerPerso (posi_final,a);
 				break;
-				case DEXIEME_PLACEMENT :
+				case DEUXIEME_PLACEMENT :
 					placerPerso (posi_final,a);
 				break;
 
@@ -156,7 +156,7 @@ public class ActionUser {
 				j.poserPersonnage (posi_final, j.getJoueurEnJeu ());
 				if (a == Action.PREMIER_PLACEMENT)
 				{
-					j.setAction (j.getJoueurEnJeu(),Action.DEXIEME_PLACEMENT);
+					j.setAction (j.getJoueurEnJeu(),Action.DEUXIEME_PLACEMENT);
 				}
 				else
 				{
@@ -169,6 +169,36 @@ public class ActionUser {
 		
 	}
 
+	public void annulerCoup(){
+		// Attention aux actions !
+		Coup c = j.histoAnnulerCoup();
+		selectionnerPerso(c.getArrive());
+		avancerPerso(c.getDepart());
+		j.detruireEtage(c.getConstruction());
+	}
+
+	public void retablirCoup(){
+		Coup c = j.histoRetablir();
+		if (c.estDeplacement()){
+			selectionnerPerso(c.getDepart());
+			avancerPerso(c.getArrive());
+			construireIci(c.getConstruction());
+		} else {
+			placerPerso(c.getDepart(), Action.AFK); // Traiter les changements d'actions
+		}
+	}
+
+	// Fonction spécial pour l'IA.
+	public void tour(Coup c){
+		// Et l'historique ?
+		if (c.estDeplacement()){
+			selectionnerPerso(c.getDepart());
+			avancerPerso(c.getArrive());
+			construireIci(c.getConstruction());
+		} else {
+			placerPerso(c.getDepart(), Action.AFK);
+		}
+	}
 
 
 }
