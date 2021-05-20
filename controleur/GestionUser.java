@@ -24,7 +24,10 @@ public class GestionUser
 
 	PlateauInterface_2 aire1;
 
-	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1)
+	JLabel leJoueur;
+	JLabel gagnant;
+
+	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1, JLabel leJoueur, JLabel gagnant)
 	{
 		this.j = j;
 		this.commencer = false;
@@ -33,6 +36,9 @@ public class GestionUser
 		this.humainJoue = true;
 
 		this.aire1 = aire1;
+
+		this.leJoueur = leJoueur;
+		this.gagnant = gagnant;
 
 	}
 
@@ -91,16 +97,19 @@ public class GestionUser
 				System.out.println("A l'ia de jouer");
 				JouerIA ();
 			}
+			action = j.getAction(numJoueur);
+			System.out.println(" Au joueur : " + numJoueur + " de " + action);
+			leJoueur.setText("Au joueur : " + numJoueur + " de " + action);
+			System.out.println(" Au joueur : " + (numJoueur%2 +1) + " de " + j.getAction(numJoueur%2 +1));
 		}
 		else
 		{
 			numJoueur = j.getJoueurEnJeu();
-			System.out.println(" Le Joueur : " + quiGagne + " A gagnée ! ");
+			System.out.println(" Le Joueur " + quiGagne + " a gagné ! ");
+			leJoueur.setText("Le Joueur " + quiGagne + " a gagné ! ");
 
 		}
-		action = j.getAction(numJoueur);
-		System.out.println(" Au joueur : " + numJoueur + " de " + action);
-		System.out.println(" Au joueur : " + (numJoueur%2 +1) + " de " + j.getAction(numJoueur%2 +1));
+		
 		aire1.repaint();
 	}
 
