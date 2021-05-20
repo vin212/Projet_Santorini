@@ -1,13 +1,10 @@
 package controleurIA;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-import modele.Jeu;
 import modele.Coup;
 import structure.*;
-import structure.Verificateur;
 
 public class IAAleatoire extends IA {
     Random r;

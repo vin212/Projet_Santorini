@@ -1,16 +1,11 @@
 package controleur;
 
 
-import java.util.concurrent.TimeUnit;
 import controleurIA.*;
 //import javax.swing.*;
 
 import modele.*;
-import structure.*;
 import interfaceUser.*;
-import javax.swing.*;
-
-
 
 public class GestionUser
 {
@@ -111,11 +106,6 @@ public class GestionUser
 		}
 		
 		aire1.repaint();
-	}
-
-	private void JouerJoueur()
-	{
-
 	}
 
 	private void JouerIA()
