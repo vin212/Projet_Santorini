@@ -1,7 +1,6 @@
 package modele;
 
 import structure.*;
-import controleurIA.*;
 
 public class Jeu{
 	Plateau p;
@@ -73,12 +72,16 @@ public class Jeu{
 		historique.ajouteCoup(c);
 	}
 
-	public Coup histoAnnulerCoup(){
+	public Coup histoAnnulerCoup() throws ArrayIndexOutOfBoundsException{
 		return historique.annuler();
 	}
 
-	public Coup histoRetablir(){
+	public Coup histoRetablir() throws ArrayIndexOutOfBoundsException{
 		return historique.retablir();
+	}
+
+	public int histoPosition(){
+		return historique.positionnement();
 	}
 
 	public boolean peutPoserUnPerso(Point posi_init,Point posi_final){
@@ -177,7 +180,7 @@ public class Jeu{
 	}
 
 	public String toString(){
-		return ("Au joueur " + joueurEnJeu + " a joue sur le plateau :\n" + p);
+		return ("Au joueur " + joueurEnJeu + " de jouer sur le plateau :\n" + p);
 	}
 
 }
