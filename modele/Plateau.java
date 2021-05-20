@@ -147,6 +147,27 @@ public class Plateau{
 		return retour;
 	}
 
+	public int eleverPerso (Point posi)
+	{
+		int retour = 0;
+		if (this.cases != null && posi.getx() >= 0 && posi.getx() < largeur && posi.gety() >= 0 && posi.gety() < hauteur)
+		{
+			if (this.cases[posi.getx()][posi.gety()].aPersonnage())
+			{
+				retour = this.cases[posi.getx()][posi.gety()].enleverPerso();
+			}
+			else
+			{
+				retour = -1;
+			}
+		}
+		else
+		{
+			retour =-1;
+		}
+		return retour;
+	}
+
 	public int quiEstIci (Point posi){
 		int retour;
 		if (cases != null && posi.getx() >= 0 && posi.gety() >= 0 && posi.getx()  < largeur && posi.gety() < hauteur){
