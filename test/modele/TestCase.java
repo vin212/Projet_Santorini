@@ -100,4 +100,17 @@ public class TestCase {
         Assertions.assertFalse(caseNorm.peutPoserUnPerso());
         Assertions.assertEquals(5000000,caseNorm.getNbPerso());
     }
+
+    @Test
+    public void testToString() {
+        caseNorm.aPersonnage();
+        String expected1 = "" + caseNorm.getNbEtage() + "   ";
+
+        Assertions.assertEquals(expected1,caseNorm.toString());
+
+        caseNorm.mettrePerso(1);
+        String expected2 = ("" + caseNorm.getNbEtage() + ":" + caseNorm.getNbPerso() + " ");
+
+        Assertions.assertEquals(expected2,caseNorm.toString());
+    }
 }
