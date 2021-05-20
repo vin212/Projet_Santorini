@@ -26,14 +26,20 @@ public class Historique{
 
     // Reviens en arrière de un coup.
     public Coup annuler(){
-        position --;
-        return historique.get(position);
+        if (verifAnnulerCoup()){
+            position --;
+            return historique.get(position);
+        }
+        throw new ArrayIndexOutOfBoundsException();
     }
 
     // Rétablie un coup, aucune robustesse.
     public Coup retablir(){
-        position ++;
-        return historique.get(position);
+        if(verifRetablirCoup()){
+            position ++;
+            return historique.get(position);
+        }
+        throw new ArrayIndexOutOfBoundsException();
     }
 
     // Vérifie qu'un coup puisse être annulé.
@@ -58,7 +64,10 @@ public class Historique{
 
     // Obtiens le coup n, non robuste.
     public Coup obtenirCoup(int n){
-        return historique.get(n);
+        if (existeCoup(n)){
+            return historique.get(n);
+        }
+        throw new ArrayIndexOutOfBoundsException();
     }
 
     public String toString(){
