@@ -7,12 +7,13 @@ public class Jeu{
 	int t;
 	Joueur []joueurs;
 	int joueurEnJeu;
-	Historique historique;
+	public Historique historique;
 
 
 	public Jeu (){
 		this.p = new Plateau (5,5);
 
+		historique = new Historique();
 		System.out.println("Init plateau : " + this.p);
 		this.t = 0;
 		this.joueurs = new Joueur [2];
@@ -72,11 +73,13 @@ public class Jeu{
 		historique.ajouteCoup(c);
 	}
 
-	public Coup histoAnnulerCoup() throws ArrayIndexOutOfBoundsException{
+	public Coup histoAnnulerCoup() throws IndexOutOfBoundsException{
+		System.out.println("historique : "+historique);
 		return historique.annuler();
 	}
 
-	public Coup histoRetablir() throws ArrayIndexOutOfBoundsException{
+	public Coup histoRetablir() throws IndexOutOfBoundsException{
+		System.out.println("historique : "+historique);
 		return historique.retablir();
 	}
 
@@ -103,6 +106,7 @@ public class Jeu{
 		int retour;
 		if (t > 0){
 			this.t--;
+			calculJoueurEnJeu();
 			retour = 0;
 		} else {
 			retour = -1;

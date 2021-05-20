@@ -47,7 +47,7 @@ public class GestionUser
 		int quiGagne = j.quiGagnant() ;
 		if (j != null && quiGagne == 0)
 		{
-			if (numJoueur == 1)
+			if (numJoueur == 1 || ia1 == null || !ia1.estActive())
 			{
 				iaJoue = false;
 				for (int i = 1; i < 3; i++ )
@@ -89,18 +89,14 @@ public class GestionUser
 			else if  (numJoueur == 2 && ia1 != null && ia1.estActive())	
 			{
 				iaJoue = true;
-				System.out.println("A l'ia de jouer");
 				JouerIA ();
 			}
 			action = j.getAction(numJoueur);
-			System.out.println(" Au joueur : " + numJoueur + " de " + action);
 			leJoueur.setText("Au joueur : " + numJoueur + " de " + action);
-			System.out.println(" Au joueur : " + (numJoueur%2 +1) + " de " + j.getAction(numJoueur%2 +1));
 		}
 		else
 		{
 			numJoueur = j.getJoueurEnJeu();
-			System.out.println(" Le Joueur " + quiGagne + " a gagné ! ");
 			leJoueur.setText("Le Joueur " + quiGagne + " a gagné ! ");
 
 		}

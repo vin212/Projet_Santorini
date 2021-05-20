@@ -9,6 +9,12 @@ public class Point {
 		this.y = y;
 	}
 
+	public Point (Point p)
+	{
+		this.x = p.getx();
+		this.y = p.gety();
+	}
+
 	public void modifValeur (int x, int y){
 		this.x = x;
 		this.y = y;
