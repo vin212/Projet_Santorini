@@ -1,6 +1,7 @@
 package controleurIA;
 
 import modele.Jeu;
+import modele.Coup;
 import structure.*;
 import java.util.ArrayList;
 
@@ -57,37 +58,50 @@ public abstract class IA {
         int ymax = j.getHauteurPlateau();
         ArrayList<Point> voisins = new ArrayList<Point>(0); 
         if (0 < x){
-            if (v.verifie(new Point(x-1, y)))
+            if (v.verifie(p, new Point(x-1, y)))
                 voisins.add(new Point(x-1, y));
         }
         if (0 < y){
-            if (v.verifie(new Point(x, y-1)))
+            if (v.verifie(p, new Point(x, y-1)))
                 voisins.add(new Point(x, y-1));
         }
         if (x < xmax){
-            if (v.verifie(new Point(x+1, y)))
+            if (v.verifie(p, new Point(x+1, y)))
                 voisins.add(new Point(x+1, y));
         }
         if (y < ymax){
-            if (v.verifie(new Point(x, y+1)))
+            if (v.verifie(p, new Point(x, y+1)))
                 voisins.add(new Point(x, y+1));
         }
         if (0 < x && 0 < y){
-            if (v.verifie(new Point(x-1, y-1)))
+            if (v.verifie(p, new Point(x-1, y-1)))
                 voisins.add(new Point(x-1, y-1));
         }
         if (x < xmax && y < ymax){
-            if (v.verifie(new Point(x+1, y+1)))
+            if (v.verifie(p, new Point(x+1, y+1)))
                 voisins.add(new Point(x+1, y+1));
         }
         if (x < xmax && 0 < y){
-            if (v.verifie(new Point(x+1, y-1)))
+            if (v.verifie(p, new Point(x+1, y-1)))
                 voisins.add(new Point(x+1, y-1));
         }
         if (0 < x && y < ymax){
-            if (v.verifie(new Point(x-1, y+1)))
+            if (v.verifie(p, new Point(x-1, y+1)))
                 voisins.add(new Point(x-1, y+1));
         }
         return voisins;
     }
+
+    public String toString(){
+        String msg ="";
+
+        if (active){
+            msg += "L'IA est active et " + j;
+        } else {
+            msg += "L'IA est désactive et " + j;
+        }
+
+        return msg;
+    }
+
 }
