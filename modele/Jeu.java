@@ -145,6 +145,8 @@ public class Jeu{
 	{
 		boolean retour = false;
 		Point [] posiPions;
+		int totVoisin= 0;
+		Verificateur v = new VerificateurPion(this);
 		for (int i = 0; i < 2; i++)
 		{
 			posiPions = this.joueurs[i].getPosiPions();
@@ -153,7 +155,45 @@ public class Jeu{
 				for (int j = 0; j < posiPions.length; j++)
 				{	
 					retour = retour || p.getNbEtage (posiPions[j]) == 3;
+					totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
 				}
+
+				retour = (totVoisin == 0) || retour;
+				System.out.println("totVoisin : " + totVoisin+ "-------------------------");
+				totVoisin = 0;
+
+			}
+		}
+
+		return retour;
+	}
+
+	public int quiGagnant()
+	{
+		int retour = 0
+		;
+		Point [] posiPions;
+		int totVoisin= 0;
+		Verificateur v = new VerificateurPion(this);
+		for (int i = 0; i < 2; i++)
+		{
+			posiPions = this.joueurs[i].getPosiPions();
+			if (posiPions != null)
+			{
+				for (int j = 0; j < posiPions.length; j++)
+				{	
+					if (retour == 0 && p.getNbEtage (posiPions[j]) == 3)
+					{
+						retour = i+1;
+					}
+					totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
+				}
+				if (retour == 0 && totVoisin == 0)
+				{
+					retour = ((i+1)%2) + 1;
+				}
+				totVoisin = 0;
+
 			}
 		}
 
@@ -173,6 +213,11 @@ public class Jeu{
 		}
 
 		return retour;
+	}
+
+	public int getNbVoisin(Point posi, Verificateur v)
+	{
+		return p.getNbVoisin(posi,v);
 	}
 
 	public String toString(){

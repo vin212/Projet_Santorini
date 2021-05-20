@@ -167,6 +167,46 @@ public class Plateau{
 		return retour;
 	}
 
+	public int getNbVoisin(Point posi, Verificateur v){
+        int x = posi.getx(), y = posi.gety();
+        int xmax = largeur;
+        int ymax = hauteur;
+        int voisins = 0;
+        if (0 < x){
+            if (v.verifie(posi, new Point(x-1, y)))
+                voisins++;
+        }
+        if (0 < y){
+            if (v.verifie(posi, new Point(x, y-1)))
+                voisins++;
+        }
+        if (x < xmax){
+            if (v.verifie(posi, new Point(x+1, y)))
+                voisins++;
+        }
+        if (y < ymax){
+            if (v.verifie(posi, new Point(x, y+1)))
+                voisins++;
+        }
+        if (0 < x && 0 < y){
+            if (v.verifie(posi, new Point(x-1, y-1)))
+                voisins++;
+        }
+        if (x < xmax && y < ymax){
+            if (v.verifie(posi, new Point(x+1, y+1)))
+                voisins++;
+        }
+        if (x < xmax && 0 < y){
+            if (v.verifie(posi, new Point(x+1, y-1)))
+                voisins++;
+        }
+        if (0 < x && y < ymax){
+            if (v.verifie(posi, new Point(x-1, y+1)))
+                voisins++;
+        }
+        return voisins;
+    }
+
 
 	public void afficher_CMD (){
 		for (int i = 0; i < hauteur; i++){
