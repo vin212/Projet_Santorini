@@ -60,8 +60,8 @@ public class TestJoueur {
 
         // check for negative values
         joueur.deplacerPerso(new Point(3,2), new Point(-3,-3));
-        Assertions.assertEquals(2,joueur.checkPerso(new Point(-3,-3))); // should return -1 when negative
-        Assertions.assertEquals(-1,joueur.checkPerso(new Point(3,2)));
+        Assertions.assertEquals(-1,joueur.checkPerso(new Point(-3,-3)));
+        Assertions.assertEquals(2,joueur.checkPerso(new Point(3,2)));
 
         // check for big values
         joueur.deplacerPerso(new Point(4,4), new Point(50000,50000));
