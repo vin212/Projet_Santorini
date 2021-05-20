@@ -73,8 +73,7 @@ public class Fenetres {
 
 	public void afficherFenetre1 ()
 	{
-		ia1 = new IAAleatoire();
-		ia1 = ia1.nouvelle(this.j,"controleurIA.IAAleatoire");
+		ia1 = IA.nouvelle(this.j,"controleurIA.IAAleatoire");
 		ia1.activeIA();
 
 		
