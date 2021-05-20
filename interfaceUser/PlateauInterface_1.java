@@ -8,8 +8,6 @@ import java.awt.Image;
 import java.awt.Color;
 import java.io.*;
 
-import java.util.Scanner;
-
 import modele.*;
 import structure.*;
 

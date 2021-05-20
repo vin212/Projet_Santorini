@@ -21,11 +21,11 @@ public class Joueur {
 	public int placerPerso (Point p){
 		int retour;
 		if (nbPersoPlacer == 0){
-			this.perso1 =p;
+			placerPerso1(p);
 			nbPersoPlacer++;
 			retour = 0;
 		} else if (nbPersoPlacer == 1) {
-			this.perso2 =p;
+			placerPerso2(p);
 			nbPersoPlacer++;
 			retour = 0;
 		} else {
@@ -57,13 +57,19 @@ public class Joueur {
 	}
 
 	public int placerPerso1 (Point p){
-		this.perso1 = p;
-		return 0;
+		if (p.getx() >= 0 && p.gety() >= 0){
+			this.perso1 = p;
+			return 0;
+		}
+		return -1;
 	}
 
 	public int placerPerso2(Point p){
-		this.perso2 = p;
-		return 0;
+		if (p.getx() >= 0 && p.gety() >= 0){
+			this.perso2 = p;
+			return 0;
+		}
+		return -1;
 	}
 
 	public int deplacerPerso (Point posi_init, Point posi_final){
@@ -72,12 +78,12 @@ public class Joueur {
 
 		if (posi_init.CompareTo(posi_final) != 0){
 			if (perso == 1){
-				this.perso1 = posi_final;
+				placerPerso1(posi_final);
 				retour = 0;
 			}
 			else if (perso == 2)
 			{
-				this.perso2 = posi_final;
+				placerPerso2(posi_final);
 				retour = 0;
 			} else {
 				retour = -1;
@@ -124,8 +130,7 @@ public class Joueur {
 		return "Etat : " + actionEnCours + "Pion 1 : " + perso1 + "\n Pion 2 : " + perso2;
 	}
 
-	public void setAction (Action a)
-	{
+	public void setAction (Action a){
 		actionEnCours = a;
 	}
 }
