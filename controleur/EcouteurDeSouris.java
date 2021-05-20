@@ -2,7 +2,6 @@ package controleur;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import modele.*;
 import interfaceUser.*;
 
 public class EcouteurDeSouris extends MouseAdapter {

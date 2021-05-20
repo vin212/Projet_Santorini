@@ -2,7 +2,6 @@ package controleur;
 
 import modele.*;
 import structure.*;
-import java.lang.*;
 
 public class ActionUser {
 
@@ -19,8 +18,7 @@ public class ActionUser {
 	{
 		Action a = j.getAction (j.getJoueurEnJeu());
 
-		if (!j.estGagnant())
-		{
+		if (!j.estGagnant()){
 			switch (a)
 			{
 				case A_DEPLACER :
@@ -38,20 +36,17 @@ public class ActionUser {
 				case DEUXIEME_PLACEMENT :
 					placerPerso (posi_final,a);
 				break;
-
+				default:
 			}
 		}
 		//avancerPerso (posi_final);
 	}
 
-	public void selectionnerPerso(Point posi_final)
-	{
+	public void selectionnerPerso(Point posi_final){
 		int perso;
-		if (posi_final.getx() >= 0 && posi_final.getx() < j.getLargeurPlateau () && posi_final.gety() >= 0 && posi_final.gety() < j.getHauteurPlateau ())
-		{
+		if (posi_final.getx() >= 0 && posi_final.getx() < j.getLargeurPlateau () && posi_final.gety() >= 0 && posi_final.gety() < j.getHauteurPlateau ()){
 			perso = j.quiEstIci (posi_final);
-			if (perso == j.getJoueurEnJeu())
-			{
+			if (perso == j.getJoueurEnJeu()) {
 				System.out.println("ok select perso");
 				this.posi_init = posi_final;
 				j.setAction (j.getJoueurEnJeu(),Action.EN_COURS_DE_DEPLACEMENT);
@@ -59,15 +54,11 @@ public class ActionUser {
 		}
 	}
 
-	public void avancerPerso (Point posi_final)
-	{
+	public void avancerPerso (Point posi_final){
 		int perso;
 		perso = j.quiEstIci (posi_final);
-		if (posi_final.getx() >= 0 && posi_final.getx() < j.getLargeurPlateau () && posi_final.gety() >= 0 && posi_final.gety() < j.getHauteurPlateau ())
-		{
-			if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
-			{
-
+		if (posi_final.getx() >= 0 && posi_final.getx() < j.getLargeurPlateau () && posi_final.gety() >= 0 && posi_final.gety() < j.getHauteurPlateau ()){
+			if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 ) {
 				if (j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1  )
 				{
 					System.out.println("ok deplacer");
@@ -170,33 +161,66 @@ public class ActionUser {
 	}
 
 	public void annulerCoup(){
-		// Attention aux actions !
-		Coup c = j.histoAnnulerCoup();
-		selectionnerPerso(c.getArrive());
-		avancerPerso(c.getDepart());
-		j.detruireEtage(c.getConstruction());
+		int pos;
+		Coup c;
+		try{
+			c = j.histoAnnulerCoup();
+		} catch(ArrayIndexOutOfBoundsException e){
+			System.err.println("Plus de coup a annuler");
+			return;
+		}
+		int nbJ2 = c.getJoueur() %2 + 1;
+		
+		if(c.estDeplacement()){
+			selectionnerPerso(c.getArrive());
+			avancerPerso(c.getDepart());
+			j.detruireEtage(c.getConstruction());
+			j.setAction(c.getJoueur(), Action.A_DEPLACER);
+			j.setAction(nbJ2, Action.AFK);
+		}
+		else{
+			pos = j.histoPosition();
+			if(pos % 2 == 0){
+				j.enleverPerso(c.getDepart());
+				j.setAction(c.getJoueur(), Action.PREMIER_PLACEMENT);
+				j.setAction(nbJ2, Action.AFK);
+			}
+			else{
+				j.enleverPerso(c.getDepart());
+				j.setAction(c.getJoueur(), Action.DEUXIEME_PLACEMENT);
+				j.setAction(nbJ2, Action.AFK);
+			}
+		}
+
 	}
 
 	public void retablirCoup(){
-		Coup c = j.histoRetablir();
+		Coup c;
+		try{
+			c = j.histoRetablir();
+		} catch(ArrayIndexOutOfBoundsException e){
+			System.err.println("Plus de coup à rétablir.");
+			return;
+		}
+		
 		if (c.estDeplacement()){
 			selectionnerPerso(c.getDepart());
 			avancerPerso(c.getArrive());
 			construireIci(c.getConstruction());
 		} else {
-			placerPerso(c.getDepart(), Action.AFK); // Traiter les changements d'actions
+			placerPerso(c.getDepart(), j.getAction(j.getJoueurEnJeu()));
 		}
 	}
 
 	// Fonction spécial pour l'IA.
 	public void tour(Coup c){
-		// Et l'historique ?
+		j.histoAjouterCoup(c);
 		if (c.estDeplacement()){
 			selectionnerPerso(c.getDepart());
 			avancerPerso(c.getArrive());
 			construireIci(c.getConstruction());
 		} else {
-			placerPerso(c.getDepart(), Action.AFK);
+			placerPerso(c.getDepart(), j.getAction(j.getJoueurEnJeu()));
 		}
 	}
 

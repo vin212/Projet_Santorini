@@ -1,7 +1,6 @@
 package modele;
 
 import structure.*;
-import java.lang.*;
 
 public class Plateau{
 
@@ -40,7 +39,7 @@ public class Plateau{
 		} else {
 			retour = -1;
 		}
-		return -1;
+		return retour;
 	}
 
 	public int detruireEtage (Point posi){
@@ -186,7 +185,7 @@ public class Plateau{
 			}
 			msg += "|\n";
 			for(int i = 0; i < largeur; i++){
-				msg += "|---";
+				msg += "|----";
 			}
 			msg += "|\n";
 		}

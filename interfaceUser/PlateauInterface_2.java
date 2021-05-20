@@ -5,10 +5,7 @@ import javax.swing.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Color;
 import java.io.*;
-
-import java.util.Scanner;
 
 import modele.*;
 import structure.*;

@@ -1,9 +1,6 @@
 package test;
 
-import java.io.*;
 import modele.*;
-import structure.*;
-
 
 public class TestCase {
 
