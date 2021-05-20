@@ -3,13 +3,20 @@ package structure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
 public class PointTest {
 
     @Test
     public void testSameCoordinatevalues() {
         Point comparePoint = new Point(1, 2);
         Assertions.assertEquals(0, new Point(1, 2).CompareTo(comparePoint));
+    }
+
+    @Test
+    public void testModifValeur() {
+        Point comparePoint = new Point(1, 2);
+
+        comparePoint.modifValeur(3,4);
+        Assertions.assertEquals(0, new Point(3, 4).CompareTo(comparePoint));
     }
 
     @Test

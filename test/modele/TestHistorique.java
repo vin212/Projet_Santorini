@@ -1,15 +1,10 @@
 package test.modele;
 
 import modele.Historique;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import structure.Coup;
-import structure.Point;
 
 public class TestHistorique {
     Historique historique;
-
+/*
     @BeforeEach
     public void setup() {
         historique = new Historique();
@@ -87,4 +82,5 @@ public class TestHistorique {
         Assertions.assertFalse(historique.existeCoup(3));
         Assertions.assertTrue(historique.existeCoup(2));
     }
+ */
 }

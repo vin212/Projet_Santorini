@@ -10,7 +10,13 @@ public class TestPlateau {
 
     @BeforeEach
     public void setup() {
-        plateau = new Plateau(5,5);
+        plateau = new Plateau(5,6);
+    }
+    
+    @Test
+    public void testInit() {
+        Assertions.assertEquals(5, plateau.getHauteur());
+        Assertions.assertEquals(6, plateau.getLargeur());
     }
 
     //TODO
