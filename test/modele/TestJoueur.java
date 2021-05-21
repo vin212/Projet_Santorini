@@ -69,6 +69,26 @@ public class TestJoueur {
     }
 
     @Test
+    public void testEnleverPerso() {
+        // check before creation
+        Assertions.assertEquals(-1,joueur.enleverPerso(new Point(1,2)));
+
+        joueur.placerPerso1(new Point(1,2));
+        joueur.placerPerso2(new Point(3,2));
+
+
+        Assertions.assertEquals(0,joueur.enleverPerso(new Point(1,2)));
+
+        // check after remove person
+        Assertions.assertEquals(-1,joueur.enleverPerso(new Point(1,2)));
+
+        // check for negative values
+        joueur.placerPerso1(new Point(-3,-3));
+
+        Assertions.assertEquals(-1,joueur.enleverPerso(new Point(-3,-3)));
+    }
+
+    @Test
     public void testToString() {
         joueur.placerPerso1(new Point(2,1));
         joueur.placerPerso2(new Point(3,3));

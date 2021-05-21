@@ -189,6 +189,51 @@ public class TestJeu {
     }
 
     @Test
+    public void testEnleverPerso() {
+        // check before poser personnage
+        Assertions.assertEquals(-1,jeu.enleverPerso(new Point(3,2)));
+
+        jeu.poserPersonnage(new Point(3,1),1);
+        jeu.poserPersonnage(new Point(2,1),1);
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,3),2);
+
+        // check if person exists in that position before enlever person
+        Assertions.assertEquals(2, jeu.quiEstIci(new Point(4,3)));
+
+        // enlever personnage
+        jeu.enleverPerso(new Point(4,3));
+
+        // check if person removed
+        Assertions.assertEquals(0,jeu.quiEstIci(new Point(4,3)));
+
+        // poser le personnage
+        jeu.poserPersonnage(new Point(4,3),2);
+
+        // change position of the person
+        jeu.deplacerPersonnage(new Point(2,1), new Point(2,2));
+
+        // enlever personnage apres deplacer
+        jeu.enleverPerso(new Point(2,2));
+
+        Assertions.assertEquals(0,jeu.quiEstIci(new Point(2,2)));
+        Assertions.assertEquals(0,jeu.quiEstIci(new Point(2,1)));
+
+        // check for negative values
+        jeu.poserPersonnage(new Point(-1,-2),1);
+        jeu.enleverPerso(new Point(-1, -2));
+
+        Assertions.assertEquals(-1,jeu.quiEstIci(new Point(-1,-2)));
+
+        // check for big numbers
+        jeu.poserPersonnage(new Point(50000,60000),1);
+        jeu.enleverPerso(new Point(50000,60000));
+
+        Assertions.assertEquals(-1,jeu.quiEstIci(new Point(50000,60000)));
+    }
+
+    @Test
     public void testTour() {
         jeu.poserPersonnage(new Point(3,1),1);
         jeu.poserPersonnage(new Point(2,1),2);
