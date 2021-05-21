@@ -7,7 +7,9 @@ public class Historique{
     int position = 0;
     ArrayList<Coup> historique;
 
-    public Historique(){} // A faire : Chargement de partie ...
+    public Historique(){
+        historique = new ArrayList<Coup>();
+    } // A faire : Chargement de partie ...
 
     // Ajoute un coup à l'historique et supprime le futur si il y en a un. 
     public void ajouteCoup(Coup c){
@@ -19,7 +21,7 @@ public class Historique{
             historique.subList(position, taille).clear();
             position = taille = historique.size();
             historique.add(c);
-            taille ++;
+            taille  = position + 1;
             position ++;
         }
     }
@@ -30,16 +32,20 @@ public class Historique{
             position --;
             return historique.get(position);
         }
-        throw new ArrayIndexOutOfBoundsException();
+        throw new IndexOutOfBoundsException();
     }
 
     // Rétablie un coup, aucune robustesse.
     public Coup retablir(){
+        Coup c;
+        System.out.println("position : " + position);
+        System.out.println("taille : " + taille);
         if(verifRetablirCoup()){
-            position ++;
-            return historique.get(position);
+             c = historique.get(position);
+            position ++; 
+            return c;
         }
-        throw new ArrayIndexOutOfBoundsException();
+        throw new IndexOutOfBoundsException();
     }
 
     // Vérifie qu'un coup puisse être annulé.
@@ -67,7 +73,7 @@ public class Historique{
         if (existeCoup(n)){
             return historique.get(n);
         }
-        throw new ArrayIndexOutOfBoundsException();
+        throw new IndexOutOfBoundsException();
     }
 
     public String toString(){
