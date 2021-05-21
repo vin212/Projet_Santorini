@@ -238,11 +238,6 @@ public class Jeu{
 			totVoisin = 1;
 		}
 
-		System.out.println("totVoisin : " + totVoisin + "-------------------");
-		System.out.println("joueurEnJeu : " + joueurEnJeu );
-		System.out.println("totVoisin == 0 : " + (totVoisin == 0) );
-		System.out.println("retour : " + retour );
-
 		if (retour == 0 && totVoisin == 0)
 		{
 			retour = joueurEnJeu%2+1;

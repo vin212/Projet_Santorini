@@ -1,7 +1,7 @@
 package controleur;
 
 public enum Bouton {
-	PAUSE, RETABLIR, RETOUR, RETOUR_JEU, RECOMMENCER;
+	PAUSE, RETABLIR, RETOUR, RETOUR_JEU, RECOMMENCER, AVEC_IA, SANS_IA, RETOUR_MENU;
 
 	public String toString ()
 	{
@@ -17,6 +17,12 @@ public enum Bouton {
 				return "RETOUR_JEU";
 			case RECOMMENCER :
 				return "RECOMMENCER";
+			case AVEC_IA :
+				return "AVEC_IA";
+			case SANS_IA :
+				return "SANS_IA";
+			case RETOUR_MENU :
+				return "RETOUR_MENU";
 		}
 		return "";
 	}

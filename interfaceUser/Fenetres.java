@@ -12,10 +12,10 @@ import controleurIA.*;
 }*/
 
 public class Fenetres {
-	int f;
+	NomFenetres f;
 
 	public Jeu j;
-	IA ia1;
+	public IA ia1;
 	IA ia2;
 
 	Timer chrono;
@@ -29,9 +29,9 @@ public class Fenetres {
 	public Fenetres (Jeu j)
 	{
 		this.j = j;
-		this.f = 0;
+		this.f = NomFenetres.PAGE_ACCUEIL ;
 
-		ia1 = IA.nouvelle(this.j,"controleurIA.IAAleatoire");
+		
 		//ia1.activeIA();
 
 
@@ -43,7 +43,7 @@ public class Fenetres {
 			
 	}
 
-	public void ChangerFenetres (int i)
+	public void ChangerFenetres (NomFenetres i)
 	{
 		this.f = i;
 	}
@@ -52,15 +52,19 @@ public class Fenetres {
 	{
 		switch (f)
 		{
-			case 0 :
+			case JEU :
 				afficherFenetre1 ();
 				frame.repaint();
 			break;
-			case 2 :
+			case MENU_PAUSE :
 				afficherMenuPause(); 
 				frame.repaint();
 			break;
-			case 1 :	
+			case PAGE_ACCUEIL :
+				afficherAccueil();
+				frame.repaint();
+			break;
+			case AUTRE :	
 			    //Toolkit.getDefaultToolkit().getScreenSize();
     			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
 				frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
@@ -127,6 +131,7 @@ public class Fenetres {
 
 
 		aire2.addMouseListener(new EcouteurDeSouris(aire2,g));
+		frame.addKeyListener(new EcouteurDeClavier());
 	}
 
 	public void afficherMenuPause()
@@ -137,8 +142,11 @@ public class Fenetres {
 
 		JButton boutonRetourJeu = new JButton ("Retour au Jeu");
 		JButton boutonRecommencer = new JButton ("Recommencer");
+		JButton boutonMenu = new JButton ("Retour Menu (sans sauvegarde)");
+
 		boutonRetourJeu.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR_JEU,this));
 		boutonRecommencer.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RECOMMENCER,this));
+		boutonMenu.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR_MENU,this));
 
 		JPanel container = new JPanel();
 		container.setBackground(new Color(150,150,150));
@@ -155,6 +163,38 @@ public class Fenetres {
 		gbc.gridx = 0;
 		gbc.gridy = 50;
 		container.add(boutonRecommencer,gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 100;
+		container.add(boutonMenu,gbc);
+		frame.add(container);
+		frame.setVisible(true);
+	}
+
+	public void afficherAccueil ()
+	{
+		frame.getContentPane().removeAll(); 
+		JButton boutonAvecIA = new JButton ("Jouer Avec IA");
+		JButton boutonSansIA = new JButton ("Jouer Sans IA");
+
+		boutonAvecIA.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.AVEC_IA,this));
+		boutonSansIA.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.SANS_IA,this));
+
+		JPanel container = new JPanel();
+		container.setBackground(new Color(150,150,150));
+
+		container.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+
+		container.add(boutonSansIA ,gbc);
+
+
+		gbc.gridx = 0;
+		gbc.gridy = 50;
+		container.add(boutonAvecIA,gbc);
 		frame.add(container);
 		frame.setVisible(true);
 	}
