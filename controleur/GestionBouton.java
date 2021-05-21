@@ -6,6 +6,7 @@ import java.awt.event.*;
 
 import modele.*;
 import interfaceUser.*;
+import controleurIA.*;
 
 public class GestionBouton extends JButton implements ActionListener
 {
@@ -13,12 +14,15 @@ public class GestionBouton extends JButton implements ActionListener
 	//Jeu j;
 	PlateauInterface_2 aire2;
 	ActionUser action;
+	Fenetres f;
 
-	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type)
+	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f)
 	{
 		this.type = type;
 		this.action = new ActionUser(j);
 		this.aire2 = aire2;
+
+		this.f = f;
 	}
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -48,7 +52,42 @@ public class GestionBouton extends JButton implements ActionListener
 				aire2.repaint();
 			break;
 			case PAUSE :
+				f.ChangerFenetres (NomFenetres.MENU_PAUSE);
+				f.gestionFenetre ();
+				f.frame.repaint();
 			break;
+			case RETOUR_JEU :
+				f.ChangerFenetres (NomFenetres.JEU);
+				f.gestionFenetre ();
+				f.frame.repaint();
+			break;
+			case RECOMMENCER :
+				f.j = new Jeu();
+				f.ChangerFenetres (NomFenetres.JEU);
+				f.gestionFenetre ();
+				f.frame.repaint();
+			break;
+			case AVEC_IA:
+				f.j = new Jeu();
+				f.ia1 = IA.nouvelle(f.j,"controleurIA.IAAleatoire");
+				f.ia1.activeIA();
+				f.ChangerFenetres (NomFenetres.JEU);
+				f.gestionFenetre ();
+				f.frame.repaint();
+			break;
+			case SANS_IA:
+				f.j = new Jeu();
+				f.ChangerFenetres (NomFenetres.JEU);
+				f.gestionFenetre ();
+				f.frame.repaint();
+			break;
+			case RETOUR_MENU:
+				f.ia1 = null;
+				f.ChangerFenetres(NomFenetres.PAGE_ACCUEIL);
+				f.gestionFenetre();
+				f.frame.repaint();
+			break;
+
 		}
 	}
 }

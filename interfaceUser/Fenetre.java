@@ -14,12 +14,13 @@ public class Fenetre implements Runnable {
 	public Fenetre (Jeu j)
 	{
 		this.j = j;
+		f = new Fenetres(j);
 	}
 
 	public void run()
 	{
 
-		f = new Fenetres(j);
+		
 		f.gestionFenetre ();
 
 		try 
