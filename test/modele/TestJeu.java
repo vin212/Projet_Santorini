@@ -1,6 +1,7 @@
 package test.modele;
 
 import modele.Jeu;
+import modele.Plateau;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -332,5 +333,43 @@ public class TestJeu {
 
         Assertions.assertEquals(1, jeu.getPosiPions(2)[0].CompareTo(new Point(-1,-2)));
         Assertions.assertEquals(0, jeu.getPosiPions(2)[0].CompareTo(new Point(3,2)));
+    }
+
+    @Test
+    public void testHistoire() {
+        // a tester
+    }
+
+    @Test
+    public void testGagnant() {
+        // a tester
+    }
+
+    @Test
+    public void testToString() {
+        Plateau p = new Plateau(5, 5);
+        // before placing personnages
+        String expected = "Au joueur " + jeu.getJoueurEnJeu() + " de jouer sur le plateau :\n" + p;
+
+        Assertions.assertEquals(expected, jeu.toString());
+
+        //poser les personnages sur le plateau
+        p.poserPersonnage(new Point(1,1),1);
+        p.poserPersonnage(new Point(2,1),1);
+
+        p.poserPersonnage(new Point(3,2),2);
+        p.poserPersonnage(new Point(4,1),2);
+
+        //poser les personnages
+        jeu.poserPersonnage(new Point(1,1),1);
+        jeu.poserPersonnage(new Point(2,1),1);
+
+        jeu.poserPersonnage(new Point(3,2),2);
+        jeu.poserPersonnage(new Point(4,1),2);
+
+        String expected2 = "Au joueur " + jeu.getJoueurEnJeu() + " de jouer sur le plateau :\n" + p;
+
+        Assertions.assertEquals(expected2, jeu.toString());
+
     }
 }
