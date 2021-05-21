@@ -9,10 +9,11 @@ import structure.Point;
 public class TestCoup {
     Coup coup;
     Coup coupDeplacement;
-    Coup c;
+    Coup coupVide;
 
     @BeforeEach
     public void setup() {
+        coupVide = new Coup();
         coup = new Coup(new Point(2,1),1);
         coupDeplacement = new Coup(new Point(3,2),new Point(2,2), new Point(3,3), 1);
     }
@@ -32,6 +33,60 @@ public class TestCoup {
         Assertions.assertEquals(0, new Point(2,2).CompareTo(coupDeplacement.getArrive()));
         Assertions.assertTrue(coupDeplacement.estDeplacement());
         Assertions.assertEquals(0, new Point(3,3).CompareTo(coupDeplacement.getConstruction()));
+    }
+
+    @Test
+    public void testCoupVide() {
+        Assertions.assertNull(coupVide.getDepart());
+        Assertions.assertEquals(0,coupVide.getJoueur());
+        Assertions.assertNull(coupVide.getArrive());
+        Assertions.assertFalse(coupVide.estDeplacement());
+        Assertions.assertNull(coupVide.getConstruction());
+    }
+
+    @Test
+    public void testSetters() {
+        // test construction
+        coupVide.setConstruction(new Point(2,2));
+        coup.setConstruction(new Point(2,1));
+
+        Assertions.assertEquals(0 , coupVide.getConstruction().CompareTo(new Point(2,2)));
+        Assertions.assertEquals(0 , coup.getConstruction().CompareTo(new Point(2,1)));
+        Assertions.assertEquals(0 , coupDeplacement.getConstruction().CompareTo(new Point(3,3)));
+
+       // test construction with negative values
+        coup.setConstruction(new Point(-2,-2));
+        coupVide.setConstruction(new Point(-1,-2));
+
+        Assertions.assertEquals( 0 , coup.getConstruction().CompareTo(new Point(-2,-2))); // should fail!!!
+        Assertions.assertEquals( 0 , coupVide.getConstruction().CompareTo(new Point(-1,-2))); // should fail!!!
+
+        // test with bigger than plateau values
+        coup.setConstruction(new Point(500,500));
+        coupVide.setConstruction(new Point(400,400));
+
+        Assertions.assertEquals( 0 , coup.getConstruction().CompareTo(new Point(500,500))); // should fail!!!
+        Assertions.assertEquals( 0 , coupVide.getConstruction().CompareTo(new Point(400,400))); // should fail!!!
+
+        // test deplacement
+        coupVide.setDeplacement(new Point(1,1),new Point(2,1));
+
+        Assertions.assertEquals( 0 , coupVide.getDepart().CompareTo(new Point(1,1)));
+        Assertions.assertEquals(0, coupDeplacement.getDepart().CompareTo(new Point(3,2)));
+
+        // with big numbers
+        coupVide.setDeplacement(new Point(500,500),new Point(600, 600));
+
+        Assertions.assertEquals( 0 , coupVide.getDepart().CompareTo(new Point(500,500))); // should fail!!!
+
+        // test joueur
+        Assertions.assertEquals(0, coupVide.getJoueur());
+        Assertions.assertEquals(1,coup.getJoueur());
+        Assertions.assertEquals(1, coupDeplacement.getJoueur());
+
+        coupVide.setJoueur(-1);
+
+        Assertions.assertEquals(-1, coupVide.getJoueur());
     }
 
     @Test
