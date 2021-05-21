@@ -34,12 +34,16 @@ public class IAMinMax extends IA {
                 }
             }
         }
+/*        if (j.aPersonnage(new Point(4, 0)))
+            return new Coup(new Point(0, 4), j.getJoueurEnJeu());
+        else 
+            return new Coup(new Point(4, 0), j.getJoueurEnJeu());*/
         return new Coup(liste.get(r.nextInt(liste.size())), j.getJoueurEnJeu());
     }
 
     @Override
     public Coup joue(){
-        ActionUser control = new ActionUser(this.j);
+//        ActionUser control = new ActionUser(this.j);
         ArrayList<Coup> successeur = successeur(j);
         ListGagnant gagnant = new ListGagnant();
         Iterator<Coup> I = successeur.iterator();
@@ -47,7 +51,7 @@ public class IAMinMax extends IA {
         int valeur; 
         Coup c;
 
-        int horizon = 5;
+        int horizon = 1;
 
         if (taille == 0){
             System.err.println("Aucun coup possible !");
@@ -58,10 +62,10 @@ public class IAMinMax extends IA {
 
         while(I.hasNext()){
             c = I.next();
-            control.tour(c);
+            tour(c);
             valeur = calcul_toi(j, horizon, Integer.MAX_VALUE);
             gagnant.ajouter(valeur, c);
-            control.annulerCoup();
+            annulerCoup();
         }
         return gagnant.extraire();
     }
@@ -69,7 +73,7 @@ public class IAMinMax extends IA {
     // Max
     private int calcul_moi(Jeu j, int horizon, int maximum){
         // Si il renvoie supérieur au max en argument, ça ne sert à rien.
-        ActionUser control = new ActionUser(j);
+        // ActionUser control = new ActionUser(j);
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
         int chiffrage = Integer.MIN_VALUE;
@@ -80,11 +84,11 @@ public class IAMinMax extends IA {
             return chiffrage(j);
         }
 
-        while(I.hasNext() || (maximum >= chiffrage)){
+        while(I.hasNext() && (maximum >= chiffrage)){
             c = I.next();
-            control.tour(c);
+            tour(c);
             chiffrage = Math.max(chiffrage, calcul_toi(j, horizon - 1, chiffrage));
-            control.annulerCoup();
+            annulerCoup();
         }
         return chiffrage;
 
@@ -92,7 +96,7 @@ public class IAMinMax extends IA {
 
     // Min
     private int calcul_toi(Jeu j, int horizon, int maximum){
-        ActionUser control = new ActionUser(j);
+        // ActionUser control = new ActionUser(j);
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
         int chiffrage = Integer.MAX_VALUE;
@@ -102,11 +106,11 @@ public class IAMinMax extends IA {
             return -chiffrage(j);
         }
 
-        while(I.hasNext() || (maximum >= chiffrage)){
+        while(I.hasNext() && (maximum >= chiffrage)){
             c = I.next();
-            control.tour(c);
+            tour(c);
             chiffrage = Math.max(chiffrage, calcul_moi(j, horizon - 1, chiffrage));
-            control.annulerCoup();
+            annulerCoup();
         }
         return -chiffrage;
     }
@@ -126,6 +130,7 @@ public class IAMinMax extends IA {
             while(It1.hasNext()){
                 depl = It1.next();
                 construction = getVoisin(depl, ve);
+                construction.add(p[i]);
                 Iterator<Point> It2 = construction.iterator();
                 while(It2.hasNext()){
                     successeur.add(new Coup(p[i], depl, It2.next(), j.getJoueurEnJeu()));
@@ -146,6 +151,44 @@ public class IAMinMax extends IA {
             return r.nextInt();
         else
             return - r.nextInt();
+    }
+
+    private void tour(Coup c){
+        j.histoAjouterCoup(c);
+        j.addTour();
+        if (c.estDeplacement()){
+            j.deplacerPersonnage(c.getDepart(), c.getArrive());
+            j.Construire(c.getConstruction());
+        } else {
+            j.poserPersonnage(c.getDepart(), c.getJoueur());
+        }
+    }
+
+    private void annulerCoup(){
+		int pos;
+		Coup c;
+        j.subTour();
+		try{
+			c = j.histoAnnulerCoup();
+		} catch(IndexOutOfBoundsException e){
+			System.err.println("Plus de coup a annuler");
+			return;
+		}
+	
+		if(c.estDeplacement()){
+			System.out.println(c.getArrive());
+			j.deplacerPersonnage(c.getArrive(), c.getDepart());
+			j.detruireEtage(c.getConstruction());
+		} else {
+            System.out.println("Annulation de placement ? Vraiment ?");
+			pos = j.histoPosition();
+			if(pos % 2 == 0){
+				j.enleverPerso(c.getDepart());
+			}
+			else{
+				j.enleverPerso(c.getDepart());
+			}
+		}
     }
 
 }
@@ -170,6 +213,7 @@ class ListGagnant {
         if (m == max){
             gagnant.add(c);
         } else if (m > max){
+            max = m;
             gagnant = new ArrayList<Coup>(0);
             gagnant.add(c);
         }
