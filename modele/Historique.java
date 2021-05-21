@@ -28,8 +28,10 @@ public class Historique{
 
     // Reviens en arrière de un coup.
     public Coup annuler(){
+        System.out.println(historique);
         if (verifAnnulerCoup()){
             position --;
+            System.out.println(historique);
             return historique.get(position);
         }
         throw new IndexOutOfBoundsException();

@@ -3,6 +3,7 @@ package controleur;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.concurrent.TimeUnit;
 
 import modele.*;
 import interfaceUser.*;
@@ -32,7 +33,20 @@ public class GestionBouton extends JButton implements ActionListener
 			case RETOUR :
 				try
 				{
-					action.annulerCoup();
+                                    if (f.ia1 != null && f.ia1.estActive())
+                                    {
+                                        System.out.println("je passe ici");
+                                        f.g.iaJoue = true;
+                                        action.annulerCoup();
+                                        f.ia1.desactiverIA();
+                                        System.out.println(f.g.iaJoue);
+                
+                                    }
+                                    else
+                                    {
+                                        action.annulerCoup();
+                                    }
+					
 				}
 				catch (IndexOutOfBoundsException except)
 				{

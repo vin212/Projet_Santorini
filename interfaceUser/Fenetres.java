@@ -24,7 +24,7 @@ public class Fenetres {
 	PlateauInterface_1 aire1;
 	PlateauInterface_2 aire2;
 
-	GestionUser g;
+	public GestionUser g;
 
 	public Fenetres (Jeu j)
 	{
@@ -130,8 +130,11 @@ public class Fenetres {
 		chrono.start();
 
 
-		aire2.addMouseListener(new EcouteurDeSouris(aire2,g));
-		frame.addKeyListener(new EcouteurDeClavier());
+		aire2.addMouseListener(new EcouteurDeSouris(aire2,g,ia1));
+                EcouteurDeClavier test = new EcouteurDeClavier();
+		frame.addKeyListener(test);
+
+                // test.requestFocus();
 	}
 
 	public void afficherMenuPause()

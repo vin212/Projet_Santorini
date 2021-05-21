@@ -12,7 +12,7 @@ public class EcouteurDeClavier  extends KeyAdapter{
 
    	}
    	
-   	@Override
+    //@Override
     public void keyPressed(KeyEvent event){
     	System.out.println("ici clqiue");
         int source = event.getKeyCode();
@@ -27,12 +27,12 @@ public class EcouteurDeClavier  extends KeyAdapter{
             System.out.println("Gauche");
     }
            
-    @Override   
+    //@Override   
     public void keyReleased(KeyEvent event){
     	System.out.println("ici relacher");
     }
 
-    @Override
+    //@Override
     public void keyTyped(KeyEvent event){
     	System.out.println("ici");
     }
