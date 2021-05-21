@@ -13,12 +13,15 @@ public class GestionBouton extends JButton implements ActionListener
 	//Jeu j;
 	PlateauInterface_2 aire2;
 	ActionUser action;
+	Fenetres f;
 
-	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type)
+	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f)
 	{
 		this.type = type;
 		this.action = new ActionUser(j);
 		this.aire2 = aire2;
+
+		this.f = f;
 	}
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -48,6 +51,20 @@ public class GestionBouton extends JButton implements ActionListener
 				aire2.repaint();
 			break;
 			case PAUSE :
+				f.ChangerFenetres (2);
+				f.gestionFenetre ();
+				f.frame.repaint();
+			break;
+			case RETOUR_JEU :
+				f.ChangerFenetres (0);
+				f.gestionFenetre ();
+				f.frame.repaint();
+			break;
+			case RECOMMENCER :
+				f.j = new Jeu();
+				f.ChangerFenetres (0);
+				f.gestionFenetre ();
+				f.frame.repaint();
 			break;
 		}
 	}

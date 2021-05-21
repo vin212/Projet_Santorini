@@ -179,15 +179,26 @@ public class Jeu{
 			if (posiPions != null){
 				for (int j = 0; j < posiPions.length; j++){
 					retour = retour || p.getNbEtage (posiPions[j]) == 3;
-					totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
 				}
-
-				retour = (totVoisin == 0) || retour;
-				System.out.println("totVoisin : " + totVoisin+ "-------------------------");
-				totVoisin = 0;
-
 			}
 		}
+
+		posiPions = this.joueurs[joueurEnJeu-1].getPosiPions();
+		if (posiPions != null && getAction(joueurEnJeu) == Action.A_DEPLACER)
+		{
+			for (int j = 0; j < posiPions.length; j++)
+			{
+				totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
+			}
+
+		}
+		else
+		{
+			totVoisin = 1;
+		}
+
+		retour = retour || (totVoisin == 0);
+
 
 		return retour;
 	}
@@ -210,16 +221,33 @@ public class Jeu{
 					{
 						retour = i+1;
 					}
-					totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
 				}
-				if (retour == 0 && totVoisin == 0)
-				{
-					retour = ((i+1)%2) + 1;
-				}
-				totVoisin = 0;
-
 			}
 		}
+		posiPions = this.joueurs[joueurEnJeu-1].getPosiPions();
+		if (posiPions != null && getAction(joueurEnJeu) == Action.A_DEPLACER)
+		{
+			for (int j = 0; j < posiPions.length; j++)
+			{
+				totVoisin = getNbVoisin(posiPions[j],v) + totVoisin;
+			}
+
+		}
+		else
+		{
+			totVoisin = 1;
+		}
+
+		System.out.println("totVoisin : " + totVoisin + "-------------------");
+		System.out.println("joueurEnJeu : " + joueurEnJeu );
+		System.out.println("totVoisin == 0 : " + (totVoisin == 0) );
+		System.out.println("retour : " + retour );
+
+		if (retour == 0 && totVoisin == 0)
+		{
+			retour = joueurEnJeu%2+1;
+		}
+
 		return retour;
 	}
 
