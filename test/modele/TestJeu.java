@@ -12,6 +12,11 @@ public class TestJeu {
     @BeforeEach
     public void setup() {
         jeu = new Jeu();
+
+        // test for creation jeu class
+        Assertions.assertEquals(5,jeu.getHauteurPlateau());
+        Assertions.assertEquals(5,jeu.getLargeurPlateau());
+        Assertions.assertEquals(1,jeu.getJoueurEnJeu());
     }
 
     @Test
@@ -123,7 +128,6 @@ public class TestJeu {
         jeu.poserPersonnage(new Point(2,3), 2);
         jeu.poserPersonnage(new Point(4,4), 2);
 
-
         //check if person can be placed after poserPersonnage
         Assertions.assertFalse(jeu.peutPoserUnPerso(new Point(1,1)));
         Assertions.assertFalse(jeu.peutPoserUnPerso(new Point(3,3)));
@@ -231,6 +235,45 @@ public class TestJeu {
         jeu.enleverPerso(new Point(50000,60000));
 
         Assertions.assertEquals(-1,jeu.quiEstIci(new Point(50000,60000)));
+    }
+
+    @Test
+    public void testQuiEstIci() {
+        // test before poser personnage
+
+        //poser les personnages
+        jeu.poserPersonnage(new Point(1,1),1);
+        jeu.poserPersonnage(new Point(2,1),1);
+
+        jeu.poserPersonnage(new Point(3,2),2);
+        jeu.poserPersonnage(new Point(4,1),2);
+
+        // check for positions
+        Assertions.assertEquals(1,jeu.quiEstIci(new Point(2,1)));
+        Assertions.assertEquals(1,jeu.quiEstIci(new Point(1,1)));
+        Assertions.assertEquals(2,jeu.quiEstIci(new Point(3,2)));
+        Assertions.assertEquals(2,jeu.quiEstIci(new Point(4,1)));
+
+        // deplacer les personnages
+        jeu.deplacerPersonnage(new Point(2,1), new Point(2,2));
+        jeu.deplacerPersonnage(new Point(4,1), new Point(4,2));
+
+        // check for new position
+        Assertions.assertEquals(1,jeu.quiEstIci(new Point(2,2)));
+        Assertions.assertEquals(2,jeu.quiEstIci(new Point(4,2)));
+
+        // check for old positions
+        Assertions.assertEquals(0,jeu.quiEstIci(new Point(2,1)));
+        Assertions.assertEquals(0, jeu.quiEstIci(new Point(4,1)));
+
+        // deplacer a la position negative
+        jeu.deplacerPersonnage(new Point(1,1), new Point(-1,-1));
+
+        // check if position is the same
+        Assertions.assertEquals(1,jeu.quiEstIci(new Point(1,1)));
+
+        // check negative deplacement is false
+        Assertions.assertEquals(-1, jeu.quiEstIci(new Point(-1,-1)));
     }
 
     @Test
