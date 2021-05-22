@@ -77,6 +77,8 @@ public class GestionBouton extends JButton implements ActionListener
 			break;
 			case RECOMMENCER :
 				f.j = new Jeu();
+				f.ia1 = IA.nouvelle(f.j,"controleurIA.IAAleatoire");
+				f.ia1.activeIA();
 				f.ChangerFenetres (NomFenetres.JEU);
 				f.gestionFenetre ();
 				f.frame.repaint();
