@@ -342,11 +342,66 @@ public class TestJeu {
 
     @Test
     public void testGagnant() {
+        //check before start game
+        Assertions.assertEquals(0,jeu.quiGagnant());
+        Assertions.assertFalse(jeu.estGagnant());
+
+        jeu.poserPersonnage(new Point(1,2), 1);
+        jeu.poserPersonnage(new Point(2,2), 1);
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,4),2);
+
+        jeu.Construire(new Point(2,3));
+        jeu.deplacerPersonnage(new Point(2,2), new Point(2,3));
+
+        jeu.Construire(new Point(3,4));
+        jeu.Construire(new Point(3,4));
+
+        //check random time in game
+        Assertions.assertEquals(0,jeu.quiGagnant());
+        Assertions.assertFalse(jeu.estGagnant());
+
+        jeu.deplacerPersonnage(new Point(2,3), new Point(3,4));
+
+        jeu.Construire(new Point(2,3));
+        jeu.Construire(new Point(2,3));
+
+        jeu.deplacerPersonnage(new Point(3,4),new Point(2,3));
+
+        // after perso1 wins
+        Assertions.assertEquals(1,jeu.quiGagnant());
+        Assertions.assertTrue(jeu.estGagnant());
+    }
+
+    @Test
+    public void testCalculJouerEnJeu() {
+        Assertions.assertEquals(0,jeu.calculJoueurEnJeu());
+
+        jeu.poserPersonnage(new Point(1,2), 1);
+        jeu.poserPersonnage(new Point(2,2), 1);
+
+        Assertions.assertEquals(0,jeu.calculJoueurEnJeu());
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,4),2);
+
+        jeu.deplacerPersonnage(new Point(1,2),new Point(2,3));
+        jeu.Construire(new Point(1,2));
+
+        jeu.deplacerPersonnage(new Point(2,2),new Point(2,4));
+        jeu.Construire(new Point(1,2));
+
+        Assertions.assertEquals(0,jeu.calculJoueurEnJeu());
+    }
+
+    @Test
+    public void testGetNbVoisin() {
         // a tester
     }
 
     @Test
-    public void testToString() {
+    public void testToStringEtgetJoueurEnJeu() {
         Plateau p = new Plateau(5, 5);
         // before placing personnages
         String expected = "Au joueur " + jeu.getJoueurEnJeu() + " de jouer sur le plateau :\n" + p;
