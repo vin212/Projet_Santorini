@@ -2,6 +2,8 @@ package interfaceUser;
 
 import java.awt.*;
 import javax.swing.*;
+import java.io.*;
+import javax.imageio.ImageIO;
 
 import modele.*;
 import controleur.*;
@@ -47,10 +49,20 @@ public class Fenetres {
 
 		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		frame = new JFrame("Santorini");
+
+		try {
+			InputStream  in = new FileInputStream("ressource/texture/total.png");
+			Image icon = ImageIO.read(in);
+			frame.setIconImage(icon); 
+		}
+		catch (Exception except)
+		{
+			System.err.println("erreur icone introuvable");
+		}
+
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(700, 500);
 		frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
-		
 		this.action = new ActionUser(j);
 	}
 
