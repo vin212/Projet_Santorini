@@ -9,13 +9,13 @@ public class TestBouton {
 
     @Test
     public void testBouton() {
-        Assertions.assertNotNull(Bouton.PAUSE);
-        Assertions.assertNotNull(Bouton.RETABLIR);
-        Assertions.assertNotNull(Bouton.RETOUR);
-        Assertions.assertNotNull(Bouton.RETOUR_JEU);
-        Assertions.assertNotNull(Bouton.RECOMMENCER);
-        Assertions.assertNotNull(Bouton.AVEC_IA);
-        Assertions.assertNotNull(Bouton.SANS_IA);
-        Assertions.assertNotNull(Bouton.RETOUR_MENU);
+        Assertions.assertEquals("PAUSE", Bouton.PAUSE.toString());
+        Assertions.assertEquals("RETABLIR", Bouton.RETABLIR.toString());
+        Assertions.assertEquals("RETOUR", Bouton.RETOUR.toString());
+        Assertions.assertEquals("RETOUR_JEU", Bouton.RETOUR_JEU.toString());
+        Assertions.assertEquals("RECOMMENCER", Bouton.RECOMMENCER.toString());
+        Assertions.assertEquals("AVEC_IA", Bouton.AVEC_IA.toString());
+        Assertions.assertEquals("SANS_IA", Bouton.SANS_IA.toString());
+        Assertions.assertEquals("RETOUR_MENU", Bouton.RETOUR_MENU.toString());
     }
 }
