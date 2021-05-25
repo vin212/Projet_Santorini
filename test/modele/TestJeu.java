@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import structure.Point;
+import structure.VerificateurEtage;
+import structure.VerificateurPion;
 
 public class TestJeu {
     Jeu jeu;
@@ -435,7 +437,30 @@ public class TestJeu {
 
     @Test
     public void testGetNbVoisin() {
-        // a tester
+        VerificateurPion vp = new VerificateurPion(jeu);
+        VerificateurEtage ve = new VerificateurEtage(jeu);
+
+        jeu.poserPersonnage(new Point(1,2), 1);
+        jeu.poserPersonnage(new Point(2,2), 1);
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,4),2);
+
+        jeu.deplacerPersonnage(new Point(4,4), new Point(3,4));
+        jeu.Construire(new Point(4,4));
+
+        Assertions.assertEquals(7, jeu.getNbVoisin(new Point(1,2), vp));
+        Assertions.assertEquals(6, jeu.getNbVoisin(new Point(3,3), vp));
+
+        Assertions.assertEquals(4, jeu.getNbVoisin(new Point(3,4), ve));
+
+        // test with negative values
+        Assertions.assertEquals(0, jeu.getNbVoisin(new Point(1,-2), vp));
+        Assertions.assertEquals(0, jeu.getNbVoisin(new Point(-3,4), ve));
+
+        // test with bigger than board values
+        Assertions.assertEquals(0, jeu.getNbVoisin(new Point(7,8), vp));
+        Assertions.assertEquals(0, jeu.getNbVoisin(new Point(9,8), ve));
     }
 
     @Test
