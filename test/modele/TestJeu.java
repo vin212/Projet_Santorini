@@ -1,5 +1,7 @@
 package test.modele;
 
+import modele.Coup;
+import modele.Historique;
 import modele.Jeu;
 import modele.Plateau;
 import org.junit.jupiter.api.Assertions;
@@ -337,7 +339,43 @@ public class TestJeu {
 
     @Test
     public void testHistoire() {
-        // a tester
+        Historique h = new Historique();
+        jeu.poserPersonnage(new Point(1,2), 1);
+        jeu.poserPersonnage(new Point(2,2), 1);
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,4),2);
+
+        // ajoute le coup a la historique
+        jeu.deplacerPersonnage(new Point(2,2), new Point(2,3));
+        jeu.histoAjouterCoup(new Coup(new Point(2,2),1));
+
+        jeu.deplacerPersonnage(new Point(2,3), new Point(3,3));
+        jeu.histoAjouterCoup(new Coup(new Point(2,3),1));
+
+        // test si coup a ajoute a la positionne
+        Assertions.assertEquals(2,jeu.histoPosition());
+
+        // annuler coup
+        jeu.histoAnnulerCoup();
+
+        // test annuler coup
+        Assertions.assertEquals(1, jeu.histoPosition());
+
+        // retablir coup
+        jeu.histoRetablir();
+
+        // test retablir coup
+        Assertions.assertEquals(2,jeu.histoPosition());
+
+        // try with inexisting value
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> jeu.histoRetablir());
+
+        // check if annuler throws error
+        jeu.histoAnnulerCoup();
+        jeu.histoAnnulerCoup();
+
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> jeu.histoAnnulerCoup());
     }
 
     @Test
