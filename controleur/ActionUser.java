@@ -17,6 +17,11 @@ public class ActionUser {
 		this.coupJouer = new Coup();
 	}
 
+	public Point recupPosiPerso ()
+	{
+		return posi_init;
+	}
+
 	public void jouerAction (Point posi_final)
 	{
 		Action a = j.getAction (j.getJoueurEnJeu());
@@ -39,44 +44,34 @@ public class ActionUser {
 				case DEUXIEME_PLACEMENT :
 					placerPerso (posi_final,a,true);
 				break;
+				case AFK :
+					System.out.println("afk");
+				break;
 				default:
+					System.out.println("bug");
 			}
 		}
 		//avancerPerso (posi_final);
 	}
 
 	public void selectionnerPerso(Point posi_final){
-		int perso;
-		if (posi_final.getx() >= 0 && posi_final.getx() < j.getLargeurPlateau () && posi_final.gety() >= 0 && posi_final.gety() < j.getHauteurPlateau ()){
-			perso = j.quiEstIci (posi_final);
-			if (perso == j.getJoueurEnJeu()) {
-				System.out.println("ok select perso");
-				this.posi_init = posi_final;
-				j.setAction (j.getJoueurEnJeu(),Action.EN_COURS_DE_DEPLACEMENT);
-			}
+		int perso = j.quiEstIci (posi_final);
+		if (perso == j.getJoueurEnJeu()) {
+			System.out.println("ok select perso");
+			this.posi_init = posi_final;
+			j.setAction (j.getJoueurEnJeu(),Action.EN_COURS_DE_DEPLACEMENT);
 		}
 	}
 
     public void avancerPerso (Point posi_final, boolean histoActiv, boolean cheat){
 		int perso;
 		perso = j.quiEstIci (posi_final);
-		if (posi_final.getx() >= 0 && posi_final.getx() < j.getLargeurPlateau () && posi_final.gety() >= 0 && posi_final.gety() < j.getHauteurPlateau () && perso != j.getJoueurEnJeu()){
+		if (perso != j.getJoueurEnJeu()){
 			if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 ) {
-                            if ((j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1) ||( cheat == true ))
+                if ((j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1) ||( cheat == true ))
 				{
 					
-					if (histoActiv)
-					{
-						coupJouer.setJoueur(j.getJoueurEnJeu());
-						coupJouer.setDeplacement(posi_init,posi_final);
-					}
-					System.out.println(posi_init + " "+ posi_final);
-
-					System.out.println("ok deplacer");
-					j.deplacerPersonnage (posi_init,posi_final);
-					j.setAction (j.getJoueurEnJeu(),Action.A_CONSTRUIRE);
-					this.posi_init = posi_final;
-
+					deplacer(posi_final,histoActiv);
 					
 				}
 				else
@@ -85,21 +80,11 @@ public class ActionUser {
 				}
 				
 			}
-			else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
+			else if ((Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1)  )
 			{
-				if (j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1 )
+				if ((j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1 )|| (cheat == true))
 				{
-					if (histoActiv)
-					{
-						coupJouer.setJoueur(j.getJoueurEnJeu());
-						coupJouer.setDeplacement(posi_init,posi_final);
-					}
-					System.out.println(posi_init +" " + posi_final);
-
-					System.out.println("ok deplacer");
-					j.deplacerPersonnage (posi_init,posi_final);
-					j.setAction (j.getJoueurEnJeu(),Action.A_CONSTRUIRE);
-					this.posi_init = posi_final;
+					deplacer(posi_final,histoActiv);
 				}
 				else
 				{
@@ -113,110 +98,92 @@ public class ActionUser {
 
 			}
 			else
-				{
-					System.out.println("Coup INVALIDE autre!!! " + posi_final + posi_init);
-				}
+			{
+				System.out.println("Coup INVALIDE autre!!! " + posi_final + posi_init);
+			}
 		}
-                else if (perso == j.getJoueurEnJeu())
-                {
-                    	System.out.println("ok select perso");
+        else if (perso == j.getJoueurEnJeu())
+        {
+            System.out.println("ok select perso");
 			this.posi_init = posi_final;
-                }
-
+        }
 	}
 
 	public void construireIci (Point posi_final, boolean histoActiv)
 	{
-		if (posi_final.getx() >= 0 && posi_final.getx() < j.getLargeurPlateau () && posi_final.gety() >= 0 && posi_final.gety() < j.getHauteurPlateau ())
+		if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
 		{
-			if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
+			if (j.Constructible (posi_final))
 			{
-				if (j.Constructible (posi_final))
-				{
-					System.out.println("ok constuir");
-					j.setAction (j.getJoueurEnJeu(),Action.AFK);
-					j.Construire (posi_final);
-
-					if (histoActiv)
-					{
-						coupJouer.setConstruction (posi_final);
-						j.histoAjouterCoup(coupJouer);
-						coupJouer = new Coup();
-					}
-				}
-				else
-				{
-					System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
-				}
-			}
-			else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
-			{
-				if (j.Constructible (posi_final))
-				{
-					System.out.println("ok constuir");
-					j.setAction (j.getJoueurEnJeu(),Action.AFK);
-					j.Construire (posi_final);
-
-					if (histoActiv)
-					{
-						coupJouer.setConstruction (posi_final);
-						j.histoAjouterCoup(coupJouer);
-						coupJouer = new Coup();
-					}
-				}
-				else
-				{
-					System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
-				}
+				construire(posi_final,histoActiv);
 			}
 			else
-				{
-					System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
-				}
+			{
+				System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
+			}
+		}
+		else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
+		{
+			construire(posi_final,histoActiv);
+		}
+		else
+		{
+			System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
 		}
 	}
 
 	public void placerPerso (Point posi_final,Action a, boolean histoActiv)
 	{
-		if (posi_final.getx() >= 0 && posi_final.getx() < j.getLargeurPlateau () && posi_final.gety() >= 0 && posi_final.gety() < j.getHauteurPlateau ())
+		if (j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1  )
 		{
-			if (j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1  )
+			System.out.println("ok placer");
+			j.poserPersonnage (posi_final, j.getJoueurEnJeu ());
+			if (a == Action.PREMIER_PLACEMENT)
 			{
-				System.out.println("ok placer");
-				j.poserPersonnage (posi_final, j.getJoueurEnJeu ());
-				if (a == Action.PREMIER_PLACEMENT)
+				j.setAction (j.getJoueurEnJeu(),Action.DEUXIEME_PLACEMENT);
+				if (histoActiv)
 				{
-					j.setAction (j.getJoueurEnJeu(),Action.DEUXIEME_PLACEMENT);
-					if (histoActiv)
-					{
-						coupJouer = new Coup(posi_final,j.getJoueurEnJeu());
-						j.histoAjouterCoup(coupJouer);
-						coupJouer = new Coup();
-					}
+					coupJouer = new Coup(posi_final,j.getJoueurEnJeu());
+					j.histoAjouterCoup(coupJouer);
+					coupJouer = new Coup();
 				}
-				else
-				{
-					j.setAction (j.getJoueurEnJeu(),Action.AFK);
-					if (histoActiv)
-					{
-						coupJouer = new Coup(posi_final,j.getJoueurEnJeu());
-						j.histoAjouterCoup(coupJouer);
-						coupJouer = new Coup();
-					}
-				}
-				this.posi_init = posi_final;
 			}
-				
-		}
-		
+			else
+			{
+				j.setAction (j.getJoueurEnJeu(),Action.AFK);
+				if (histoActiv)
+				{
+					coupJouer = new Coup(posi_final,j.getJoueurEnJeu());
+					j.histoAjouterCoup(coupJouer);
+					coupJouer = new Coup();
+				}
+			}
+			this.posi_init = posi_final;				
+		}	
 	}
 
 	public void annulerCoup(){
+		
+		Action action = j.getAction(j.getJoueurEnJeu()) ;
+		if (action != Action.AFK && action != Action.A_CONSTRUIRE )
+		{
+			annuler();
+		}
+		else if (j.estGagnant() && action == Action.A_CONSTRUIRE )
+		{
+			coupJouer.setConstruction (new Point(-1,-1));
+			j.histoAjouterCoup(coupJouer);
+			coupJouer = new Coup();
+			annuler();
+		}
+
+	}
+
+	public void annuler()
+	{
 		int pos;
 		Coup c;
-		if (j.getAction(j.getJoueurEnJeu()) == Action.A_DEPLACER || j.getAction(j.getJoueurEnJeu()) == Action.DEUXIEME_PLACEMENT|| j.getAction(j.getJoueurEnJeu()) == Action.PREMIER_PLACEMENT )
-		{
-			try{
+		try{
 				c = j.histoAnnulerCoup();
 			} catch(IndexOutOfBoundsException e){
 				System.err.println("Plus de coup a annuler");
@@ -251,8 +218,6 @@ public class ActionUser {
 				
 				}
 			}
-		}
-
 	}
 
 	public void retablirCoup(){
@@ -274,6 +239,42 @@ public class ActionUser {
 			} else{
 				placerPerso(c.getDepart(), j.getAction(j.getJoueurEnJeu()),false);
 			}
+		}
+	}
+
+	public void deplacer (Point posi_final, boolean histoActiv)
+	{
+		if (histoActiv)
+		{
+			coupJouer.setJoueur(j.getJoueurEnJeu());
+			coupJouer.setDeplacement(posi_init,posi_final);
+		}
+		System.out.println(posi_init + " "+ posi_final);
+
+		System.out.println("ok deplacer");
+		j.deplacerPersonnage (posi_init,posi_final);
+		j.setAction (j.getJoueurEnJeu(),Action.A_CONSTRUIRE);
+		this.posi_init = posi_final;
+	}
+
+	public void construire (Point posi_final, boolean histoActiv)
+	{
+		if (j.Constructible (posi_final))
+		{
+			System.out.println("ok constuir");
+			j.setAction (j.getJoueurEnJeu(),Action.AFK);
+			j.Construire (posi_final);
+
+			if (histoActiv)
+			{
+				coupJouer.setConstruction (posi_final);
+				j.histoAjouterCoup(coupJouer);
+				coupJouer = new Coup();
+			}
+		}
+		else
+		{
+			System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
 		}
 	}
 

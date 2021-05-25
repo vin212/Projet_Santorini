@@ -1,6 +1,7 @@
 package modele;
 
 import structure.*;
+import java.util.ArrayList;
 
 public class Jeu{
 	Plateau p;
@@ -8,6 +9,8 @@ public class Jeu{
 	Joueur []joueurs;
 	int joueurEnJeu;
 	public Historique historique;
+
+	boolean aideActiver;
 
 
 	public Jeu (){
@@ -18,6 +21,7 @@ public class Jeu{
 		this.t = 0;
 		this.joueurs = new Joueur [2];
 		this.joueurEnJeu = 1;
+		this.aideActiver = true;
 		if (joueurs != null)
 		{
 			for (int i = 0; i < 2 ; i++)
@@ -266,5 +270,51 @@ public class Jeu{
 	public String toString(){
 		return ("Au joueur " + joueurEnJeu + " de jouer sur le plateau :\n" + p);
 	}
+
+	public boolean aideEstActiver ()
+	{
+		return aideActiver;
+	}
+
+	public ArrayList<Point> getVoisin(Point p, Verificateur v){
+        int x = p.getx(), y = p.gety();
+        int xmax = getLargeurPlateau();
+        int ymax = getHauteurPlateau();
+        ArrayList<Point> voisins = new ArrayList<Point>(0); 
+        if (0 < x){
+            if (v.verifie(p, new Point(x-1, y)))
+                voisins.add(new Point(x-1, y));
+        }
+        if (0 < y){
+            if (v.verifie(p, new Point(x, y-1)))
+                voisins.add(new Point(x, y-1));
+        }
+        if (x < xmax){
+            if (v.verifie(p, new Point(x+1, y)))
+                voisins.add(new Point(x+1, y));
+        }
+        if (y < ymax){
+            if (v.verifie(p, new Point(x, y+1)))
+                voisins.add(new Point(x, y+1));
+        }
+        if (0 < x && 0 < y){
+            if (v.verifie(p, new Point(x-1, y-1)))
+                voisins.add(new Point(x-1, y-1));
+        }
+        if (x < xmax && y < ymax){
+            if (v.verifie(p, new Point(x+1, y+1)))
+                voisins.add(new Point(x+1, y+1));
+        }
+        if (x < xmax && 0 < y){
+            if (v.verifie(p, new Point(x+1, y-1)))
+                voisins.add(new Point(x+1, y-1));
+        }
+        if (0 < x && y < ymax){
+            if (v.verifie(p, new Point(x-1, y+1)))
+                voisins.add(new Point(x-1, y+1));
+        }
+        return voisins;
+    }
+
 
 }

@@ -17,6 +17,7 @@ public class GestionBouton extends JButton implements ActionListener
 	ActionUser action;
 	Fenetres f;
 
+
 	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f)
 	{
 		this.type = type;
@@ -33,19 +34,18 @@ public class GestionBouton extends JButton implements ActionListener
 			case RETOUR :
 				try
 				{
-                                    if (f.ia1 != null && f.ia1.estActive())
-                                    {
-                                        System.out.println("je passe ici");
-                                        f.g.iaJoue = true;
-                                        action.annulerCoup();
-                                        f.ia1.desactiverIA();
-                                        System.out.println(f.g.iaJoue);
-                
-                                    }
-                                    else
-                                    {
-                                        action.annulerCoup();
-                                    }
+                    if (f.ia1 != null && f.ia1.estActive())
+                    {
+                        System.out.println("je passe ici");
+                        f.g.iaJoue = true;
+                        action.annulerCoup();
+                        f.ia1.desactiverIA();
+                        System.out.println(f.g.iaJoue);
+                    }
+                    else
+                    {
+                        action.annulerCoup();
+                    }
 					
 				}
 				catch (IndexOutOfBoundsException except)
