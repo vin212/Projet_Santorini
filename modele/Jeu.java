@@ -91,6 +91,10 @@ public class Jeu{
 		return historique.positionnement();
 	}
 
+	public int histo(){
+		return historique.getHisto();
+	}
+
 	public boolean peutPoserUnPerso(Point posi_init,Point posi_final){
 		return this.p.peutPoserUnPerso(posi_init,posi_final);
 	}

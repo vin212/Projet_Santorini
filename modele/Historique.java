@@ -65,6 +65,10 @@ public class Historique{
         return position;
     }
 
+    public ArrayList getHisto(){
+        return this.historique;
+    }
+
     // Vérifie l'existence d'un coup.
     public boolean existeCoup(int n){
         return n < taille;
