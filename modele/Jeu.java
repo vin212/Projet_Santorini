@@ -91,6 +91,10 @@ public class Jeu{
 		return historique.positionnement();
 	}
 
+	public Coup histoDernierCoup()throws IndexOutOfBoundsException{
+		return historique.obtenirCoup(historique.positionnement()-1);
+	}
+
 	public boolean peutPoserUnPerso(Point posi_init,Point posi_final){
 		return this.p.peutPoserUnPerso(posi_init,posi_final);
 	}
