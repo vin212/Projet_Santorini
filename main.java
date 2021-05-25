@@ -38,7 +38,7 @@ public class main {
 		SwingUtilities.invokeLater(new Fenetre(j));
 		///j.setAction (1,Action.PREMIER_PLACEMENT);
 
-		System.out.println("Gagnant  " + j.estGagnant());
+		System.out.println("Gagnant  " + j.estGagnant() + "");
 
 	}	
 }
