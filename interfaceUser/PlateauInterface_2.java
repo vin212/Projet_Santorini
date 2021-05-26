@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.*;
+import java.util.ArrayList;
 
 import modele.*;
 import structure.*;
@@ -21,6 +22,8 @@ public class PlateauInterface_2 extends JComponent {
 	Image coupole;
 	Image J2;
 	Image J1;
+	Image griserDeplacement;
+	Image griserConstructible;
 
 	ActionUser actionUser;
 
@@ -50,6 +53,12 @@ public class PlateauInterface_2 extends JComponent {
 		 	in = new FileInputStream("ressource/texture/J2_2D.png");
 		 	J2 = ImageIO.read(in);
 
+		 	in = new FileInputStream("ressource/texture/griserDeplacement.png");
+		 	griserDeplacement = ImageIO.read(in);
+
+		 	in = new FileInputStream("ressource/texture/griserConstructible.png");
+		 	griserConstructible = ImageIO.read(in);
+
 		} catch (Exception e) {
 			System.out.print("erreur 2D \n");
 			System.exit(1);
@@ -75,8 +84,9 @@ public class PlateauInterface_2 extends JComponent {
 
 		System.out.println( x_calcul+ "," + y_calcul);
 		
-		if (x >= positionPremierBatiment.getx() && y >= positionPremierBatiment.gety())
+		if (x >= positionPremierBatiment.getx() && y >= positionPremierBatiment.gety() && x_calcul >= 0 && y_calcul >= 0 && x_calcul < j.getLargeurPlateau() && y_calcul < j.getHauteurPlateau())
 		{
+			System.out.println("ok");
 			actionUser.jouerAction(new Point(x_calcul,y_calcul));
 			this.repaint();
 		}
@@ -141,6 +151,31 @@ public class PlateauInterface_2 extends JComponent {
 				
 					}
 				}
+			}
+		}
+
+		modele.Action a = j.getAction (j.getJoueurEnJeu());
+		if (j.aideEstActiver() && a == modele.Action.EN_COURS_DE_DEPLACEMENT && !j.estGagnant())
+		{
+			Point posi = actionUser.recupPosiPerso ();
+			ArrayList<Point> voisins = j.getVoisin(posi, new VerificateurPion(j));
+			for (int h = 0; h < voisins.size(); h++)
+			{
+				int i = voisins.get(h).getx();
+				int k = voisins.get(h).gety();
+				drawable.drawImage(griserDeplacement, positionPremierBatiment.getx() + taille_largeur*i+inter_batiment_largeur*i, positionPremierBatiment.gety() + taille_hauteur*k + inter_batiment_hauteur * k, taille_largeur,taille_hauteur,null);
+			}
+		}
+		else if (j.aideEstActiver() && a == modele.Action.A_CONSTRUIRE && !j.estGagnant())
+		
+		{
+			Point posi = actionUser.recupPosiPerso ();
+			ArrayList<Point> voisins = j.getVoisin(posi, new VerificateurEtage(j));
+			for (int h = 0; h < voisins.size(); h++)
+			{
+				int i = voisins.get(h).getx();
+				int k = voisins.get(h).gety();
+				drawable.drawImage(griserConstructible, positionPremierBatiment.getx() + taille_largeur*i+inter_batiment_largeur*i, positionPremierBatiment.gety() + taille_hauteur*k + inter_batiment_hauteur * k, taille_largeur,taille_hauteur,null);
 			}
 		}
 

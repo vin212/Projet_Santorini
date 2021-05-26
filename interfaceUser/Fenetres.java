@@ -24,13 +24,23 @@ public class Fenetres {
 	PlateauInterface_1 aire1;
 	PlateauInterface_2 aire2;
 
+	EcouteurDeClavier clavier;
+
+
 	public GestionUser g;
+
+	Integer [] toucheAppuier;
+
+	ActionUser action;
 
 	public Fenetres (Jeu j)
 	{
 		this.j = j;
 		this.f = NomFenetres.PAGE_ACCUEIL ;
 
+		this.toucheAppuier = new Integer [2]; 
+		this.toucheAppuier[0] = -1;
+		this.toucheAppuier[1] = -1;
 		
 		//ia1.activeIA();
 
@@ -40,7 +50,13 @@ public class Fenetres {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(700, 500);
 		frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
-			
+		
+		this.action = new ActionUser(j);
+	}
+
+	public NomFenetres getNomFenetres()
+	{
+		return this.f;
 	}
 
 	public void ChangerFenetres (NomFenetres i)
@@ -84,21 +100,27 @@ public class Fenetres {
 
 	public void afficherFenetre1 ()
 	{
+		frame.removeKeyListener(clavier);
+		
 		frame.getContentPane().removeAll();
-		
-		
+	 
 		aire2 = new PlateauInterface_2 (j);
+		JLabel leJoueur = new JLabel ("A toto de jouer");
+		JLabel gagnant = new JLabel ("");
 		
 		JButton boutonRetour = new JButton("<");
 		JButton boutonPause = new JButton("||");
 		JButton boutonRetablir = new JButton(">");
 
+		boutonRetour.setFocusable(false);
+		boutonPause.setFocusable(false);
+		boutonRetablir.setFocusable(false);
+
 		boutonRetour.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR,this));
 		boutonPause.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.PAUSE,this));
 		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this));
 
-		JLabel leJoueur = new JLabel ("A toto de jouer");
-		JLabel gagnant = new JLabel ("");
+	
 
 
 		
@@ -107,6 +129,7 @@ public class Fenetres {
 		
 		JPanel container = new JPanel();
 		JPanel containerEst = new JPanel();
+		container.setFocusable(false);
 		containerEst.setPreferredSize(new Dimension(200, 500));
 		container.setPreferredSize(new Dimension(200, 450));
 		container.add(leJoueur,BorderLayout.NORTH);
@@ -119,6 +142,9 @@ public class Fenetres {
 		container.add(boutonPause,BorderLayout.CENTER);
 		container.add(boutonRetablir,BorderLayout.EAST);
 		containerEst.add(container,BorderLayout.SOUTH);
+
+		containerEst.setFocusable(false);
+		container.setFocusable(false);
 	
 		
 		frame.add(aire2,BorderLayout.CENTER);
@@ -130,16 +156,23 @@ public class Fenetres {
 		chrono.start();
 
 
-		aire2.addMouseListener(new EcouteurDeSouris(aire2,g,ia1));
-                EcouteurDeClavier test = new EcouteurDeClavier();
-		frame.addKeyListener(test);
+		aire2.setFocusable(false);
 
-                // test.requestFocus();
+		aire2.addMouseListener(new EcouteurDeSouris(aire2,g,ia1));
+		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2);
+		frame.addKeyListener(clavier);
+
+        frame.requestFocus();
 	}
+
+
 
 	public void afficherMenuPause()
 	{
 		//frame.add(new JPanel ());
+		frame.removeKeyListener(clavier);
+		frame.setEnabled(false);
+		frame.setEnabled(true);
 		chrono.stop();
 		frame.getContentPane().removeAll();
 
@@ -170,7 +203,11 @@ public class Fenetres {
 		gbc.gridx = 0;
 		gbc.gridy = 100;
 		container.add(boutonMenu,gbc);
+
 		frame.add(container);
+
+		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2);
+		frame.addKeyListener(clavier);
 		frame.setVisible(true);
 	}
 

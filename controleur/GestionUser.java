@@ -47,7 +47,7 @@ public class GestionUser
 		int quiGagne = j.quiGagnant() ;
 		if (j != null && quiGagne == 0)
 		{
-                    if (ia1 == null || (numJoueur == 1 && ia1.estActive()) )
+            if (ia1 == null || (numJoueur == 1 && ia1.estActive()) )
 			{
 				iaJoue = false;
 				for (int i = 1; i < 3; i++ )
@@ -62,14 +62,14 @@ public class GestionUser
 				{	
 					j.addTour();
 					numJoueur = j.getJoueurEnJeu();
-                                        if (numJoueur%2 == 0)
-                                        {
-                                            humainJoue = false;
-                                        }
-                                        else
-                                        {
-                                            humainJoue = true;
-                                        }
+                    if (numJoueur%2 == 0)
+                    {
+                        humainJoue = false;
+                    }
+                        else
+                    {
+                        humainJoue = true;
+                    }
 					j.setAction (numJoueur,modele.Action.A_DEPLACER);
 				}
 				else if (nbAfk == 2 && j.getTour() < 1)
@@ -135,15 +135,15 @@ public class GestionUser
 			numJoueur = j.getJoueurEnJeu();
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 		}
-                else if (j.getTour() <= 1 && modele.Action.DEUXIEME_PLACEMENT == j.getAction(numJoueur))
-                {
-                        j.setAction (numJoueur,modele.Action.DEUXIEME_PLACEMENT);
+        else if (j.getTour() <= 1 && modele.Action.DEUXIEME_PLACEMENT == j.getAction(numJoueur))
+        {
+            j.setAction (numJoueur,modele.Action.DEUXIEME_PLACEMENT);
 			coupIA = ia1.debuterPartie();
 			a.jouerAction (coupIA.getDepart());
 			j.addTour();
 			numJoueur = j.getJoueurEnJeu();
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
-                }
+        }
 		else 
 		{
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
