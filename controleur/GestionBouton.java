@@ -73,12 +73,29 @@ public class GestionBouton extends JButton implements ActionListener
 			case RETOUR :
 				try
 				{
-                    if (f.ia1 != null && f.ia1.estActive())
+					if (f.ia1 != null && f.ia2 != null && (f.ia1.estActive() || f.ia2.estActive()) )
+					{
+						System.out.println("je passe ici");
+                        f.g.iaJoue = true;
+                        action.annulerCoup();
+                        f.ia1.desactiverIA();
+                        f.ia2.desactiverIA();
+                        System.out.println(f.g.iaJoue);
+					}
+                    else if (f.ia1 != null && f.ia1.estActive() && f.ia2 == null)
                     {
                         System.out.println("je passe ici");
                         f.g.iaJoue = true;
                         action.annulerCoup();
                         f.ia1.desactiverIA();
+                        System.out.println(f.g.iaJoue);
+                    }
+                     else if (f.ia2 != null && f.ia2.estActive() && f.ia1 == null)
+                    {
+                        System.out.println("je passe ici");
+                        f.g.iaJoue = true;
+                        action.annulerCoup();
+                        f.ia2.desactiverIA();
                         System.out.println(f.g.iaJoue);
                     }
                     else

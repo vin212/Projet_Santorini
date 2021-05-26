@@ -37,7 +37,13 @@ public class EcouteurDeSouris extends MouseAdapter {
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
-        if (name == NomFenetres.JEU && ia1 != null && !ia1.estActive() && g.iaJoue )
+		if (name == NomFenetres.JEU && ia2 != null && !ia2.estActive() && g.iaJoue && ia1 != null && !ia1.estActive())
+        {
+        	System.out.println("reactover ia-----------------------");
+            ia1.activeIA();
+            ia2.activeIA();
+        }
+        else if (name == NomFenetres.JEU && ia1 != null && !ia1.estActive() && g.iaJoue )
         {
             System.out.println("reactover ia-----------------------");
             ia1.activeIA();
@@ -47,6 +53,7 @@ public class EcouteurDeSouris extends MouseAdapter {
             System.out.println("reactover ia-----------------------");
             ia2.activeIA();
         }
+
 		else if (name == NomFenetres.JEU && !g.iaJoue)
 		{
 			System.out.println("faire action: ");
