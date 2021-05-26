@@ -33,7 +33,7 @@ public class ActionUser {
 					selectionnerPerso(posi_final);
 				break;
 				case EN_COURS_DE_DEPLACEMENT :
-                                    avancerPerso (posi_final,true,false);
+                    avancerPerso (posi_final,true,false);
 				break;
 				case A_CONSTRUIRE :
 					construireIci (posi_final,true);
@@ -57,7 +57,6 @@ public class ActionUser {
 	public void selectionnerPerso(Point posi_final){
 		int perso = j.quiEstIci (posi_final);
 		if (perso == j.getJoueurEnJeu()) {
-			System.out.println("ok select perso");
 			this.posi_init = posi_final;
 			j.setAction (j.getJoueurEnJeu(),Action.EN_COURS_DE_DEPLACEMENT);
 		}
@@ -93,9 +92,7 @@ public class ActionUser {
 			}
 			else if (perso == j.getJoueurEnJeu())
 			{
-				System.out.println("ok select perso");
 				this.posi_init = posi_final;
-
 			}
 			else
 			{
@@ -104,7 +101,6 @@ public class ActionUser {
 		}
         else if (perso == j.getJoueurEnJeu())
         {
-            System.out.println("ok select perso");
 			this.posi_init = posi_final;
         }
 	}
@@ -136,7 +132,6 @@ public class ActionUser {
 	{
 		if (j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1  )
 		{
-			System.out.println("ok placer");
 			j.poserPersonnage (posi_final, j.getJoueurEnJeu ());
 			if (a == Action.PREMIER_PLACEMENT)
 			{
@@ -249,9 +244,7 @@ public class ActionUser {
 			coupJouer.setJoueur(j.getJoueurEnJeu());
 			coupJouer.setDeplacement(posi_init,posi_final);
 		}
-		System.out.println(posi_init + " "+ posi_final);
 
-		System.out.println("ok deplacer");
 		j.deplacerPersonnage (posi_init,posi_final);
 		j.setAction (j.getJoueurEnJeu(),Action.A_CONSTRUIRE);
 		this.posi_init = posi_final;
@@ -261,7 +254,6 @@ public class ActionUser {
 	{
 		if (j.Constructible (posi_final))
 		{
-			System.out.println("ok constuir");
 			j.setAction (j.getJoueurEnJeu(),Action.AFK);
 			j.Construire (posi_final);
 

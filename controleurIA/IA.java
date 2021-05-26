@@ -8,14 +8,16 @@ import java.util.ArrayList;
 public abstract class IA {
     public Jeu j;
     private boolean active = false;
+    public String type; 
 
     // Instancie l'IA demandé et la renvoie.
-    public static IA nouvelle(Jeu j, String classIaString){
+    public static IA nouvelle(Jeu j, String classIaString, String type){
         IA instance = null;
 
         try {
             instance = (IA) ClassLoader.getSystemClassLoader().loadClass(classIaString).getDeclaredConstructor().newInstance();
             instance.j = j;
+            instance.type = type;
         } catch(Exception e){
             System.err.println(e);
         }
@@ -102,6 +104,11 @@ public abstract class IA {
         }
 
         return msg;
+    }
+
+    public final String type()
+    {
+        return this.type;
     }
 
 }
