@@ -49,5 +49,10 @@ public class TestActionUser {
         // check positions after annuler coup
         Assertions.assertEquals(-1, jeu.quiEstIci(new Point(5,4)));
         Assertions.assertEquals(2, jeu.quiEstIci(new Point(4,4)));
+
+        // test deplacer
+        actionUser.deplacer(new Point(2,1), true);
+
+        Assertions.assertEquals(1,jeu.quiEstIci(new Point(2,1)));
     }
 }

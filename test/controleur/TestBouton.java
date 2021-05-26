@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestBouton {
-    Bouton bouton;
 
     @Test
     public void testBouton() {
