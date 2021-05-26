@@ -1,13 +1,13 @@
 package controleurIA;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
-
-
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.Iterator;
 import java.lang.Math;
 
-import controleur.ActionUser;
+//import controleur.ActionUser;
 import modele.Jeu;
 import modele.Coup;
 import structure.*;
@@ -21,7 +21,7 @@ public class IAMinMax extends IA {
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log absent, IA Aléatoire activée");
+        System.err.println("Systeme de log absent, IA MinMax activée");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class IAMinMax extends IA {
         int valeur; 
         Coup c;
 
-        int horizon = 1;
+        int horizon = 4;
 
         if (taille == 0){
             System.err.println("Aucun coup possible !");
@@ -63,7 +63,7 @@ public class IAMinMax extends IA {
         while(I.hasNext()){
             c = I.next();
             tour(c);
-            valeur = calcul_toi(j, horizon, Integer.MAX_VALUE);
+            valeur = calcul_toi(j, horizon-1, Integer.MAX_VALUE);
             gagnant.ajouter(valeur, c);
             annulerCoup();
         }
@@ -141,17 +141,67 @@ public class IAMinMax extends IA {
         return successeur;
     }
 
+
+    private ArrayList<Collection<Point>> observes (Jeu j, Point p){
+        ArrayList<Point> deplacement = new ArrayList<Point>(0);
+        ConcurrentSkipListSet<Point> construction = new ConcurrentSkipListSet<Point>();
+        ArrayList<Collection<Point>> successeur = new ArrayList<Collection<Point>>(2);
+        VerificateurPion vp = new VerificateurPion(j);
+        VerificateurEtage ve = new VerificateurEtage(j);
+        
+        deplacement = getVoisin(p, vp);
+        Iterator<Point> It1 = deplacement.iterator();
+        Point depl;
+        construction.add(p);
+        while(It1.hasNext()){
+            depl = It1.next();
+            Iterator<Point> It2 = getVoisin(depl, ve).iterator();
+            while(It2.hasNext()){
+                construction.add(It2.next());
+            }
+        }
+        successeur.add(0, deplacement);
+        successeur.add(1, construction);
+        return successeur;
+    }
+
+
     /* Chiffrage :
      * retour positif = plus de chance de gagner que de perdre
      * retour négatif  = plus de chance de perdre que de gagner
      */
 
     private int chiffrage(Jeu j){
+        Point[] p = j.getPosiPions(j.getJoueurEnJeu());
+        Point[] p1 = j.getPosiPions(j.getJoueurEnJeu() %2 + 1);
+        if (j.getNbEtage(p[0]) == 3 || j.getNbEtage(p[1]) == 3){
+            System.err.println("Je l'ai vu");
+            return Integer.MAX_VALUE;
+        } else if (j.getNbEtage(p1[0]) == 3 || j.getNbEtage(p1[1]) == 3) {
+            System.err.println("Je vois " + (j.getJoueurEnJeu() %2 + 1) +" gagner");
+            return Integer.MAX_VALUE;
+        }
+
         if (r.nextBoolean())
             return r.nextInt();
         else
             return - r.nextInt();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void tour(Coup c){
         j.histoAjouterCoup(c);
@@ -176,11 +226,11 @@ public class IAMinMax extends IA {
 		}
 	
 		if(c.estDeplacement()){
-			System.out.println(c.getArrive());
+			//System.out.println(c.getArrive());
 			j.deplacerPersonnage(c.getArrive(), c.getDepart());
 			j.detruireEtage(c.getConstruction());
 		} else {
-            System.out.println("Annulation de placement ? Vraiment ?");
+            //System.out.println("Annulation de placement ? Vraiment ?");
 			pos = j.histoPosition();
 			if(pos % 2 == 0){
 				j.enleverPerso(c.getDepart());
