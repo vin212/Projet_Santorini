@@ -163,13 +163,13 @@ public class Save {
             while (scanner.hasNextInt()){
                 int xi = scanner.nextInt();
                 int yi = scanner.nextInt()
-                Point Pti = new Point(x, y);
+                Point Pti = new Point(xi, yi);
                 int xa = scanner.nextInt();
                 int ya = scanner.nextInt()
-                Point Pta = new Point(x, y);
+                Point Pta = new Point(xa, ya);
                 int xc = scanner.nextInt();
-                int yc = scanner.nextInt()
-                Point Ptc = new Point(x, y);
+                int yc = scanner.nextInt();
+                Point Ptc = new Point(xc, yc);
                 int numJoueur = scanner.nextInt();
                 Coup coup = new Coup(Pti, Pta, Ptc, numJoueur);
                 histo.ajouteCoup(coup);
