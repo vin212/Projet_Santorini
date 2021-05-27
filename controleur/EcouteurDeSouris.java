@@ -6,6 +6,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import modele.*;
 import controleurIA.*;
+import save.*;
+import structure.*;
 
 import interfaceUser.*;
 
@@ -19,6 +21,10 @@ public class EcouteurDeSouris extends MouseAdapter {
     NomFenetres name;
     String nomFichier;
 
+    Fenetres f;
+
+    Jeu j;
+
     public EcouteurDeSouris(PlateauInterface_2 plateau, GestionUser g, IA ia1, IA ia2)
 	{
 		this.plateau = plateau;
@@ -26,12 +32,15 @@ public class EcouteurDeSouris extends MouseAdapter {
         this.ia1 = ia1;
         this.ia2 = ia2;
         this.name = NomFenetres.JEU;
+        this.f = f;
 	}
 
-	public EcouteurDeSouris(String nomFichier)
+	public EcouteurDeSouris(String nomFichier, Jeu j, Fenetres f)
 	{
 		this.name = NomFenetres.CHARGER;
 		this.nomFichier = nomFichier;
+		this.j = j;
+		this.f = f;
 	}
 
 	@Override
@@ -61,6 +70,17 @@ public class EcouteurDeSouris extends MouseAdapter {
 		}
 		else if (name == NomFenetres.CHARGER)
 		{
+			System.out.println("ok ");
+			//j.Construire(new Point(0,0));
+			f.j = null;
+			Save save = new Save(f.j);
+			f.j = save.chargerSauvegarde(nomFichier);
+			if (f.j != null)
+			{
+				f.ChangerFenetres(NomFenetres.JEU);
+				f.gestionFenetre ();
+				//f.repaint();
+			}
 			System.out.println("nom fichier : " + nomFichier);
 		}
 	}

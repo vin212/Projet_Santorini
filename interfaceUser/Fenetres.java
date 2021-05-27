@@ -365,7 +365,7 @@ public class Fenetres {
 	{
 		frame.getContentPane().removeAll();
 
-		ChargerPage aire = new ChargerPage(frame,this,prop );
+		ChargerPage aire = new ChargerPage(frame,this,prop,this.j );
 		frame.add(aire);
 	
 		frame.setVisible(true);
