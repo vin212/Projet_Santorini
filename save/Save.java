@@ -162,10 +162,10 @@ public class Save {
 
             while (scanner.hasNextInt()){
                 int xi = scanner.nextInt();
-                int yi = scanner.nextInt()
+                int yi = scanner.nextInt();
                 Point Pti = new Point(xi, yi);
                 int xa = scanner.nextInt();
-                int ya = scanner.nextInt()
+                int ya = scanner.nextInt();
                 Point Pta = new Point(xa, ya);
                 int xc = scanner.nextInt();
                 int yc = scanner.nextInt();
@@ -176,14 +176,13 @@ public class Save {
 
                 }
             jeu.setHisto(histo);
+            scanner.close();
 
         }
             
         catch(Exception e){
             System.err.println("Erreur lors de la lecture du fichier");
-        }
-
-        scanner.close();
+        }       
 
         return jeu;
     }
