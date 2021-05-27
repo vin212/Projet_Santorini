@@ -197,7 +197,7 @@ public class Fenetres {
 		aire2.setFocusable(false);
 
 		aire2.addMouseListener(new EcouteurDeSouris(aire2,g,ia1,ia2));
-		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2);
+		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2,prop);
 		frame.addKeyListener(clavier);
 
         frame.requestFocus();
@@ -249,7 +249,7 @@ public class Fenetres {
 
 		frame.add(container);
 
-		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2);
+		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2,prop);
 		frame.addKeyListener(clavier);
 		frame.setVisible(true);
 	}

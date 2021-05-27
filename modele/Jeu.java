@@ -73,7 +73,7 @@ public class Jeu{
 		int x = posi.getx();
 		int y = posi.gety();
 		hashCode += Math.pow(5,x+5*y);
-		retourHashCode(hashCode);
+		//retourHashCode(hashCode);
 		return p.Construire(posi);
 	}
 

@@ -14,7 +14,7 @@ public class main {
 		Configuration prop = new Configuration();
 		/*System.out.println(prop.recupValeur ("raccourci_retour"));
 		System.out.println(prop.recupValeur ("aide"));*/
-		prop.changerValeur ("aide","false");
+		prop.changerValeur ("aide","true");
 		Jeu j = new Jeu(prop);
 
 

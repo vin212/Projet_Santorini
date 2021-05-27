@@ -217,8 +217,10 @@ public class ActionUser {
 
 	public void retablirCoup(){
 		Coup c;
+		int numJoueur;
 
-		if (j.getAction(j.getJoueurEnJeu()) == Action.A_DEPLACER || j.getAction(j.getJoueurEnJeu()) == Action.DEUXIEME_PLACEMENT || j.getAction(j.getJoueurEnJeu())== Action.PREMIER_PLACEMENT )
+		System.out.println("tour : " + j.getTour());
+		if (j.getAction(j.getJoueurEnJeu()) == Action.A_DEPLACER || j.getAction(j.getJoueurEnJeu()) == Action.DEUXIEME_PLACEMENT  )
 		{
 			try{
 				c = j.histoRetablir();
@@ -228,9 +230,31 @@ public class ActionUser {
 			}
 			
 			if (c.estDeplacement()){
+
 				selectionnerPerso(c.getDepart());
 				avancerPerso(c.getArrive(),false,false);
 				construireIci(c.getConstruction(),false);
+				
+				if (j.getTour() > 1)
+				{
+					j.addTour();
+					numJoueur = j.getJoueurEnJeu();
+					j.setAction(numJoueur,Action.A_DEPLACER);
+					j.setAction(numJoueur %2 + 1, Action.AFK);
+				}
+				else if (j.getAction(j.getJoueurEnJeu()) == Action.PREMIER_PLACEMENT)
+				{
+					numJoueur = j.getJoueurEnJeu();
+					j.setAction(numJoueur,Action.DEUXIEME_PLACEMENT);
+				}
+				else if (j.getAction(j.getJoueurEnJeu()) == Action.DEUXIEME_PLACEMENT)
+				{
+					numJoueur = j.getJoueurEnJeu();
+					j.setAction(numJoueur,Action.AFK);
+					j.setAction(numJoueur%2 + 1, Action.PREMIER_PLACEMENT);
+					j.addTour();
+				}
+
 			} else{
 				placerPerso(c.getDepart(), j.getAction(j.getJoueurEnJeu()),false);
 			}

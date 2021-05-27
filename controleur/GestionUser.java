@@ -55,7 +55,7 @@ public class GestionUser
 		int quiGagne = j.quiGagnant() ;
 		if (j != null && quiGagne == 0)
 		{
-            if ((ia1 == null && ia2 == null) || (ia1 != null && numJoueur == 1 && ia1.estActive() && ia2 == null) || (ia2 != null && numJoueur == 2 && ia2.estActive()) && ia1 == null) 
+            if ((ia1 == null && ia2 == null) || (ia1 != null && numJoueur == 1 && ia2 == null && ia1.estActive()) || (ia2 != null && numJoueur == 2  && ia1 == null && ia2.estActive())) 
 			{
 				iaJoue = false;
 				for (int i = 1; i < 3; i++ )
