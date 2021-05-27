@@ -41,6 +41,8 @@ public class EcouteurDeClavier  extends KeyAdapter{
         toucheRetablir[0] = Integer.parseInt(buff[0]);
         toucheRetablir[1] = Integer.parseInt(buff[1]);
 
+        this.prop = prop;
+
         /*this.toucheAppuier[0] = (Integer)(1);
         this.toucheAppuier[1] = 1;*/
    	}
@@ -74,7 +76,7 @@ public class EcouteurDeClavier  extends KeyAdapter{
                 toucheAppuier[1] = 90;
             }   
         }
-        else if(source==27)
+        else if(source == Integer.parseInt(prop.recupValeur("raccourci_pause")))
         {
             System.out.println("echp");
             if (f.getNomFenetres() == NomFenetres.MENU_PAUSE)

@@ -12,8 +12,8 @@ public class main {
 	
 
 		Configuration prop = new Configuration();
-		/*System.out.println(prop.recupValeur ("raccourci_retour"));
-		System.out.println(prop.recupValeur ("aide"));*/
+		/*System.out.println(prop.recupValeur ("raccourci_retour"));*/
+		System.out.println(prop.recupValeur ("raccourci_pause"));
 		prop.changerValeur ("aide","true");
 		Jeu j = new Jeu(prop);
 
