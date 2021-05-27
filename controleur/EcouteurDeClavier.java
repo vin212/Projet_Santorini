@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 import interfaceUser.*;
 import modele.*;
+import global.*;
 
 public class EcouteurDeClavier  extends KeyAdapter{
    
@@ -16,7 +17,11 @@ public class EcouteurDeClavier  extends KeyAdapter{
     PlateauInterface_2 aire2;
     ActionUser action;
 
-   	public EcouteurDeClavier (Integer [] toucheAppuier, Fenetres f, Jeu j, PlateauInterface_2 aire)
+    Configuration prop;
+
+    Integer [] toucheRetour;
+    Integer [] toucheRetablir;
+   	public EcouteurDeClavier (Integer [] toucheAppuier, Fenetres f, Jeu j, PlateauInterface_2 aire, Configuration prop)
    	{
         this.toucheAppuier = toucheAppuier;
         this.f =f;
@@ -24,6 +29,20 @@ public class EcouteurDeClavier  extends KeyAdapter{
 
         this.aire2 = aire;
         this.action  = new ActionUser (j) ;
+
+        toucheRetour = new Integer[2];
+        toucheRetablir = new Integer[2];
+
+        String [] buff = prop.recupValeur("raccourci_retour").split(" ");
+        toucheRetour[0] = Integer.parseInt(buff[0]);
+        toucheRetour[1] = Integer.parseInt(buff[1]);
+
+        buff = prop.recupValeur("raccourci_retablir").split(" ");
+        toucheRetablir[0] = Integer.parseInt(buff[0]);
+        toucheRetablir[1] = Integer.parseInt(buff[1]);
+
+        this.prop = prop;
+
         /*this.toucheAppuier[0] = (Integer)(1);
         this.toucheAppuier[1] = 1;*/
    	}
@@ -57,7 +76,7 @@ public class EcouteurDeClavier  extends KeyAdapter{
                 toucheAppuier[1] = 90;
             }   
         }
-        else if(source==27)
+        else if(source == Integer.parseInt(prop.recupValeur("raccourci_pause")))
         {
             System.out.println("echp");
             if (f.getNomFenetres() == NomFenetres.MENU_PAUSE)
@@ -93,23 +112,40 @@ public class EcouteurDeClavier  extends KeyAdapter{
         {
             System.out.println("les deux sont appuier");
         }
-        else if (toucheAppuier[0] == 17 && toucheAppuier[1] == 90)
+        else if (toucheAppuier[0] == toucheRetour[0] && toucheAppuier[1] == toucheRetour[1])
         {
             try
             {
-                if (f.ia1 != null && f.ia1.estActive())
-                {
-                    System.out.println("je passe ici");
-                    f.g.iaJoue = true;
-                    action.annulerCoup();
-                    f.ia1.desactiverIA();
-                    System.out.println(f.g.iaJoue);
-                }
-                else
-                {
-                    System.out.println("je passe la");
-                    action.annulerCoup();
-                }
+                if (f.ia1 != null && f.ia2 != null && (f.ia1.estActive() || f.ia2.estActive()) )
+                    {
+                        System.out.println("je passe ici");
+                        f.g.iaJoue = true;
+                        action.annulerCoup();
+                        f.ia1.desactiverIA();
+                        f.ia2.desactiverIA();
+                        System.out.println(f.g.iaJoue);
+                    }
+                    else if (f.ia1 != null && f.ia1.estActive() && f.ia2 == null)
+                    {
+                        System.out.println("je passe ici");
+                        f.g.iaJoue = true;
+                        action.annulerCoup();
+                        f.ia1.desactiverIA();
+                        System.out.println(f.g.iaJoue);
+                    }
+                     else if (f.ia2 != null && f.ia2.estActive() && f.ia1 == null)
+                    {
+                        System.out.println("je passe ici");
+                        f.g.iaJoue = true;
+                        action.annulerCoup();
+                        f.ia2.desactiverIA();
+                        System.out.println(f.g.iaJoue);
+                    }
+                    else
+                    {
+                        action.annulerCoup();
+                    }
+                    
                     
             }
             catch (IndexOutOfBoundsException except)
@@ -118,7 +154,7 @@ public class EcouteurDeClavier  extends KeyAdapter{
             }
             aire2.repaint();
         }
-        else if (toucheAppuier[0] == 17 && toucheAppuier[1] == 89)
+        else if (toucheAppuier[0] == toucheRetablir[0] && toucheAppuier[1] == toucheRetablir[1])
         {
             try
             {
@@ -137,24 +173,24 @@ public class EcouteurDeClavier  extends KeyAdapter{
     public void keyReleased(KeyEvent event){
     	System.out.println("ici relacher");
         int source = event.getKeyCode();
-        if (source == 17 && toucheAppuier[0] == 17)
+        if (source == toucheRetour[0] && toucheAppuier[0] == toucheRetour[0] )
         {
             System.out.println("touche : ctr relacher");
             toucheAppuier[0] = -1;
         }
-        else if (source == 86 && toucheAppuier [1] == 86)
+        else if (source == toucheRetour[1]  && toucheAppuier[1] == toucheRetour[1] )
         {
-            System.out.println("touche : v relacher");
+            System.out.println("touche : z relacher");
             toucheAppuier[1] = -1;
         }
-        else if (source == 89 && toucheAppuier[1] == 89)
+        else if (source == toucheRetablir[1] && toucheAppuier[1] == toucheRetablir[1])
         {
             System.out.println("touche : y relacher");
             toucheAppuier[1] = -1;
         }
-        else if (source == 90 && toucheAppuier[1] == 90)
+        else if (source == 86 && toucheAppuier[1] == 86)
         {
-            System.out.println("touche : z relacher");
+            System.out.println("touche : v relacher");
             toucheAppuier[1] = -1;
         }
     }
