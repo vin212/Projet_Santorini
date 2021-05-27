@@ -1,13 +1,22 @@
 import interfaceUser.*;
 import modele.*;
+import global.*;
 
 import javax.swing.SwingUtilities;
+import java.util.Properties;
 
 public class main {
 	public static void main (String[] args) {
 		System.out.println("Hello World");
 
-		Jeu j = new Jeu();
+	
+
+		Configuration prop = new Configuration();
+		/*System.out.println(prop.recupValeur ("raccourci_retour"));*/
+		System.out.println(prop.recupValeur ("raccourci_pause"));
+		prop.changerValeur ("aide","true");
+		Jeu j = new Jeu(prop);
+
 
 		/*j.Construire(new Point(1,1));
 		j.Construire(new Point(1,1));
@@ -35,7 +44,7 @@ public class main {
 		j.poserPersonnage (new Point (1,3), 2);
 		//j.deplacerPersonnage(new Point(1,2), new Point(1,3));*/
 
-		SwingUtilities.invokeLater(new Fenetre(j));
+		SwingUtilities.invokeLater(new Fenetre(j,prop));
 		///j.setAction (1,Action.PREMIER_PLACEMENT);
 
 		System.out.println("Gagnant  " + j.estGagnant());
