@@ -16,7 +16,7 @@ public class Save {
     }
 
     public void sauver(String name){
-        String tmp = "../sauvegardes/"+name+".data";
+        String tmp = "sauvegardes/"+name+".data";
         File saveFile = new File(tmp);
         try{
             boolean res = saveFile.createNewFile();
@@ -36,7 +36,7 @@ public class Save {
             //Ecriture du plateau
             int hauteur = jeu.getHauteurPlateau();
             int largeur = jeu.getLargeurPlateau();
-            writer.write(hauteur+"*"+largeur);
+            writer.write(hauteur+"*"+largeur + "\n");
             for (int i = 0; i < hauteur; i++){
                 for(int j = 0; j < largeur; j++){
                     Point p = new Point(i,j);
@@ -54,8 +54,8 @@ public class Save {
             //Ecriture de la pos des joueurs
             for (int i = 1; i <= 2; i++){
                 Point[] pts = jeu.getPosiPions(i);
+                writer.write(pts[0].getx()+ " "+ pts[0].gety());
                 writer.write(pts[1].getx()+ " "+ pts[1].gety());
-                writer.write(pts[2].getx()+ " "+ pts[2].gety());
                 writer.write("\n");
             }
             
@@ -75,9 +75,12 @@ public class Save {
                 pc = coup.getConstruction();
                 joueur = coup.getJoueur();
                 writer.write(pi.getx()+" "+pi.gety()+"  ");
-                writer.write(pa.getx()+" "+pa.gety()+"  ");
-                writer.write(pc.getx()+" "+pc.gety()+"  "); // 1 1  2 2  3 3  1
-                writer.write(joueur);
+                if (pa != null && pc != null)
+                {
+                    writer.write(pa.getx()+" "+pa.gety()+"  ");
+                    writer.write(pc.getx()+" "+pc.gety()+"  "); // 1 1  2 2  3 3  1
+                    writer.write(joueur);
+                }
                 writer.write("\n");
             }
             writer.close();

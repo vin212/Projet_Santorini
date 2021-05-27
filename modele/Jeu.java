@@ -38,7 +38,7 @@ public class Jeu{
 		}
 	}
 
-	/*public Jeu (){
+	public Jeu (){
 		this.p = new Plateau (5,5);
 
 		historique = new Historique();
@@ -54,7 +54,7 @@ public class Jeu{
 				this.joueurs[i] = new Joueur();
 			}
 		}
-	}*/
+	}
 
 	public int getHauteurPlateau(){
 		return p.getHauteur();
@@ -138,6 +138,7 @@ public class Jeu{
 
 	public Historique histo(){
 		return this.historique;
+	}
 
 	public Coup histoDernierCoup()throws IndexOutOfBoundsException{
 		return historique.obtenirCoup(historique.positionnement()-1);

@@ -9,6 +9,7 @@ import modele.*;
 import interfaceUser.*;
 import controleurIA.*;
 import global.*;
+import save.*;
 
 public class GestionBouton extends JButton implements ActionListener
 {
@@ -197,8 +198,8 @@ public class GestionBouton extends JButton implements ActionListener
 				}
 				else
 				{
-					/*Save s = new save(j);
-					s.sauver(texte.getText());*/
+					Save s = new Save(j);
+					s.sauver(texte.getText());
 
 					System.out.println(texte.getText());
 					this.messageErreur.setText("");
