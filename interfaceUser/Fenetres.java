@@ -4,11 +4,14 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import javax.imageio.ImageIO;
+import java.util.Properties;
 
 import modele.*;
 import controleur.*;
 import controleurIA.*;
+import global.*;
 import javax.swing.border.Border;
+
 
 /*public enum EnumFenetre {
 	MENU,MENU_PAUSE,PLATEAU;
@@ -36,7 +39,9 @@ public class Fenetres {
 
 	ActionUser action;
 
-	public Fenetres (Jeu j)
+	Configuration prop;
+
+	public Fenetres (Jeu j, Configuration prop)
 	{
 		this.j = j;
 		this.f = NomFenetres.PAGE_ACCUEIL ;
@@ -44,6 +49,8 @@ public class Fenetres {
 		this.toucheAppuier = new Integer [2]; 
 		this.toucheAppuier[0] = -1;
 		this.toucheAppuier[1] = -1;
+
+		this.prop = prop;
 		
 		//ia1.activeIA();
 
@@ -62,7 +69,7 @@ public class Fenetres {
 		}
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(700, 500);
+		frame.setSize(Integer.parseInt(this.prop.recupValeur("largeur_fenetre")),Integer.parseInt(prop.recupValeur("hauteur_fenetre")));
 		frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
 		this.action = new ActionUser(j);
 	}
@@ -148,9 +155,9 @@ public class Fenetres {
 		boutonPause.setFocusable(false);
 		boutonRetablir.setFocusable(false);
 
-		boutonRetour.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR,this));
-		boutonPause.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.PAUSE,this));
-		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this));
+		boutonRetour.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR,this,prop));
+		boutonPause.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.PAUSE,this,prop));
+		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this,prop));
 
 	
 
@@ -212,10 +219,10 @@ public class Fenetres {
 		JButton boutonRecommencer = new JButton ("Recommencer");
 		JButton boutonMenu = new JButton ("Retour Menu (sans sauvegarde)");
 
-		boutonRetourJeu.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR_JEU,this));
-		boutonSauvegarde.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.SAUVEGARDER,this));
-		boutonRecommencer.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RECOMMENCER,this));
-		boutonMenu.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR_MENU,this));
+		boutonRetourJeu.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR_JEU,this,prop));
+		boutonSauvegarde.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.SAUVEGARDER,this,prop));
+		boutonRecommencer.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RECOMMENCER,this, prop));
+		boutonMenu.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR_MENU,this,prop));
 
 		JPanel container = new JPanel();
 		container.setBackground(new Color(150,150,150));
@@ -254,9 +261,9 @@ public class Fenetres {
 		//JButton boutonSansIA = new JButton ("Jouer Sans IA");
 		JButton boutonCharger = new JButton ("Charger");
 
-		boutonNouvellePartie.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.NOUVELLE_PARTIE,this));
+		boutonNouvellePartie.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.NOUVELLE_PARTIE,this,prop));
 		//boutonSansIAboutonCharger.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.SANS_IA,this));
-		boutonCharger.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.CHARGER,this));
+		boutonCharger.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.CHARGER,this,prop));
 
 		JPanel container = new JPanel();
 		container.setBackground(new Color(150,150,150));
@@ -358,7 +365,7 @@ public class Fenetres {
 	{
 		frame.getContentPane().removeAll();
 
-		ChargerPage aire = new ChargerPage(frame,this );
+		ChargerPage aire = new ChargerPage(frame,this,prop );
 		frame.add(aire);
 	
 		frame.setVisible(true);
@@ -402,8 +409,8 @@ public class Fenetres {
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		containerMain.add(boutonRetourMenu,gbc);
-		boutonRetourMenu.addActionListener(new GestionBouton (j,aire2,Bouton.RETOUR_MENU,this));
-		boutonCestParti.addActionListener(new GestionBouton (j,Bouton.LANCER_PARTIE,this,menuBar1,menuBar2));
+		boutonRetourMenu.addActionListener(new GestionBouton (j,aire2,Bouton.RETOUR_MENU,this,prop));
+		boutonCestParti.addActionListener(new GestionBouton (j,Bouton.LANCER_PARTIE,this,menuBar1,menuBar2,prop));
 
 
 		

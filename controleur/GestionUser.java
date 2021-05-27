@@ -8,6 +8,7 @@ import java.awt.Color;
 import modele.*;
 import interfaceUser.*;
 import java.util.concurrent.TimeUnit;
+import global.*;
 
 public class GestionUser
 {
@@ -24,6 +25,8 @@ public class GestionUser
 	JPanel leJoueur;
 	JLabel gagnant;
 	JLabel labelAction;
+
+	Configuration prop;
 
 	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1, JPanel leJoueur,JLabel labelAction)
 	{

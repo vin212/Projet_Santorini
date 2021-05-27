@@ -13,16 +13,19 @@ import javax.swing.border.Border;
 import modele.*;
 import structure.*;
 import controleur.*;
+import global.*;
 
 public class ChargerPage extends JPanel {
 
 	JFrame frame;
 	Fenetres f;
+	Configuration prop;
 
-	public ChargerPage(JFrame frame, Fenetres f) {
+	public ChargerPage(JFrame frame, Fenetres f, Configuration prop) {
 		//counter = 1;
 		this.frame = frame;
 		this.f = f;
+		this.prop = prop;
 	}
 
 	@Override
@@ -81,7 +84,7 @@ public class ChargerPage extends JPanel {
 		gbc.gridy = 0;
 		containerMain.add(scrPane,gbc);
 		JButton bouton = new JButton ("Retour Menu");
-		bouton.addActionListener(new GestionBouton(Bouton.RETOUR_MENU, f));
+		bouton.addActionListener(new GestionBouton(Bouton.RETOUR_MENU, f,prop));
 		gbc.gridx = 0;
 		gbc.gridy = frame.getSize().height/2;
 		containerMain.add (bouton,gbc);

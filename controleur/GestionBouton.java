@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import modele.*;
 import interfaceUser.*;
 import controleurIA.*;
+import global.*;
 
 public class GestionBouton extends JButton implements ActionListener
 {
@@ -25,7 +26,9 @@ public class GestionBouton extends JButton implements ActionListener
 	JComboBox j1;
 	JComboBox j2;
 
-	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox j1, JComboBox j2)
+	Configuration prop;
+
+	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox j1, JComboBox j2,Configuration prop)
 	{
 		this.j1 = j1;
 		this.j2 = j2;
@@ -34,20 +37,23 @@ public class GestionBouton extends JButton implements ActionListener
 		this.f = f;
 
 		this.type = type;
+		this.prop = prop;
 	}
 
-	public GestionBouton (Bouton type, Fenetres f)
+	public GestionBouton (Bouton type, Fenetres f,Configuration prop)
 	{
 		this.type = type;
 		this.f = f;
+		this.prop = prop;
 	}
 
-	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f)
+	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f,Configuration prop)
 	{this.type = type;
 		this.action = new ActionUser(j);
 		this.aire2 = aire2;
 
 		this.f = f;
+		this.prop = prop;
 	}
 
 	public GestionBouton (Jeu j, Bouton type, Fenetres f, JTextArea texte, JFrame popUp, JLabel messageErreur)
@@ -132,7 +138,7 @@ public class GestionBouton extends JButton implements ActionListener
 				f.frame.repaint();
 			break;
 			case RECOMMENCER :
-				f.j = new Jeu();
+				f.j = new Jeu(prop);
 
 				if (f.ia1 != null)
 				{
@@ -237,7 +243,10 @@ public class GestionBouton extends JButton implements ActionListener
 		String j2ToString = j2.getSelectedItem().toString();
 
 		boolean retour = false;
-		f.j = new Jeu();
+		f.j = new Jeu(prop);
+
+		f.ia1 = null;
+		f.ia2 = null;
 
 		if (j1ToString == "Joueur" && j2ToString == "Joueur")
 		{
