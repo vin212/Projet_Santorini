@@ -35,6 +35,14 @@ public class Jeu{
 		return p.getHauteur();
 	}
 
+	public void setJoueur(int num, Joueur j){
+		this.joueurs[num] = j;
+	}
+
+	public void setHisto(Historique h){
+		this.historique = h;
+	}
+
 	public int getLargeurPlateau(){
 		return p.getLargeur();
 	}
@@ -68,6 +76,10 @@ public class Jeu{
 		return t;
 	}
 
+	public void setTour(int t){
+		this.t = t;
+	}
+
 	public void addTour(){
 		this.t++;
 		calculJoueurEnJeu();
@@ -91,14 +103,13 @@ public class Jeu{
 		return historique.positionnement();
 	}
 
-	public int histo(){
-		return historique.getHisto();
+	public Historique histo(){
+		return this.historique;
 	}
 
 	public boolean peutPoserUnPerso(Point posi_init,Point posi_final){
 		return this.p.peutPoserUnPerso(posi_init,posi_final);
 	}
-
 
 	public int enleverPerso (Point posi)
 	{

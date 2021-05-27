@@ -33,6 +33,9 @@ public class main {
 		j.poserPersonnage (new Point (0,1), 1);
 		j.poserPersonnage (new Point (2,2), 2);
 		j.poserPersonnage (new Point (1,3), 2);
+
+		sauver(save1);
+
 		//j.deplacerPersonnage(new Point(1,2), new Point(1,3));*/
 
 		SwingUtilities.invokeLater(new Fenetre(j));

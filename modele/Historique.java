@@ -26,6 +26,10 @@ public class Historique{
         }
     }
 
+    public int getTaille(){
+        return this.taille;
+    }
+
     // Reviens en arrière de un coup.
     public Coup annuler(){
         System.out.println(historique);
