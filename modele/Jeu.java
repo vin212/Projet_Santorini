@@ -1,6 +1,9 @@
 package modele;
 
 import structure.*;
+import java.util.ArrayList;
+import global.*;
+import java.lang.Math.*;
 
 public class Jeu{
 	Plateau p;
@@ -9,6 +12,31 @@ public class Jeu{
 	int joueurEnJeu;
 	public Historique historique;
 
+	boolean aideActiver;
+	Configuration prop;
+
+	float hashCode;
+
+
+	public Jeu (Configuration prop){
+		this.p = new Plateau (5,5);
+
+		this.prop = prop;
+		historique = new Historique();
+		System.out.println("Init plateau : " + this.p);
+		this.t = 0;
+		this.joueurs = new Joueur [2];
+		this.joueurEnJeu = 1;
+		this.aideActiver = Boolean.valueOf(prop.recupValeur("aide")).booleanValue();
+		this.hashCode = 0;
+		if (joueurs != null)
+		{
+			for (int i = 0; i < 2 ; i++)
+			{
+				this.joueurs[i] = new Joueur();
+			}
+		}
+	}
 
 	public Jeu (){
 		this.p = new Plateau (5,5);
@@ -18,6 +46,7 @@ public class Jeu{
 		this.t = 0;
 		this.joueurs = new Joueur [2];
 		this.joueurEnJeu = 1;
+		this.aideActiver = true;
 		if (joueurs != null)
 		{
 			for (int i = 0; i < 2 ; i++)
@@ -31,6 +60,14 @@ public class Jeu{
 		return p.getHauteur();
 	}
 
+	public void setJoueur(int num, Joueur j){
+		this.joueurs[num] = j;
+	}
+
+	public void setHisto(Historique h){
+		this.historique = h;
+	}
+
 	public int getLargeurPlateau(){
 		return p.getLargeur();
 	}
@@ -41,10 +78,17 @@ public class Jeu{
 	}
 
 	public int Construire(Point posi){
+		int x = posi.getx();
+		int y = posi.gety();
+		hashCode += Math.pow(5,x+5*y);
+		//retourHashCode(hashCode);
 		return p.Construire(posi);
 	}
 
 	public int detruireEtage(Point posi){
+		int x = posi.getx();
+		int y = posi.gety();
+		hashCode -= Math.pow(5,x+5*y);
 		return p.detruireEtage(posi);
 	}
 
@@ -62,6 +106,10 @@ public class Jeu{
 
 	public int getTour(){
 		return t;
+	}
+
+	public void setTour(int t){
+		this.t = t;
 	}
 
 	public void addTour(){
@@ -87,10 +135,18 @@ public class Jeu{
 		return historique.positionnement();
 	}
 
+
+	public Historique histo(){
+		return this.historique;
+	}
+
+	public Coup histoDernierCoup()throws IndexOutOfBoundsException{
+		return historique.obtenirCoup(historique.positionnement()-1);
+	}
+
 	public boolean peutPoserUnPerso(Point posi_init,Point posi_final){
 		return this.p.peutPoserUnPerso(posi_init,posi_final);
 	}
-
 
 	public int enleverPerso (Point posi)
 	{
@@ -134,10 +190,53 @@ public class Jeu{
 
 	public int deplacerPersonnage (Point posi_init, Point posi_final){
 		int retour;
+		int x0;
+		int y0;
+		int x1;
+		int y1;
+		int decalage;
 		if (joueurs != null){	
 			retour = this.joueurs[0].deplacerPerso(posi_init,posi_final);
 			retour = this.joueurs[1].deplacerPerso(posi_init,posi_final) + retour;
 			retour = p.deplacerPersonnage(posi_init,posi_final) + retour;
+
+			Point posi [] = getPosiPions(joueurEnJeu);
+			if (this.joueurEnJeu == 1)
+			{
+				decalage = 26;
+			}
+			else
+			{
+				decalage = 30;
+			}
+
+
+			if (posi[0].CompareTo(posi[1]) == -1)
+			{
+				x0 = posi[0].getx();
+				y0 = posi[0].gety();
+				x1 = posi[1].getx();
+				y1 = posi[1].gety();
+
+			}
+			else
+			{
+				x1 = posi[0].getx();
+				y1 = posi[0].gety();
+				x0 = posi[1].getx();
+				y0 = posi[1].gety();
+			}
+
+			/*float val1 = hashCode / (float) Math.pow(5,decalage);
+			float val3 = val1 / (float)Math.pow(5,4);
+
+			float val2 = val1 - val3 * (float)Math.pow(5,4);
+			float res = hashCode - val2 * (float)Math.pow(5,decalage);
+
+			hashCode = res + (x0 + y0*5 + x1 * 25 + y1 * 125)*(float)Math.pow(5,decalage);*/
+
+			//retourHashCode(hashCode);
+
 		} else {
 			retour = -1;
 		}
@@ -266,5 +365,105 @@ public class Jeu{
 	public String toString(){
 		return ("Au joueur " + joueurEnJeu + " de jouer sur le plateau :\n" + p);
 	}
+
+	public boolean aideEstActiver ()
+	{
+		return aideActiver;
+	}
+
+	public ArrayList<Point> getVoisin(Point p, Verificateur v){
+        int x = p.getx(), y = p.gety();
+        int xmax = getLargeurPlateau();
+        int ymax = getHauteurPlateau();
+        ArrayList<Point> voisins = new ArrayList<Point>(0); 
+        if (0 < x){
+            if (v.verifie(p, new Point(x-1, y)))
+                voisins.add(new Point(x-1, y));
+        }
+        if (0 < y){
+            if (v.verifie(p, new Point(x, y-1)))
+                voisins.add(new Point(x, y-1));
+        }
+        if (x < xmax){
+            if (v.verifie(p, new Point(x+1, y)))
+                voisins.add(new Point(x+1, y));
+        }
+        if (y < ymax){
+            if (v.verifie(p, new Point(x, y+1)))
+                voisins.add(new Point(x, y+1));
+        }
+        if (0 < x && 0 < y){
+            if (v.verifie(p, new Point(x-1, y-1)))
+                voisins.add(new Point(x-1, y-1));
+        }
+        if (x < xmax && y < ymax){
+            if (v.verifie(p, new Point(x+1, y+1)))
+                voisins.add(new Point(x+1, y+1));
+        }
+        if (x < xmax && 0 < y){
+            if (v.verifie(p, new Point(x+1, y-1)))
+                voisins.add(new Point(x+1, y-1));
+        }
+        if (0 < x && y < ymax){
+            if (v.verifie(p, new Point(x-1, y+1)))
+                voisins.add(new Point(x-1, y+1));
+        }
+        return voisins;
+    }
+
+    public void retourHashCode(float hashbis){
+		float reste;
+		float hash = hashbis;
+		float val;
+		float quotient;
+		for (int i = 0; i<5;i++){
+			for (int j = 0; j<5;j++){
+				reste = hash %5;
+				System.out.print("   " + reste);
+
+				hash = (hash - reste)/5;
+			}
+			System.out.println("");
+		}
+
+		for (int j = 1; j<9;j++){
+				reste = hash %5;
+				System.out.print("   " + reste);
+
+				hash = (hash - reste)/5;
+				if (j%4 == 0)
+				{
+					System.out.println("");
+				}
+			}
+
+		/*System.out.println("Les pions du joueur 1 sont : ");
+		reste = hash / 5;
+		hash = new Float (reste.intValue());
+		System.out.print(" (" + (reste-hash)*5 + ",");
+		reste = hash / 5;
+		hash = new Float (reste.intValue());
+		System.out.print("" + (reste-hash)*5 + ") et");
+		reste = hash / 5;
+		hash = new Float (reste.intValue());
+		System.out.print(" (" + (reste-hash)*5 + ",");
+		reste = hash / 5;
+		hash = new Float (reste.intValue());
+		System.out.println("" + (reste-hash)*5 + ")");
+		System.out.print("Les pions du joueur 2 sont :");
+		reste = hash / 5;
+		hash = new Float (reste.intValue());
+		System.out.print(" (" + (reste-hash)*5 + ",");
+		reste = hash / 5;
+		hash = new Float (reste.intValue());
+		System.out.print("" + (reste-hash)*5 + ") et");
+		reste = hash / 5;
+		hash = new Float (reste.intValue());
+		System.out.print(" (" + (reste-hash)*5 + ",");
+		reste = hash / 5;
+		hash = new Float (reste.intValue());
+		System.out.println("" + (reste-hash)*5 + ")");*/
+}
+
 
 }
