@@ -28,6 +28,7 @@ public class TestActionUser {
 
         // select and move person
         actionUser.selectionnerPerso(new Point(2,1));
+
         actionUser.avancerPerso(new Point(1,2),true,false);
 
         // test new position
@@ -39,20 +40,29 @@ public class TestActionUser {
         // check if construct worked
         Assertions.assertEquals(1,jeu.getNbEtage(new Point(2,2)));
 
-        // deplacer perso
-        actionUser.selectionnerPerso(new Point(4,4));
-        actionUser.avancerPerso(new Point(5,4),true,false);
+        // check position
+        Assertions.assertEquals(0, actionUser.recupPosiPerso().CompareTo(new Point(1,2)));
+    }
 
-        // annuler coup
-        actionUser.annulerCoup();
+    @Test
+    public void testDeplacer() {
+        jeu.poserPersonnage(new Point(1,1),1);
+        jeu.poserPersonnage(new Point(2,1),1);
 
-        // check positions after annuler coup
-        Assertions.assertEquals(-1, jeu.quiEstIci(new Point(5,4)));
-        Assertions.assertEquals(2, jeu.quiEstIci(new Point(4,4)));
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,4),2);
 
-        // test deplacer
-        actionUser.deplacer(new Point(2,1), true);
+        // test before selectionner perso
+        actionUser.deplacer(new Point(2,2),true);
 
-        Assertions.assertEquals(1,jeu.quiEstIci(new Point(2,1)));
+        Assertions.assertEquals(0,jeu.quiEstIci(new Point(2,2)));
+
+        // select and move person
+        actionUser.selectionnerPerso(new Point(2,1));
+        actionUser.deplacer(new Point(2,2),true);
+
+        Assertions.assertEquals(1,jeu.quiEstIci(new Point(2,2)));
+
+
     }
 }

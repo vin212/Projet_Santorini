@@ -26,14 +26,15 @@ public class TestIAAletoire {
     public void setup() {
         // initialize l'IA
         jeu = new Jeu();
-        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire");
         ve = new VerificateurEtage(jeu);
         vp = new VerificateurPion(jeu);
     }
 
     @ParameterizedTest
     @MethodSource("pointPersonnage")
-    public void testIA(Point firstPoint, Point secondPoint) {
+    public void testIA(Point firstPoint, Point secondPoint, String iaType) {
+        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", iaType);
+
         // simulate le jeu
         iaa.activeIA();
 
@@ -66,6 +67,8 @@ public class TestIAAletoire {
 
     @Test
     public void testAvecPointsEnormes() {
+        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", "IA Normal");
+
         iaa.activeIA();
 
         jeu.poserPersonnage(new Point(5,5),1);
@@ -79,6 +82,8 @@ public class TestIAAletoire {
 
     @Test
     public void testAvecPointsNegatives() {
+        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", "IA Normal");
+
         iaa.activeIA();
 
         jeu.poserPersonnage(new Point(-1,-1),1);
@@ -92,17 +97,17 @@ public class TestIAAletoire {
 
     private static List<Arguments> pointPersonnage() {
         return Arrays.asList(
-                Arguments.of(new Point(0,0), new Point(5,5)),
-                Arguments.of(new Point(1,0), new Point(2,3)),
-                Arguments.of(new Point(1,1), new Point(2,4)),
-                Arguments.of(new Point(1,2), new Point(4,3)),
-                Arguments.of(new Point(4,2), new Point(2,1)),
-                Arguments.of(new Point(2,3), new Point(4,4)),
-                Arguments.of(new Point(1,1), new Point(0,0)),
-                Arguments.of(new Point(2,2), new Point(3,2)),
-                Arguments.of(new Point(3,3), new Point(3,1)),
-                Arguments.of(new Point(4,4), new Point(2,4)),
-                Arguments.of(new Point(0,0), new Point(4,4)));
+                Arguments.of(new Point(0,0), new Point(5,5), "IA Facile"),
+                Arguments.of(new Point(1,0), new Point(2,3), "IA Normal"),
+                Arguments.of(new Point(1,1), new Point(2,4), "IA Difficile"),
+                Arguments.of(new Point(1,2), new Point(4,3), "IA Facile"),
+                Arguments.of(new Point(4,2), new Point(2,1), "IA Difficile"),
+                Arguments.of(new Point(2,3), new Point(4,4), "IA Difficile"),
+                Arguments.of(new Point(1,1), new Point(0,0), "IA Normal"),
+                Arguments.of(new Point(2,2), new Point(3,2), "IA Facile"),
+                Arguments.of(new Point(3,3), new Point(3,1), "IA Difficile"),
+                Arguments.of(new Point(4,4), new Point(2,4), "IA Normal"),
+                Arguments.of(new Point(0,0), new Point(4,4), "IA Difficile"));
     }
 
 }

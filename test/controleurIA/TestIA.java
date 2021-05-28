@@ -15,7 +15,7 @@ public class TestIA extends IA{
     @BeforeEach
     public void setup() {
         j = new Jeu();
-        ia = IA.nouvelle(j,"controleurIA.IAAleatoire");
+        ia = IA.nouvelle(j,"controleurIA.IAAleatoire", "IA Facile");
         ia.activeIA();
     }
 
