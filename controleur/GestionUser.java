@@ -3,9 +3,12 @@ package controleur;
 
 import controleurIA.*;
 import javax.swing.*;
+import java.awt.Color;
 
 import modele.*;
 import interfaceUser.*;
+import java.util.concurrent.TimeUnit;
+import global.*;
 
 public class GestionUser
 {
@@ -19,10 +22,13 @@ public class GestionUser
 
 	PlateauInterface_2 aire1;
 
-	JLabel leJoueur;
+	JPanel leJoueur;
 	JLabel gagnant;
+	JLabel labelAction;
 
-	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1, JLabel leJoueur, JLabel gagnant)
+	Configuration prop;
+
+	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1, JPanel leJoueur,JLabel labelAction)
 	{
 		this.j = j;
 		this.commencer = false;
@@ -34,6 +40,8 @@ public class GestionUser
 
 		this.leJoueur = leJoueur;
 		this.gagnant = gagnant;
+
+		this.labelAction = labelAction;
 
 	}
 
@@ -47,7 +55,7 @@ public class GestionUser
 		int quiGagne = j.quiGagnant() ;
 		if (j != null && quiGagne == 0)
 		{
-            if (ia1 == null || (numJoueur == 1 && ia1.estActive()) )
+            if ((ia1 == null && ia2 == null) || (ia1 != null && numJoueur == 1 && ia2 == null && ia1.estActive()) || (ia2 != null && numJoueur == 2  && ia1 == null && ia2.estActive())) 
 			{
 				iaJoue = false;
 				for (int i = 1; i < 3; i++ )
@@ -93,27 +101,50 @@ public class GestionUser
 				action = j.getAction(numJoueur);
 				
 			}
-			else if  (numJoueur == 2 && ia1 != null && ia1.estActive())	
+			else if  (numJoueur == 2 && ia1 != null && ia1.estActive()) 
 			{
-                            System.out.println("je suis ici");
 				iaJoue = true;
-				JouerIA ();
+				JouerIA (1);
 			}
+			else if (numJoueur == 1 && ia2 != null && ia2.estActive())	
+			{
+				iaJoue = true;
+				JouerIA (2);
+			}
+
 			action = j.getAction(numJoueur);
-			leJoueur.setText("Au joueur : " + numJoueur + " de " + action);
-                        //System.out.println("valeur ia : " + ia1 + "\n");
+			if (numJoueur == 1)
+			{
+				leJoueur.setBackground(new Color(0,110,255));
+			}
+			else
+			{
+				leJoueur.setBackground(new Color(255,0,0));
+			}
+
+			labelAction.setText(action.toString());
 		}
 		else
 		{
-			numJoueur = j.getJoueurEnJeu();
-			leJoueur.setText("Le Joueur " + quiGagne + " a gagné ! ");
+			//numJoueur = j.getJoueurEnJeu();
+			if (quiGagne == 1)
+			{
+				leJoueur.setBackground(new Color(0,110,255));
+			}
+			else
+			{
+				leJoueur.setBackground(new Color(255,0,0));
+			}
+
+			labelAction.setText("Gagné !!");
+			//leJoueur.setText("Le Joueur " + quiGagne + " a gagné ! ");
 
 		}
 		
 		aire1.repaint();
 	}
 
-	private void JouerIA()
+	private void JouerIA(int numIA)
 	{
 
 		Coup coupIA;
@@ -122,32 +153,66 @@ public class GestionUser
 
 		ActionUser a;
 
+		IA iaLocal;
+
+		try
+		{
+			TimeUnit.SECONDS.sleep(1);
+		}
+		catch (Exception exept)
+		{
+
+		}
+
+		if (numIA ==1 )
+		{
+			iaLocal = ia1;
+		}
+		else
+		{
+			iaLocal = ia2;
+		}
+
 		a = new ActionUser (j);
 
 		if (j.getTour() <= 1 && (j.getAction(numJoueur) == modele.Action.AFK ||j.getAction(numJoueur) == modele.Action.PREMIER_PLACEMENT))
 		{
 			j.setAction (numJoueur,modele.Action.PREMIER_PLACEMENT);
-			coupIA = ia1.debuterPartie();
+			coupIA = iaLocal.debuterPartie();
 			a.jouerAction (coupIA.getDepart());
-			coupIA = ia1.debuterPartie();
+			coupIA = iaLocal.debuterPartie();
 			a.jouerAction (coupIA.getDepart());
 			j.addTour();
 			numJoueur = j.getJoueurEnJeu();
-			j.setAction (numJoueur,modele.Action.A_DEPLACER);
+			if (j.getTour() > 1)
+			{
+				j.setAction (numJoueur,modele.Action.A_DEPLACER);
+			}
+			else
+			{	
+				j.setAction (numJoueur,modele.Action.PREMIER_PLACEMENT);
+			}
 		}
         else if (j.getTour() <= 1 && modele.Action.DEUXIEME_PLACEMENT == j.getAction(numJoueur))
         {
             j.setAction (numJoueur,modele.Action.DEUXIEME_PLACEMENT);
-			coupIA = ia1.debuterPartie();
+			coupIA = iaLocal.debuterPartie();
 			a.jouerAction (coupIA.getDepart());
 			j.addTour();
 			numJoueur = j.getJoueurEnJeu();
-			j.setAction (numJoueur,modele.Action.A_DEPLACER);
+			if (j.getTour() > 1)
+			{
+				j.setAction (numJoueur,modele.Action.A_DEPLACER);
+			}
+			else
+			{	
+				j.setAction (numJoueur,modele.Action.PREMIER_PLACEMENT);
+			}
         }
 		else 
 		{
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
-			coupIA = ia1.joue();
+			coupIA = iaLocal.joue();
 			a.jouerAction(coupIA.getDepart());
 			a.jouerAction(coupIA.getArrive());
 			a.jouerAction(coupIA.getConstruction());

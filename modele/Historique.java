@@ -26,6 +26,10 @@ public class Historique{
         }
     }
 
+    public int getTaille(){
+        return this.taille;
+    }
+
     // Reviens en arrière de un coup.
     public Coup annuler(){
         System.out.println(historique);
@@ -63,6 +67,10 @@ public class Historique{
     // Retourne la position dans l'historique.
     public int positionnement(){
         return position;
+    }
+
+    public ArrayList getHisto(){
+        return this.historique;
     }
 
     // Vérifie l'existence d'un coup.
