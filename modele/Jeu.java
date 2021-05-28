@@ -1,6 +1,8 @@
 package modele;
 
 import structure.*;
+import java.lang.Math;
+import java.math.BigInteger;
 
 public class Jeu{
 	Plateau p;
@@ -8,16 +10,19 @@ public class Jeu{
 	Joueur []joueurs;
 	int joueurEnJeu;
 	public Historique historique;
+	public BigInteger hashCode;
+	//TODO hash code à partir d'une base 5 (5^33 au max)
 
 
 	public Jeu (){
 		this.p = new Plateau (5,5);
 
 		historique = new Historique();
-		System.out.println("Init plateau : " + this.p);
+		//System.out.println("Init plateau : " + this.p);
 		this.t = 0;
 		this.joueurs = new Joueur [2];
 		this.joueurEnJeu = 1;
+		this.hashCode = BigInteger.valueOf((long) 0);
 		if (joueurs != null)
 		{
 			for (int i = 0; i < 2 ; i++)
@@ -36,15 +41,23 @@ public class Jeu{
 	}
 
 	public void AfficherPlateau(){
-		System.out.println("Afficher plateau : " + this.p);
+		//System.out.println("Afficher plateau : " + this.p);
 		this.p.afficher_CMD();
 	}
 
 	public int Construire(Point posi){
+		int x = posi.getx();
+		int y = posi.gety();
+		hashCode = hashCode.add( BigInteger.valueOf( (long) Math.pow(5,x+5*y)) );
+		//retourHashCode(hashCode);
 		return p.Construire(posi);
 	}
 
 	public int detruireEtage(Point posi){
+		int x = posi.getx();
+		int y = posi.gety();
+		hashCode = hashCode.subtract( BigInteger.valueOf( (long) Math.pow(5,x+5*y)) );
+		//retourHashCode(hashCode);
 		return p.detruireEtage(posi);
 	}
 
@@ -74,12 +87,12 @@ public class Jeu{
 	}
 
 	public Coup histoAnnulerCoup() throws IndexOutOfBoundsException{
-		System.out.println("historique : "+historique);
+		//System.out.println("historique : "+historique);
 		return historique.annuler();
 	}
 
 	public Coup histoRetablir() throws IndexOutOfBoundsException{
-		System.out.println("historique : "+historique);
+		//System.out.println("historique : "+historique);
 		return historique.retablir();
 	}
 
@@ -134,10 +147,36 @@ public class Jeu{
 
 	public int deplacerPersonnage (Point posi_init, Point posi_final){
 		int retour;
+		int x0, y0, x1, y1;
+		BigInteger decalage;
 		if (joueurs != null){	
 			retour = this.joueurs[0].deplacerPerso(posi_init,posi_final);
 			retour = this.joueurs[1].deplacerPerso(posi_init,posi_final) + retour;
 			retour = p.deplacerPersonnage(posi_init,posi_final) + retour;
+
+			Point posi [] = getPosiPions(joueurEnJeu);
+			if (this.joueurEnJeu == 1)
+				decalage = BigInteger.valueOf((long) 5).pow(25);
+			else
+				decalage = BigInteger.valueOf((long) 5).pow(29);
+
+			if (posi[0].CompareTo(posi[1]) == -1){
+				x0 = posi[0].getx();
+				y0 = posi[0].gety();
+				x1 = posi[1].getx();
+				y1 = posi[1].gety();
+			} else {
+				x1 = posi[0].getx();
+				y1 = posi[0].gety();
+				x0 = posi[1].getx();
+				y0 = posi[1].gety();
+			}
+
+			BigInteger intermediaire = hashCode.divide(decalage);
+			BigInteger val [] = intermediaire.divideAndRemainder(BigInteger.valueOf((long) Math.pow(5, 4)));
+			hashCode = hashCode.subtract(val[1].multiply(decalage));
+
+			hashCode = hashCode.add(decalage.multiply(BigInteger.valueOf((long) x0 + y0*5 + x1 * 25 + y1 * 125)));
 		} else {
 			retour = -1;
 		}
@@ -266,5 +305,28 @@ public class Jeu{
 	public String toString(){
 		return ("Au joueur " + joueurEnJeu + " de jouer sur le plateau :\n" + p);
 	}
+
+	public BigInteger gethashCode(){
+		return hashCode;
+	}
+	
+    public void retourHashCode(BigInteger hashbis){
+		BigInteger val[] = hashbis.divideAndRemainder(BigInteger.valueOf((long) 1));
+		for (int i = 0; i<5;i++){
+			for (int j = 0; j<5;j++){
+				val = val[0].divideAndRemainder(BigInteger.valueOf((long) 5));
+				System.out.print("   " + val[1]);
+			}
+			System.out.println("");
+		}
+		
+		for (int j = 1; j<9;j++){
+			val = val[0].divideAndRemainder(BigInteger.valueOf((long) 5));
+			System.out.print("   " + val[1]);
+			if (j%4 == 0){
+				System.out.println("");
+			}
+		}
+}
 
 }
