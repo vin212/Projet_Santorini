@@ -9,6 +9,7 @@ public class VerificateurEscalier implements Verificateur {
         j = jeu;
     }
 
+
     // Retourne la constructabilité de p1 si p1 est à la même auteur que p2.
     public boolean verifie(Point p1, Point p2){
         return (j.Constructible(p2) &&

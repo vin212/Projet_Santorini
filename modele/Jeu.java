@@ -1,8 +1,12 @@
 package modele;
 
 import structure.*;
+
 import java.lang.Math;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import global.*;
+
 
 public class Jeu{
 	Plateau p;
@@ -13,6 +17,31 @@ public class Jeu{
 	public BigInteger hashCode;
 	//TODO hash code à partir d'une base 5 (5^33 au max)
 
+	boolean aideActiver;
+	Configuration prop;
+
+	float hashCode;
+
+
+	public Jeu (Configuration prop){
+		this.p = new Plateau (5,5);
+
+		this.prop = prop;
+		historique = new Historique();
+		System.out.println("Init plateau : " + this.p);
+		this.t = 0;
+		this.joueurs = new Joueur [2];
+		this.joueurEnJeu = 1;
+		this.aideActiver = Boolean.valueOf(prop.recupValeur("aide")).booleanValue();
+		this.hashCode = 0;
+		if (joueurs != null)
+		{
+			for (int i = 0; i < 2 ; i++)
+			{
+				this.joueurs[i] = new Joueur();
+			}
+		}
+	}
 
 	public Jeu (){
 		this.p = new Plateau (5,5);
@@ -23,6 +52,7 @@ public class Jeu{
 		this.joueurs = new Joueur [2];
 		this.joueurEnJeu = 1;
 		this.hashCode = BigInteger.valueOf((long) 0);
+		this.aideActiver = true;
 		if (joueurs != null)
 		{
 			for (int i = 0; i < 2 ; i++)
@@ -34,6 +64,14 @@ public class Jeu{
 
 	public int getHauteurPlateau(){
 		return p.getHauteur();
+	}
+
+	public void setJoueur(int num, Joueur j){
+		this.joueurs[num] = j;
+	}
+
+	public void setHisto(Historique h){
+		this.historique = h;
 	}
 
 	public int getLargeurPlateau(){
@@ -56,6 +94,7 @@ public class Jeu{
 	public int detruireEtage(Point posi){
 		int x = posi.getx();
 		int y = posi.gety();
+
 		hashCode = hashCode.subtract( BigInteger.valueOf( (long) Math.pow(5,x+5*y)) );
 		//retourHashCode(hashCode);
 		return p.detruireEtage(posi);
@@ -75,6 +114,10 @@ public class Jeu{
 
 	public int getTour(){
 		return t;
+	}
+
+	public void setTour(int t){
+		this.t = t;
 	}
 
 	public void addTour(){
@@ -100,10 +143,18 @@ public class Jeu{
 		return historique.positionnement();
 	}
 
+
+	public Historique histo(){
+		return this.historique;
+	}
+
+	public Coup histoDernierCoup()throws IndexOutOfBoundsException{
+		return historique.obtenirCoup(historique.positionnement()-1);
+	}
+
 	public boolean peutPoserUnPerso(Point posi_init,Point posi_final){
 		return this.p.peutPoserUnPerso(posi_init,posi_final);
 	}
-
 
 	public int enleverPerso (Point posi)
 	{
@@ -149,6 +200,7 @@ public class Jeu{
 		int retour;
 		int x0, y0, x1, y1;
 		BigInteger decalage;
+
 		if (joueurs != null){	
 			retour = this.joueurs[0].deplacerPerso(posi_init,posi_final);
 			retour = this.joueurs[1].deplacerPerso(posi_init,posi_final) + retour;
@@ -156,6 +208,7 @@ public class Jeu{
 
 			Point posi [] = getPosiPions(joueurEnJeu);
 			if (this.joueurEnJeu == 1)
+
 				decalage = BigInteger.valueOf((long) 5).pow(25);
 			else
 				decalage = BigInteger.valueOf((long) 5).pow(29);
@@ -165,7 +218,9 @@ public class Jeu{
 				y0 = posi[0].gety();
 				x1 = posi[1].getx();
 				y1 = posi[1].gety();
+
 			} else {
+
 				x1 = posi[0].getx();
 				y1 = posi[0].gety();
 				x0 = posi[1].getx();
@@ -177,6 +232,7 @@ public class Jeu{
 			hashCode = hashCode.subtract(val[1].multiply(decalage));
 
 			hashCode = hashCode.add(decalage.multiply(BigInteger.valueOf((long) x0 + y0*5 + x1 * 25 + y1 * 125)));
+
 		} else {
 			retour = -1;
 		}
@@ -329,4 +385,51 @@ public class Jeu{
 		}
 }
 
+
+	public boolean aideEstActiver ()
+	{
+		return aideActiver;
+	}
+
+	public ArrayList<Point> getVoisin(Point p, Verificateur v){
+        int x = p.getx(), y = p.gety();
+        int xmax = getLargeurPlateau();
+        int ymax = getHauteurPlateau();
+        ArrayList<Point> voisins = new ArrayList<Point>(0); 
+        if (0 < x){
+            if (v.verifie(p, new Point(x-1, y)))
+                voisins.add(new Point(x-1, y));
+        }
+        if (0 < y){
+            if (v.verifie(p, new Point(x, y-1)))
+                voisins.add(new Point(x, y-1));
+        }
+        if (x < xmax){
+            if (v.verifie(p, new Point(x+1, y)))
+                voisins.add(new Point(x+1, y));
+        }
+        if (y < ymax){
+            if (v.verifie(p, new Point(x, y+1)))
+                voisins.add(new Point(x, y+1));
+        }
+        if (0 < x && 0 < y){
+            if (v.verifie(p, new Point(x-1, y-1)))
+                voisins.add(new Point(x-1, y-1));
+        }
+        if (x < xmax && y < ymax){
+            if (v.verifie(p, new Point(x+1, y+1)))
+                voisins.add(new Point(x+1, y+1));
+        }
+        if (x < xmax && 0 < y){
+            if (v.verifie(p, new Point(x+1, y-1)))
+                voisins.add(new Point(x+1, y-1));
+        }
+        if (0 < x && y < ymax){
+            if (v.verifie(p, new Point(x-1, y+1)))
+                voisins.add(new Point(x-1, y+1));
+        }
+        return voisins;
+    }
+
+   
 }
