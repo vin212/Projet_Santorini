@@ -20,8 +20,6 @@ public class Jeu{
 	boolean aideActiver;
 	Configuration prop;
 
-	float hashCode;
-
 
 	public Jeu (Configuration prop){
 		this.p = new Plateau (5,5);
@@ -33,7 +31,7 @@ public class Jeu{
 		this.joueurs = new Joueur [2];
 		this.joueurEnJeu = 1;
 		this.aideActiver = Boolean.valueOf(prop.recupValeur("aide")).booleanValue();
-		this.hashCode = 0;
+		this.hashCode = BigInteger.valueOf((long) 0);
 		if (joueurs != null)
 		{
 			for (int i = 0; i < 2 ; i++)

@@ -56,6 +56,7 @@ public class Save {
             //Ecriture de la pos des joueurs
             for (int i = 1; i <= 2; i++){
                 Point[] pts = jeu.getPosiPions(i);
+                System.out.println("pts : " + pts + "writer : "+ writer);
                 writer.write(pts[0].getx()+ " "+ pts[0].gety()+"  ");
                 writer.write(pts[1].getx()+ " "+ pts[1].gety());
                 writer.write("\n");
