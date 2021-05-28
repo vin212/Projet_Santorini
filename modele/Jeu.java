@@ -18,7 +18,7 @@ public class Jeu{
 		this.p = new Plateau (5,5);
 
 		historique = new Historique();
-		//System.out.println("Init plateau : " + this.p);
+		System.out.println("Init plateau : " + this.p);
 		this.t = 0;
 		this.joueurs = new Joueur [2];
 		this.joueurEnJeu = 1;
@@ -41,7 +41,7 @@ public class Jeu{
 	}
 
 	public void AfficherPlateau(){
-		//System.out.println("Afficher plateau : " + this.p);
+		System.out.println("Afficher plateau : " + this.p);
 		this.p.afficher_CMD();
 	}
 
@@ -87,12 +87,12 @@ public class Jeu{
 	}
 
 	public Coup histoAnnulerCoup() throws IndexOutOfBoundsException{
-		//System.out.println("historique : "+historique);
+		System.out.println("historique : "+historique);
 		return historique.annuler();
 	}
 
 	public Coup histoRetablir() throws IndexOutOfBoundsException{
-		//System.out.println("historique : "+historique);
+		System.out.println("historique : "+historique);
 		return historique.retablir();
 	}
 
@@ -306,7 +306,7 @@ public class Jeu{
 		return ("Au joueur " + joueurEnJeu + " de jouer sur le plateau :\n" + p);
 	}
 
-	public BigInteger gethashCode(){
+	public BigInteger getHashCode(){
 		return hashCode;
 	}
 	
