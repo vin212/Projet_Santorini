@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.lang.Math;
+import java.math.BigInteger;
 
 //import controleur.ActionUser;
 import modele.Jeu;
@@ -15,10 +17,11 @@ import structure.*;
 public class IAMinMax extends IA {
     Random r;
     int horizonMax;
+    Hashtable<BigInteger, Integer> table;
     
     public IAMinMax(){
         r = new Random((long) 0);
-        horizonMax = 3;
+        horizonMax = 2;
     }
 
     @Override
@@ -46,6 +49,7 @@ public class IAMinMax extends IA {
     @Override
     public Coup joue(){
 //        ActionUser control = new ActionUser(this.j);
+        table = new Hashtable<BigInteger, Integer>();
         ArrayList<Coup> successeur = successeur(j);
         ListGagnant gagnant = new ListGagnant();
         Iterator<Coup> I = successeur.iterator();
@@ -75,16 +79,18 @@ public class IAMinMax extends IA {
     private int calcul(Jeu j, int horizon, int maximum){
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
-        // int chiffrage = table.get(j.hashCode());
-        int chiffrage = (int) ((int)Integer.MAX_VALUE * Math.pow(-1, horizonMax - horizon)); // -1^ (horizonMax - hori)
+        Integer chiffrage = table.get(j.getHashCode());
+        //int chiffrage = (int) ((int)Integer.MAX_VALUE * Math.pow(-1, horizonMax - horizon)); // -1^ (horizonMax - hori)
         // Max value pour moi, et min value pour l'adversaire
         Coup c;
         
-        /*if (chiffrage != null) {
-            return table.get(j.hashcode())
-        }else */if (j.estGagnant() || horizon == 0){
+        if (chiffrage != null) {
+            return chiffrage;
+        } else if (j.estGagnant() || horizon == 0){
             return -chiffrage(j);
-        //} else { (int) ((int)Integer.MAX_VALUE * Math.pow(-1, horizonMax - horizon));
+        } else { 
+            chiffrage = (int) ((int)Integer.MAX_VALUE * Math.pow(-1, horizonMax - horizon));
+            chiffrage = Integer.MIN_VALUE;
         // Max value pour moi, et min value pour l'adversaire
         }
 
@@ -92,10 +98,10 @@ public class IAMinMax extends IA {
             c = I.next();
             tour(c);
             chiffrage = Math.max(chiffrage, calcul(j, horizon -1, chiffrage));
-            //table.put(j.hashCode(), chiffrage);
+            table.put(j.getHashCode(), chiffrage);
             annulerCoup();
         }
-        return chiffrage * -1;
+        return -chiffrage / 2;
     }
 
     // Max
@@ -122,7 +128,6 @@ public class IAMinMax extends IA {
             annulerCoup();
         }
         return chiffrage/2;
-
     }
 
     // Min
@@ -214,7 +219,7 @@ public class IAMinMax extends IA {
             System.err.println("Je l'ai vu");
             return Integer.MAX_VALUE;
         } else if (j.getNbEtage(p1[0]) == 3 || j.getNbEtage(p1[1]) == 3) {
-            System.err.println("Je vois " + (j.getJoueurEnJeu() %2 + 1) +" gagner");
+            //System.err.println("Je vois " + (j.getJoueurEnJeu() %2 + 1) +" gagner");
             return -Integer.MAX_VALUE;
         }
 
@@ -226,13 +231,13 @@ public class IAMinMax extends IA {
 
     private void tour(Coup c){
         j.histoAjouterCoup(c);
-        j.addTour();
         if (c.estDeplacement()){
             j.deplacerPersonnage(c.getDepart(), c.getArrive());
             j.Construire(c.getConstruction());
         } else {
             j.poserPersonnage(c.getDepart(), c.getJoueur());
         }
+        j.addTour();
     }
 
     private void annulerCoup(){
@@ -289,6 +294,7 @@ class ListGagnant {
             gagnant.add(c);
         }
     }
+
     public Coup extraire(){
         Random r = new Random((long) 0);
         return gagnant.get(r.nextInt(gagnant.size()));
