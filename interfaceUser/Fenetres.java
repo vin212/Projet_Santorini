@@ -11,6 +11,7 @@ import controleur.*;
 import controleurIA.*;
 import global.*;
 import javax.swing.border.Border;
+import java.awt.event.KeyEvent;
 
 
 /*public enum EnumFenetre {
@@ -112,6 +113,10 @@ public class Fenetres {
 				afficherNouvellePartie ();
 				frame.repaint();
 			break;
+			case OPTION :
+				afficherOption ();
+				frame.repaint();
+			break;
 			case AUTRE :	
 			    //Toolkit.getDefaultToolkit().getScreenSize();
     			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
@@ -129,6 +134,7 @@ public class Fenetres {
 				frame.repaint();
 		}
 	}
+
 
 	public void afficherFenetre1 ()
 	{
@@ -217,11 +223,13 @@ public class Fenetres {
 		JButton boutonRetourJeu = new JButton ("Retour au Jeu");
 		JButton boutonSauvegarde = new JButton ("Sauvegarder");
 		JButton boutonRecommencer = new JButton ("Recommencer");
+		JButton boutonOption = new JButton ("Option");
 		JButton boutonMenu = new JButton ("Retour Menu (sans sauvegarde)");
 
 		boutonRetourJeu.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR_JEU,this,prop));
 		boutonSauvegarde.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.SAUVEGARDER,this,prop));
 		boutonRecommencer.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RECOMMENCER,this, prop));
+		boutonOption.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.OPTION,this, prop));
 		boutonMenu.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR_MENU,this,prop));
 
 		JPanel container = new JPanel();
@@ -245,6 +253,10 @@ public class Fenetres {
 
 		gbc.gridx = 0;
 		gbc.gridy = 150;
+		container.add(boutonOption,gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 200;
 		container.add(boutonMenu,gbc);
 
 		frame.add(container);
@@ -258,12 +270,15 @@ public class Fenetres {
 	{
 		frame.getContentPane().removeAll(); 
 		JButton boutonNouvellePartie = new JButton ("Nouvelle Partie");
-		//JButton boutonSansIA = new JButton ("Jouer Sans IA");
 		JButton boutonCharger = new JButton ("Charger");
+		JButton boutonOption = new JButton ("Option");
+		JButton boutonQuitter = new JButton ("Quitter");
 
 		boutonNouvellePartie.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.NOUVELLE_PARTIE,this,prop));
-		//boutonSansIAboutonCharger.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.SANS_IA,this));
 		boutonCharger.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.CHARGER,this,prop));
+		boutonOption.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.OPTION,this,prop));
+		boutonQuitter.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.QUITTER,this,prop));
+		
 
 		JPanel container = new JPanel();
 		container.setBackground(new Color(150,150,150));
@@ -276,14 +291,17 @@ public class Fenetres {
 
 		container.add(boutonNouvellePartie,gbc);
 
-
-		/*gbc.gridx = 0;
-		gbc.gridy = 50;
-		container.add(boutonAvecIA,gbc);*/
-
 		gbc.gridx = 0;
 		gbc.gridy = 100;
 		container.add(boutonCharger,gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 150;
+		container.add(boutonOption,gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 2000;
+		container.add(boutonQuitter,gbc);
 
 		frame.add(container);
 		frame.setVisible(true);
@@ -419,6 +437,58 @@ public class Fenetres {
 		frame.add(containerMain);
 
 		frame.setVisible(true);
+	}
+
+	public void afficherOption ()
+	{
+		System.out.println();
+		frame.getContentPane().removeAll();
+
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		Border lineborder = BorderFactory.createLineBorder(Color.black, 2);
+
+
+		JPanel containerMain = new JPanel ();
+		JPanel container = new JPanel ();
+		JPanel bloc = new JPanel(); 
+
+		containerMain.setLayout(new GridBagLayout());
+		container.setLayout(new GridBagLayout());
+
+
+		JLabel label = new JLabel ("Pause : ");
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		bloc.add (label,gbc);
+
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+
+
+		label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(prop.recupValeur("raccourci_pause"))));
+		label.setBorder(lineborder);
+
+		bloc.add (label,gbc);
+
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		container.add(bloc,gbc);
+
+		label = new JLabel ("Retour: ");
+
+		prop.recupClesModifiable ();
+
+
+
+
+		containerMain.add(container);
+		frame.add(containerMain);
+
+		frame.setVisible(true);
+
+
 	}
 
 

@@ -2,6 +2,7 @@ package global;
 
 import java.io.*;
 import java.util.Properties;
+import java.util.Iterator;
 
 public class Configuration
 {
@@ -42,11 +43,27 @@ public class Configuration
 
 	public String recupValeur (String nom)
 	{
-		return prop.getProperty(nom);
+		String retour;
+		retour=prop.getProperty("fix-"+nom);
+		if (retour==null)
+		{	
+			retour = prop.getProperty("modifiable-"+nom);
+		}
+
+		return retour;
 	}
 
 	public void changerValeur (String nom, String nouvelleValeur)
 	{
+		if(prop.getProperty("fix-"+nom) != null)
+		{
+			nom = "fix-"+nom;
+		}
+		else if(prop.getProperty("modifiable-"+nom) != null)
+		{
+			nom = "modifiable-"+nom;
+		}
+
 		try {
 			FileOutputStream out = new FileOutputStream (user);
 			prop.setProperty(nom,nouvelleValeur);
@@ -56,6 +73,17 @@ public class Configuration
 		{
 			System.out.println("erreur");
 		}
+	}
+
+	public void recupClesModifiable ()
+	{
+		Iterator it = prop.keySet().iterator();
+		while (it.hasNext()) 
+		{
+			String key = (String) it.next();
+			String valeur = prop.getProperty(key);
+			System.out.println(key + "\t | " + valeur + "\t|");
+		} 
 	}
 
 }
