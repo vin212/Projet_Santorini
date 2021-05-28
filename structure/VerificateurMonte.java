@@ -10,8 +10,7 @@ public class VerificateurMonte implements Verificateur {
         j = jeu;
     }
 
-    // Retourne l'occupabilité de p.
-    //@Override
+    // Retourne l'occupabilité de p si p est supérieur à p2.
     public boolean verifie(Point p, Point p2){
         return (j.peutPoserUnPerso(p, p2) &&
                j.getNbEtage(p) < j.getNbEtage(p2));
