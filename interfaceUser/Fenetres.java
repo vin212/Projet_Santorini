@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.io.*;
 import javax.imageio.ImageIO;
 import java.util.Properties;
+import java.util.ArrayList;
 
 import modele.*;
 import controleur.*;
@@ -19,7 +20,8 @@ import java.awt.event.KeyEvent;
 }*/
 
 public class Fenetres {
-	NomFenetres f;
+	public NomFenetres f;
+	public NomFenetres f_avant;
 
 	public Jeu j;
 	public IA ia1;
@@ -83,6 +85,12 @@ public class Fenetres {
 	public void ChangerFenetres (NomFenetres i)
 	{
 		this.f = i;
+	}
+
+	public void ChangerFenetres (NomFenetres i, NomFenetres f_avant)
+	{
+		this.f = i;
+		this.f_avant = f_avant;
 	}
 
 	public void gestionFenetre ()
@@ -444,6 +452,8 @@ public class Fenetres {
 		System.out.println();
 		frame.getContentPane().removeAll();
 
+		ArrayList <String> clefs;
+
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		Border lineborder = BorderFactory.createLineBorder(Color.black, 2);
@@ -453,37 +463,101 @@ public class Fenetres {
 		JPanel container = new JPanel ();
 		JPanel bloc = new JPanel(); 
 
+		JCheckBox checkBox = new JCheckBox();
+
 		containerMain.setLayout(new GridBagLayout());
 		container.setLayout(new GridBagLayout());
 
+		clefs = prop.recupClesModifiable ();
+		System.out.println("taille : " + clefs.size());
+		for (int i = 0; i < clefs.size(); i++)
+		{
+			System.out.println("celf : " + clefs.get(i));
+			bloc = new JPanel ();
+			JLabel label = new JLabel (clefs.get(i) + ":");
+			System.out.println("valeur : " + prop.recupValeur(clefs.get(i)));
+			gbc.gridx = 0;
+			gbc.gridy = 0;
+			bloc.add (label,gbc);
 
-		JLabel label = new JLabel ("Pause : ");
+			String [] valDecoup = prop.recupValeur(clefs.get(i)).split(" ");
+			if (valDecoup.length < 2 && !prop.recupValeur(clefs.get(i)).equals("true") && !prop.recupValeur(clefs.get(i)).equals("false"))
+			{
+
+				gbc.gridx = 1;
+				gbc.gridy = 0;
+				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(prop.recupValeur(clefs.get(i)))));
+				label.setBorder(lineborder);
+
+				bloc.add (label,gbc);
+				gbc.gridx = 0;
+				gbc.gridy = i;
+				container.add(bloc,gbc);
+			}
+			else if (valDecoup.length < 2 && (prop.recupValeur(clefs.get(i)).equals("true") || prop.recupValeur(clefs.get(i)).equals("false")))
+			{
+				
+				checkBox = new JCheckBox();
+				gbc.gridx = 1;
+				gbc.gridy = 0;
+				if (prop.recupValeur(clefs.get(i)).equals("true") )
+				{
+					checkBox.setSelected(true);
+				}
+				else
+				{
+					checkBox.setSelected(false);
+				}
+				bloc.add (checkBox,gbc);
+				gbc.gridx = 0;
+				gbc.gridy = clefs.size() + i;
+				container.add(bloc,gbc);
+			}
+			else if (valDecoup.length == 2)
+			{
+				gbc.gridx = 1;
+				gbc.gridy = 0;
+				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[0])));
+				label.setBorder(lineborder);
+
+				bloc.add (label,gbc);
+
+				label = new JLabel (" + ");
+				gbc.gridx = 2;
+				gbc.gridy = 0;
+				bloc.add (label,gbc);
+
+				gbc.gridx = 3;
+				gbc.gridy = 0;
+				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[1])));
+				label.setBorder(lineborder);
+
+				bloc.add (label,gbc);
+
+				gbc.gridx = 0;
+				gbc.gridy = i;
+				container.add(bloc,gbc);
+
+			}
+
+			
+		}
+
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		bloc.add (label,gbc);
+		containerMain.add(container,gbc);
 
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-
-
-		label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(prop.recupValeur("raccourci_pause"))));
-		label.setBorder(lineborder);
-
-		bloc.add (label,gbc);
+		container = new JPanel ();
+		JButton boutonRetour = new JButton ("Retour");
+		boutonRetour.addActionListener(new GestionBouton(Bouton.RETOUR_OPTION,this,prop));
+		container.add(boutonRetour);
 
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		container.add(bloc,gbc);
+		containerMain.add(container,gbc);
 
-		label = new JLabel ("Retour: ");
-
-		prop.recupClesModifiable ();
-
-
-
-
-		containerMain.add(container);
+		
 		frame.add(containerMain);
 
 		frame.setVisible(true);

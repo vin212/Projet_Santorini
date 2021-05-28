@@ -3,6 +3,7 @@ package global;
 import java.io.*;
 import java.util.Properties;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 public class Configuration
 {
@@ -75,15 +76,23 @@ public class Configuration
 		}
 	}
 
-	public void recupClesModifiable ()
+	public ArrayList recupClesModifiable ()
 	{
+		ArrayList <String> clefs = new ArrayList <String> (0);
 		Iterator it = prop.keySet().iterator();
 		while (it.hasNext()) 
 		{
 			String key = (String) it.next();
-			String valeur = prop.getProperty(key);
-			System.out.println(key + "\t | " + valeur + "\t|");
+			String [] keyDecoup = key.split("-");
+			if (keyDecoup[0].equals("modifiable"))
+			{
+				clefs.add(keyDecoup[1]);
+				//System.out.println("OK");
+			}
+			//System.out.println("***" + keyDecoup[0] + "***");
 		} 
+
+		return clefs;
 	}
 
 }
