@@ -488,6 +488,7 @@ public class Fenetres {
 				gbc.gridy = 0;
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(prop.recupValeur(clefs.get(i)))));
 				label.setBorder(lineborder);
+				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0));
 
 				bloc.add (label,gbc);
 				gbc.gridx = 0;
@@ -512,6 +513,7 @@ public class Fenetres {
 				gbc.gridx = 0;
 				gbc.gridy = clefs.size() + i;
 				container.add(bloc,gbc);
+
 			}
 			else if (valDecoup.length == 2)
 			{
@@ -519,6 +521,7 @@ public class Fenetres {
 				gbc.gridy = 0;
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[0])));
 				label.setBorder(lineborder);
+				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0));
 
 				bloc.add (label,gbc);
 
@@ -530,6 +533,7 @@ public class Fenetres {
 				gbc.gridx = 3;
 				gbc.gridy = 0;
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[1])));
+				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),1));
 				label.setBorder(lineborder);
 
 				bloc.add (label,gbc);
