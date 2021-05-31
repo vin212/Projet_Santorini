@@ -32,7 +32,7 @@ public class TestIAalea3 {
 
     @ParameterizedTest
     @MethodSource("pointPersonnage")
-    public void testIA(Point firstPoint, Point secondPoint, String iaType) {
+    public void testIA(Point firstPoint, Point secondPoint, Point thirdPoint, Point fourthPoint, String iaType) {
         iaa = (IAalea3) IA.nouvelle(jeu,"controleurIA.IAalea3", iaType);
 
         // simulate le jeu
@@ -41,12 +41,17 @@ public class TestIAalea3 {
         jeu.poserPersonnage(firstPoint,1);
         jeu.poserPersonnage(secondPoint,1);
 
+        jeu.poserPersonnage(thirdPoint,2);
+        jeu.poserPersonnage(fourthPoint, 2);
+
         // placer l'ai
         iaa.debuterPartie();
 
         // vérifier que iaa n'est pas au même point que le joueur
         Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().CompareTo(firstPoint));
         Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().CompareTo(secondPoint));
+        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().CompareTo(thirdPoint));
+        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().CompareTo(fourthPoint));
 
         // vérifier si je me place au point négatif ou plus grand que la taille de la planche
         Assertions.assertEquals(1,iaa.debuterPartie().getDepart().CompareTo(new Point(-1,-1)));
@@ -62,6 +67,8 @@ public class TestIAalea3 {
         // vérifier que les points de construction ne sont pas égaux au premier ou au deuxième personnage ou au point auquel nous arrivons
         Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(firstPoint));
         Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(secondPoint));
+        Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(thirdPoint));
+        Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(fourthPoint));
         Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(iaa.joue().getDepart()));
     }
 
@@ -96,19 +103,17 @@ public class TestIAalea3 {
     }
 
     private static List<Arguments> pointPersonnage() {
-        // points tests
         return Arrays.asList(
-                Arguments.of(new Point(0,0), new Point(4,4), "IA Facile"),
-                Arguments.of(new Point(1,0), new Point(2,3), "IA Normal"),
-                Arguments.of(new Point(1,1), new Point(2,4), "IA Difficile"),
-                Arguments.of(new Point(1,2), new Point(4,3), "IA Facile"),
-                Arguments.of(new Point(4,2), new Point(2,1), "IA Difficile"),
-                Arguments.of(new Point(2,3), new Point(4,4), "IA Difficile"),
-                Arguments.of(new Point(1,1), new Point(0,0), "IA Normal"),
-                Arguments.of(new Point(2,2), new Point(3,2), "IA Facile"),
-                Arguments.of(new Point(3,3), new Point(3,1), "IA Difficile"),
-                Arguments.of(new Point(4,4), new Point(2,4), "IA Normal"),
-                Arguments.of(new Point(0,0), new Point(4,4), "IA Difficile"));
+                Arguments.of(new Point(0,0), new Point(4,4), new Point(2,1), new Point(3,2), "IA Facile"),
+                Arguments.of(new Point(1,0), new Point(2,3), new Point(4,3), new Point(1,2), "IA Normal"),
+                Arguments.of(new Point(1,1), new Point(2,4), new Point(2,2), new Point(4,3), "IA Difficile"),
+                Arguments.of(new Point(1,2), new Point(4,3), new Point(1,1), new Point(3,3), "IA Facile"),
+                Arguments.of(new Point(4,2), new Point(2,1), new Point(1,0), new Point(3,0), "IA Difficile"),
+                Arguments.of(new Point(2,3), new Point(4,4), new Point(0,0), new Point(3,2), "IA Difficile"),
+                Arguments.of(new Point(1,1), new Point(0,0), new Point(4,1), new Point(1,0), "IA Normal"),
+                Arguments.of(new Point(4,2), new Point(3,2), new Point(1,0), new Point(2,0), "IA Facile"),
+                Arguments.of(new Point(3,3), new Point(3,1), new Point(2,0), new Point(1,3), "IA Difficile"),
+                Arguments.of(new Point(4,4), new Point(2,4), new Point(1,3), new Point(1,1), "IA Normal"),
+                Arguments.of(new Point(0,0), new Point(4,4), new Point(3,1), new Point(3,2), "IA Difficile"));
     }
-
 }
