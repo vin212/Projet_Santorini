@@ -143,11 +143,11 @@ public class PlateauInterface_2 extends JComponent {
 		int height = getSize().height;
 
 
-		int inter_batiment_largeur = width/50; 
+		int inter_batiment_largeur = width/50;
 		int inter_batiment_hauteur = height/50;
 
-		int taille_hauteur = height/6- height/65;
-		int taille_largeur = width/6 - width/65;
+		int taille_hauteur = height/6 - height/65 + 1;
+		int taille_largeur = width/6 - width/65 + 1;
 
 
 		Point positionPremierBatiment = new Point(width/12,height/12);
