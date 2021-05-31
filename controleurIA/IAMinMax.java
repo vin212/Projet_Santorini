@@ -20,7 +20,7 @@ public class IAMinMax extends IA {
 
     public IAMinMax() {
         r = new Random((long) 0);
-        horizonMax = 2;
+        horizonMax = 4;
     }
 
     @Override
@@ -90,8 +90,9 @@ public class IAMinMax extends IA {
         } else if (j.estGagnant() || horizon == 0) {
             return chiffrage(j);
         } else {
+            //TODO à vérifier en priorité !
             chiffrage = (int) ((int) Integer.MAX_VALUE * Math.pow(-1, horizonMax - horizon));
-            chiffrage = Integer.MIN_VALUE;
+            chiffrage = Integer.MAX_VALUE;
             // Max value pour moi, et min value pour l'adversaire
         }
 
@@ -142,33 +143,95 @@ public class IAMinMax extends IA {
         if (h.victoireEtage(p1) == -1) {
             return 100; // Le joueur dont c'est le tour perds, l'adversaire a tout posé
         }
-        ArrayList<Collection<Point>> successeurP1J2 = h.observes(p1[0]);
-        ArrayList<Collection<Point>> successeurP2J2 = h.observes(p1[1]);
+        ArrayList<ArrayList<Point>> successeurP1J2 = h.observes(p1[0]);
+        ArrayList<ArrayList<Point>> successeurP2J2 = h.observes(p1[1]);
         Point[] p0 = j.getPosiPions(j.getJoueurEnJeu());
-        ArrayList<Collection<Point>> successeurP1J1 = h.observes(p0[0]);
-        ArrayList<Collection<Point>> successeurP2J1 = h.observes(p0[1]);
+        ArrayList<ArrayList<Point>> successeurP1J1 = h.observes(p0[0]);
+        ArrayList<ArrayList<Point>> successeurP2J1 = h.observes(p0[1]);
         ArrayList<Point> tampon = new ArrayList<Point>(successeurP1J1.get(0));
-        tampon.addAll(successeurP1J2.get(0));
+        tampon.addAll(successeurP2J1.get(0));
         if (h.victoireBlocage(tampon) == -1) {
-            return 100; // Le joueur dont c'est le tour ne peut pas bouger. Il perd
+            return 100; // Le joueur dont c'est le tour ne peut pas bouger. Il perd.
         }
-        /*
-         * public int evaluationHauteur(Point p[]) public int peutMonter(Point p,
-         * ArrayList<Point> deplacement) public ArrayList<Point>
-         * peutMonter3(ArrayList<Point> deplacement) public int peutTomber(Point p,
-         * ArrayList<Point> deplacement) public int evaluationConstructionAdverse(Point
-         * p, Collection<Point> c) public int peutBouger(Point p, ArrayList<Point>
-         * deplacement) public int constructionBloquante(Point pionAdverse,
-         * ArrayList<Point> construction) public int constructionBloquante3(Point
-         * pionAdverse, ArrayList<Point> construction) public int
-         * nonContester(ArrayList<Point> constructionMoi, ArrayList<Point>
-         * constructionToi)
-         */
+        Integer hauteurJ1 = h.evaluationHauteur(p0);
+        Integer hauteurJ2 = h.evaluationHauteur(p1);
 
-        if (r.nextBoolean())
-            return 0;
-        else
-            return -0;
+        Integer peutMonterJ1 = h.peutMonter(p0[0], successeurP1J1.get(0));
+        peutMonterJ1 += h.peutMonter(p0[1], successeurP2J1.get(0));
+        //TODO
+        Integer peutMonterJ2 = h.peutMonter(p1[0], successeurP1J2.get(0));
+        peutMonterJ2 += h.peutMonter(p1[1], successeurP2J2.get(0));
+        //TODO
+        
+        ArrayList<Point> sommetsVictorieux = h.peutMonter3(tampon);
+        if (sommetsVictorieux.size() > 1){
+            return -100; // Le joueur a au moins deux possibilités de gagner
+        } else if(sommetsVictorieux.size() == 1) { // Un étage à 3
+            return -100;
+        }
+        tampon = new ArrayList<Point>(successeurP1J2.get(0));
+        tampon.addAll(successeurP2J2.get(0));
+        sommetsVictorieux = h.peutMonter3(tampon);
+        if (sommetsVictorieux.size() > 1){
+            return 100; // L'adversaire a au moins deux possibilités de gagner
+        } else if(sommetsVictorieux.size() == 1) { // Un étage à 3
+            tampon = new ArrayList<Point>(successeurP1J1.get(1));
+            tampon.addAll(successeurP2J1.get(1));
+            if (h.constructionAdverse(sommetsVictorieux.get(0), tampon)){
+                // On peut contrer la possible victoire de l'ennemie.
+                //TODO
+            } else {
+                // On ne peut pas contrer la victoire de l'ennemie. Défaite assuré.
+                return 100;
+            }
+        }
+
+        // Fusion avec ligne 152-154 ?
+        if (h.peutBouger(successeurP1J1.get(0)) == 0){
+            if (h.peutBouger(successeurP2J1.get(0)) == 0){
+                // Déjà vu en 152
+                return -100;
+            } else {
+                //TODO
+                // On a un pion bloqué
+            }
+        } else if (h.peutBouger(successeurP2J1.get(0)) == 0){
+            // On a un pion bloqué, encore
+            //TODO
+        }
+
+        if (h.peutBouger(successeurP1J2.get(0)) == 0){
+            if (h.peutBouger(successeurP2J2.get(0)) == 0){
+                return 100;
+            } else {
+                //TODO
+                // L'adversaire a un pion bloqué
+            }
+        } else if (h.peutBouger(successeurP2J2.get(0)) == 0){
+            // L'adversaire a un pion bloqué
+            //TODO
+        }
+        
+        tampon = new ArrayList<Point>(successeurP1J1.get(1));
+        tampon.addAll(successeurP2J1.get(1));
+        Integer bloquant = h.constructionBloquante(p1, tampon);
+        Integer bloquant3 = h.constructionBloquante3(p1, tampon);
+
+        tampon = new ArrayList<Point>(successeurP1J2.get(1));
+        tampon.addAll(successeurP2J2.get(1));
+        ArrayList<Point> tampon2 = new ArrayList<Point>(successeurP1J1.get(1));
+        tampon2.addAll(successeurP2J1.get(1));
+        if(h.nonContester(tampon2,tampon) == 1){
+            //TODO
+        }
+
+        /*
+        * public int nonContester(ArrayList<Point> constructionMoi, ArrayList<Point> constructionToi)
+        * public int peutTomber(Point p, ArrayList<Point> deplacement)
+        */
+
+        return 2*hauteurJ1 - hauteurJ2 + bloquant +3* bloquant3;
+
     }
 
     private void tour(Coup c) {
@@ -194,11 +257,11 @@ public class IAMinMax extends IA {
         }
 
         if (c.estDeplacement()) {
-            // System.out.println(c.getArrive());
+            // //System.out.println(c.getArrive());
             j.deplacerPersonnage(c.getArrive(), c.getDepart());
             j.detruireEtage(c.getConstruction());
         } else {
-            // System.out.println("Annulation de placement ? Vraiment ?");
+            // //System.out.println("Annulation de placement ? Vraiment ?");
             pos = j.histoPosition();
             if (pos % 2 == 0) {
                 j.enleverPerso(c.getDepart());
@@ -213,13 +276,16 @@ public class IAMinMax extends IA {
 class ListGagnant {
     int max;
     ArrayList<Coup> gagnant;
+    Random r;
 
     public ListGagnant() {
         max = Integer.MIN_VALUE;
         gagnant = new ArrayList<Coup>();
+        r = new Random((long) 0);
     }
 
     public ListGagnant(int m, Coup c) {
+        r = new Random((long) 0);
         max = m;
         gagnant = new ArrayList<Coup>(0);
         gagnant.add(c);
@@ -236,7 +302,6 @@ class ListGagnant {
     }
 
     public Coup extraire() {
-        Random r = new Random((long) 0);
         return gagnant.get(r.nextInt(gagnant.size()));
     }
 }
