@@ -381,10 +381,10 @@ public class Fenetres {
 		JPanel containerMain = new JPanel ();
 
 		containerMain.setLayout(new GridBagLayout());
-		String [] element = new String[] {"IA Facile", "IA Normal", "IA Difficile", "Joueur"};
+		String [] element = new String[] {"Joueur", "IA Facile", "IA Normal", "IA Difficile"};
 
-		JComboBox menuBar1 = new JComboBox(element);
-		JComboBox menuBar2 = new JComboBox(element);
+		JComboBox<String> menuBar1 = new JComboBox<String>(element);
+		JComboBox<String> menuBar2 = new JComboBox<String>(element);
 		/*menuBar.add(new JLabel("Element 1"));
 		menuBar.add(new JLabel("Element 2"));*/
 		container.add(menuBar1);
@@ -396,7 +396,7 @@ public class Fenetres {
 		containerMain.add(container,gbc);
 
 
-		JButton boutonCestParti = new JButton ("C'est partie !"); 
+		JButton boutonCestParti = new JButton ("C'est parti !"); 
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
