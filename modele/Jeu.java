@@ -429,5 +429,10 @@ public class Jeu{
         return voisins;
     }
 
+    public void reactuProp ()
+    {
+    	this.aideActiver = Boolean.valueOf(prop.recupValeur("aide")).booleanValue();
+    }
+
    
 }

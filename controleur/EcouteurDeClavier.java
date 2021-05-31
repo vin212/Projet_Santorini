@@ -52,29 +52,33 @@ public class EcouteurDeClavier  extends KeyAdapter{
     	System.out.println("ici clqiue");
         int source = event.getKeyCode();
         //Test testActu = Test.this;
-        if(source==17)
+        if(source==toucheRetablir[0])
         {
-            System.out.println("ctrl");
             if (toucheAppuier[0] == -1)
             {
-                toucheAppuier[0] = 17;
+                toucheAppuier[0] = toucheRetablir[0];
             }
         }
-        else if(source==86)
+        else if(source==toucheRetablir[1])
         {
-            System.out.println("v");
             if (toucheAppuier[1] == -1)
             {
-                toucheAppuier[1] = 86;
+                toucheAppuier[1] = toucheRetablir[1];
             }
         }
-        else if (source == 90)
+        else if (source==toucheRetour[1])
         {
-            System.out.println("z");
-            if (toucheAppuier [1] == -1)
+            if (toucheAppuier[1] == -1)
             {
-                toucheAppuier[1] = 90;
-            }   
+                toucheAppuier[1] = toucheRetour[1];
+            }
+        }
+         else if (source==toucheRetour[0])
+        {
+            if (toucheAppuier[0] == -1)
+            {
+                toucheAppuier[0] = toucheRetour[0];
+            }
         }
         else if(source == Integer.parseInt(prop.recupValeur("raccourci_pause")))
         {
@@ -108,7 +112,7 @@ public class EcouteurDeClavier  extends KeyAdapter{
 
         System.out.println(toucheAppuier[0] + "," + toucheAppuier[1] );
     
-        if (toucheAppuier[0] == 17  && toucheAppuier[1] == 86)
+        if (toucheAppuier[0] == toucheRetablir[0]  && toucheAppuier[1] == toucheRetablir[1])
         {
             System.out.println("les deux sont appuier");
         }
@@ -187,6 +191,11 @@ public class EcouteurDeClavier  extends KeyAdapter{
         {
             System.out.println("touche : y relacher");
             toucheAppuier[1] = -1;
+        }
+        else if (source == toucheRetablir[0] && toucheAppuier[0] == toucheRetablir[0])
+        {
+            System.out.println("touche : y relacher");
+            toucheAppuier[0] = -1;
         }
         else if (source == 86 && toucheAppuier[1] == 86)
         {

@@ -86,7 +86,7 @@ public class ChargerPage extends JPanel {
 		add(containerMain);
 		setVisible(true);
 
-		System.out.println("c'est bon ?");
+		//System.out.println("c'est bon ?");
 		super.paintComponent(g); 
 	}
 }

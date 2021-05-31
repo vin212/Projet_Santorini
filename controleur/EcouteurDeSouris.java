@@ -31,6 +31,10 @@ public class EcouteurDeSouris extends MouseAdapter {
 
     int nb;
 
+    JFrame frame;
+
+    ChangerToucheClavier clv;
+
     public EcouteurDeSouris(PlateauInterface_2 plateau, GestionUser g, IA ia1, IA ia2)
 	{
 		this.plateau = plateau;
@@ -47,15 +51,19 @@ public class EcouteurDeSouris extends MouseAdapter {
 		this.nomFichier = nomFichier;
 		this.j = j;
 		this.f = f;
+		
 	}
 
-	public EcouteurDeSouris (Configuration prop, String nomProp, int nb)
+	public EcouteurDeSouris (Configuration prop, String nomProp, int nb, JFrame frame, Fenetres f)
 	{
 		this.name = NomFenetres.OPTION;
 		this.prop = prop;
 		this.nomProp = nomProp;
 		this.nb = nb;
+		this.frame = frame;
+		this.f = f;
 	}
+
 
 	@Override
 	public void mousePressed(MouseEvent e) 
@@ -84,7 +92,7 @@ public class EcouteurDeSouris extends MouseAdapter {
 		}
 		else if (name == NomFenetres.CHARGER)
 		{
-			System.out.println("ok ");
+			//System.out.println("ok ");
 			//j.Construire(new Point(0,0));
 			f.j = null;
 			Save save = new Save(f.j);
@@ -95,11 +103,17 @@ public class EcouteurDeSouris extends MouseAdapter {
 				f.gestionFenetre ();
 				//f.repaint();
 			}
-			System.out.println("nom fichier : " + nomFichier);
+			//System.out.println("nom fichier : " + nomFichier);
 		}
 		else if (name == NomFenetres.OPTION)
 		{
 			System.out.println("nomProp : " + nomProp);
+			if (clv != null)
+			{
+				frame.removeKeyListener(clv);
+			}
+			frame.addKeyListener(new ChangerToucheClavier(prop,nomProp,frame,nb,f));
+
 		}
 	}
 }

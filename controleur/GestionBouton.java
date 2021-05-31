@@ -255,6 +255,12 @@ public class GestionBouton extends JButton implements ActionListener
 				f.ChangerFenetres(f.f_avant);
 				f.gestionFenetre();
 				f.frame.repaint();
+			break;
+			case RETABLIR_DEFAUT :
+				prop.retablirDefaut();
+				f.gestionFenetre();
+				f.frame.repaint();
+			break;
 
 		}
 	}

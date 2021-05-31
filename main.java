@@ -14,7 +14,7 @@ public class main {
 		Configuration prop = new Configuration();
 		/*System.out.println(prop.recupValeur ("raccourci_retour"));*/
 		System.out.println(prop.recupValeur ("raccourci_pause"));
-		prop.changerValeur ("aide","true");
+		prop.changerValeur ("aide","true",0);
 		Jeu j = new Jeu(prop);
 
 
@@ -49,8 +49,6 @@ public class main {
 
 		SwingUtilities.invokeLater(new Fenetre(j,prop));
 		///j.setAction (1,Action.PREMIER_PLACEMENT);
-
 		System.out.println("Gagnant  " + j.estGagnant());
-
 	}	
 }

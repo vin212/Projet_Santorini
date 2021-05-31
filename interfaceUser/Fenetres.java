@@ -405,27 +405,70 @@ public class Fenetres {
 		GridBagConstraints gbc = new GridBagConstraints();
 		JPanel container = new JPanel ();
 		JPanel containerMain = new JPanel ();
+		JPanel couleur = new JPanel ();
 
+		couleur.setLayout(new GridBagLayout());
 		containerMain.setLayout(new GridBagLayout());
-		String [] element = new String[] {"IA Facile", "IA Normal", "IA Difficile", "Joueur"};
+		String [] element = new String[] {"Joueur","IA Facile", "IA Normal", "IA Difficile"};
 
 		JComboBox menuBar1 = new JComboBox(element);
 		JComboBox menuBar2 = new JComboBox(element);
 		/*menuBar.add(new JLabel("Element 1"));
 		menuBar.add(new JLabel("Element 2"));*/
+
+		JPanel boite = new JPanel();
+		boite.setBackground(new Color(0,110,255));
+		boite.setPreferredSize(new Dimension(100, 25));
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+
+		couleur.add(boite,gbc);
+
+		boite = new JPanel ();
+		boite.setBackground(new Color(238,238,238));
+		boite.setPreferredSize(new Dimension(25, 25));
+
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+
+		couleur.add(boite,gbc);
+
+		boite = new JPanel ();
+		boite.setBackground(new Color(255,0,0));
+		boite.setPreferredSize(new Dimension(100, 25));
+
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+
+		couleur.add(boite,gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+
+		containerMain.add(couleur,gbc);
+
 		container.add(menuBar1);
 		container.add(new JLabel("VS"));
 		container.add(menuBar2);
 
 		gbc.gridx = 0;
-		gbc.gridy = 0;
+		gbc.gridy = 1;
 		containerMain.add(container,gbc);
 
 
-		JButton boutonCestParti = new JButton ("C'est partie !"); 
+		container = new JPanel();
+		container.setBackground(new Color(238,238,238));
+		container.setPreferredSize(new Dimension(100, 100));
 
 		gbc.gridx = 0;
-		gbc.gridy = 1;
+		gbc.gridy = 2;
+		containerMain.add(container,gbc);
+
+		JButton boutonCestParti = new JButton ("C'est parti !"); 
+
+		gbc.gridx = 0;
+		gbc.gridy = 3;
 		containerMain.add(boutonCestParti,gbc);
 
 		//container = new JPanel ();
@@ -433,7 +476,7 @@ public class Fenetres {
 		JButton boutonRetourMenu = new JButton ("Retour Menu");
 
 		gbc.gridx = 0;
-		gbc.gridy = 2;
+		gbc.gridy = 4;
 		containerMain.add(boutonRetourMenu,gbc);
 		boutonRetourMenu.addActionListener(new GestionBouton (j,aire2,Bouton.RETOUR_MENU,this,prop));
 		boutonCestParti.addActionListener(new GestionBouton (j,Bouton.LANCER_PARTIE,this,menuBar1,menuBar2,prop));
@@ -469,13 +512,13 @@ public class Fenetres {
 		container.setLayout(new GridBagLayout());
 
 		clefs = prop.recupClesModifiable ();
-		System.out.println("taille : " + clefs.size());
+		//System.out.println("taille : " + clefs.size());
 		for (int i = 0; i < clefs.size(); i++)
 		{
-			System.out.println("celf : " + clefs.get(i));
+			//System.out.println("celf : " + clefs.get(i));
 			bloc = new JPanel ();
 			JLabel label = new JLabel (clefs.get(i) + ":");
-			System.out.println("valeur : " + prop.recupValeur(clefs.get(i)));
+			//System.out.println("valeur : " + prop.recupValeur(clefs.get(i)));
 			gbc.gridx = 0;
 			gbc.gridy = 0;
 			bloc.add (label,gbc);
@@ -488,7 +531,7 @@ public class Fenetres {
 				gbc.gridy = 0;
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(prop.recupValeur(clefs.get(i)))));
 				label.setBorder(lineborder);
-				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0));
+				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0,frame,this));
 
 				bloc.add (label,gbc);
 				gbc.gridx = 0;
@@ -509,6 +552,7 @@ public class Fenetres {
 				{
 					checkBox.setSelected(false);
 				}
+				checkBox.addActionListener(new EcouteurCheckBox(clefs.get(i),prop,j));
 				bloc.add (checkBox,gbc);
 				gbc.gridx = 0;
 				gbc.gridy = clefs.size() + i;
@@ -521,7 +565,7 @@ public class Fenetres {
 				gbc.gridy = 0;
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[0])));
 				label.setBorder(lineborder);
-				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0));
+				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0,frame,this));
 
 				bloc.add (label,gbc);
 
@@ -533,7 +577,7 @@ public class Fenetres {
 				gbc.gridx = 3;
 				gbc.gridy = 0;
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[1])));
-				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),1));
+				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),1,frame,this));
 				label.setBorder(lineborder);
 
 				bloc.add (label,gbc);
@@ -555,7 +599,17 @@ public class Fenetres {
 		JButton boutonRetour = new JButton ("Retour");
 		boutonRetour.addActionListener(new GestionBouton(Bouton.RETOUR_OPTION,this,prop));
 		container.add(boutonRetour);
+		boutonRetour.setFocusable(false);
 
+
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		containerMain.add(container,gbc);
+
+		container = new JPanel ();
+		JButton boutonDefaut = new JButton("Rétablir par defaut");
+		boutonDefaut.addActionListener(new GestionBouton(Bouton.RETABLIR_DEFAUT,this,prop));
+		container.add(boutonDefaut);
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -565,6 +619,7 @@ public class Fenetres {
 		frame.add(containerMain);
 
 		frame.setVisible(true);
+		frame.requestFocus();
 
 
 	}
