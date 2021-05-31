@@ -15,7 +15,7 @@ public class IAalea3 extends IA {
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log absent, IA Aléatoire activée");
+        System.err.println("Systeme de log absent, IA Alea 3");
     }
 
     @Override

@@ -1,27 +1,32 @@
 package controleurIA;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
-
-
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.lang.Math;
+import java.math.BigInteger;
 
-import controleur.ActionUser;
+//import controleur.ActionUser;
 import modele.Jeu;
 import modele.Coup;
 import structure.*;
 
 public class IAMinMax extends IA {
     Random r;
+    int horizonMax;
+    Hashtable<BigInteger, Integer> table;
     
     public IAMinMax(){
         r = new Random((long) 0);
+        horizonMax = 2;
     }
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log absent, IA Aléatoire activée");
+        System.err.println("Systeme de log absent, IA MinMax activée");
     }
 
     @Override
@@ -44,6 +49,7 @@ public class IAMinMax extends IA {
     @Override
     public Coup joue(){
 //        ActionUser control = new ActionUser(this.j);
+        table = new Hashtable<BigInteger, Integer>();
         ArrayList<Coup> successeur = successeur(j);
         ListGagnant gagnant = new ListGagnant();
         Iterator<Coup> I = successeur.iterator();
@@ -51,7 +57,7 @@ public class IAMinMax extends IA {
         int valeur; 
         Coup c;
 
-        int horizon = 1;
+        int horizon = horizonMax;
 
         if (taille == 0){
             System.err.println("Aucun coup possible !");
@@ -63,11 +69,39 @@ public class IAMinMax extends IA {
         while(I.hasNext()){
             c = I.next();
             tour(c);
-            valeur = calcul_toi(j, horizon, Integer.MAX_VALUE);
+            valeur = calcul(j, horizon-1, Integer.MAX_VALUE);
             gagnant.ajouter(valeur, c);
             annulerCoup();
         }
         return gagnant.extraire();
+    }
+
+    private int calcul(Jeu j, int horizon, int maximum){
+        ArrayList<Coup> succ = successeur(j);
+        Iterator<Coup> I = succ.iterator();
+        Integer chiffrage = table.get(j.getHashCode());
+        //int chiffrage = (int) ((int)Integer.MAX_VALUE * Math.pow(-1, horizonMax - horizon)); // -1^ (horizonMax - hori)
+        // Max value pour moi, et min value pour l'adversaire
+        Coup c;
+        
+        if (chiffrage != null) {
+            return chiffrage;
+        } else if (j.estGagnant() || horizon == 0){
+            return -chiffrage(j);
+        } else { 
+            chiffrage = (int) ((int)Integer.MAX_VALUE * Math.pow(-1, horizonMax - horizon));
+            chiffrage = Integer.MIN_VALUE;
+        // Max value pour moi, et min value pour l'adversaire
+        }
+
+        while (I.hasNext() && (maximum >= chiffrage)){
+            c = I.next();
+            tour(c);
+            chiffrage = Math.max(chiffrage, calcul(j, horizon -1, chiffrage));
+            table.put(j.getHashCode(), chiffrage);
+            annulerCoup();
+        }
+        return -chiffrage / 2;
     }
 
     // Max
@@ -76,22 +110,24 @@ public class IAMinMax extends IA {
         // ActionUser control = new ActionUser(j);
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
-        int chiffrage = Integer.MIN_VALUE;
+        int chiffrage = Integer.MIN_VALUE; //table.get(j.hashcode())
         Coup c;
 
         // Si config final ou horizon atteint
         if(j.estGagnant() || horizon == 0){
-            return chiffrage(j);
-        }
+            return -chiffrage(j);
+        } /*elif (chiffrage != null) {
+            return table.get(j.hashcode())
+        } else { chiffrage = Integer.MIN_VALUE}*/
 
         while(I.hasNext() && (maximum >= chiffrage)){
             c = I.next();
             tour(c);
             chiffrage = Math.max(chiffrage, calcul_toi(j, horizon - 1, chiffrage));
+            //table.put(j.hashcode(), chiffrage);
             annulerCoup();
         }
-        return chiffrage;
-
+        return chiffrage/2;
     }
 
     // Min
@@ -99,20 +135,25 @@ public class IAMinMax extends IA {
         // ActionUser control = new ActionUser(j);
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
-        int chiffrage = Integer.MAX_VALUE;
+        int chiffrage = Integer.MIN_VALUE; // table.get(j.hashcode())
         Coup c;
 
         if(j.estGagnant() || horizon == 0){
-            return -chiffrage(j);
-        }
+            return chiffrage(j);
+        }/*elif (chiffrage != null) {
+            return chiffrage
+        } else {
+            chiffrage = Integer.MAX_VALUE;
+        } */
 
         while(I.hasNext() && (maximum >= chiffrage)){
             c = I.next();
             tour(c);
             chiffrage = Math.max(chiffrage, calcul_moi(j, horizon - 1, chiffrage));
+            //table.put(j.hashcode(), chiffrage);
             annulerCoup();
         }
-        return -chiffrage;
+        return -chiffrage/2;
     }
 
     private ArrayList<Coup> successeur (Jeu j){
@@ -141,27 +182,62 @@ public class IAMinMax extends IA {
         return successeur;
     }
 
+
+    private ArrayList<Collection<Point>> observes (Jeu j, Point p){
+        ArrayList<Point> deplacement = new ArrayList<Point>(0);
+        ConcurrentSkipListSet<Point> construction = new ConcurrentSkipListSet<Point>();
+        ArrayList<Collection<Point>> successeur = new ArrayList<Collection<Point>>(2);
+        VerificateurPion vp = new VerificateurPion(j);
+        VerificateurEtage ve = new VerificateurEtage(j);
+        
+        deplacement = getVoisin(p, vp);
+        Iterator<Point> It1 = deplacement.iterator();
+        Point depl;
+        construction.add(p);
+        while(It1.hasNext()){
+            depl = It1.next();
+            Iterator<Point> It2 = getVoisin(depl, ve).iterator();
+            while(It2.hasNext()){
+                construction.add(It2.next());
+            }
+        }
+        successeur.add(0, deplacement);
+        successeur.add(1, construction);
+        return successeur;
+    }
+
+
     /* Chiffrage :
-     * retour positif = plus de chance de gagner que de perdre
-     * retour négatif  = plus de chance de perdre que de gagner
+     * retour positif = plus de chance de perdre que de gagner
+     * retour négatif  = plus de chance de gagner que de perdre
      */
 
     private int chiffrage(Jeu j){
+        Point[] p = j.getPosiPions(j.getJoueurEnJeu());
+        Point[] p1 = j.getPosiPions(j.getJoueurEnJeu() %2 + 1);
+        if (j.getNbEtage(p[0]) == 3 || j.getNbEtage(p[1]) == 3){
+            System.err.println("Je l'ai vu");
+            return Integer.MAX_VALUE;
+        } else if (j.getNbEtage(p1[0]) == 3 || j.getNbEtage(p1[1]) == 3) {
+            //System.err.println("Je vois " + (j.getJoueurEnJeu() %2 + 1) +" gagner");
+            return -Integer.MAX_VALUE;
+        }
+
         if (r.nextBoolean())
-            return r.nextInt();
+            return 0;
         else
-            return - r.nextInt();
+            return -0;
     }
 
     private void tour(Coup c){
         j.histoAjouterCoup(c);
-        j.addTour();
         if (c.estDeplacement()){
             j.deplacerPersonnage(c.getDepart(), c.getArrive());
             j.Construire(c.getConstruction());
         } else {
             j.poserPersonnage(c.getDepart(), c.getJoueur());
         }
+        j.addTour();
     }
 
     private void annulerCoup(){
@@ -176,11 +252,11 @@ public class IAMinMax extends IA {
 		}
 	
 		if(c.estDeplacement()){
-			System.out.println(c.getArrive());
+			//System.out.println(c.getArrive());
 			j.deplacerPersonnage(c.getArrive(), c.getDepart());
 			j.detruireEtage(c.getConstruction());
 		} else {
-            System.out.println("Annulation de placement ? Vraiment ?");
+            //System.out.println("Annulation de placement ? Vraiment ?");
 			pos = j.histoPosition();
 			if(pos % 2 == 0){
 				j.enleverPerso(c.getDepart());
@@ -218,6 +294,7 @@ class ListGagnant {
             gagnant.add(c);
         }
     }
+
     public Coup extraire(){
         Random r = new Random((long) 0);
         return gagnant.get(r.nextInt(gagnant.size()));

@@ -4,7 +4,7 @@ public enum Bouton {
 	PAUSE, RETABLIR, RETOUR, RETOUR_JEU,
 	RECOMMENCER, AVEC_IA, SANS_IA, RETOUR_MENU, 
 	SAUVEGARDER, VALIDER_SAUVEGARDE, ANNULER_SAUVEGARDE,
-	CHARGER,NOUVELLE_PARTIE,LANCER_PARTIE;
+	CHARGER,NOUVELLE_PARTIE,LANCER_PARTIE, OPTION, QUITTER, RETOUR_OPTION, RETABLIR_DEFAUT;
 
 	public String toString ()
 	{
@@ -34,6 +34,14 @@ public enum Bouton {
 				return "NOUVELLE_PARTIE";
 			case LANCER_PARTIE :
 				return "LANCER_PARTIE";
+			case QUITTER :
+				return "QUITTER";
+			case OPTION : 
+				return "OPTION";
+			case RETOUR_OPTION :
+				return "RETOUR_OPTION";
+			case RETABLIR_DEFAUT :
+				return "RETABLIR_DEFAUT";
 		}
 		return "";
 	}

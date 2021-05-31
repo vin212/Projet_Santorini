@@ -141,36 +141,45 @@ public class GestionBouton extends JButton implements ActionListener
 			case RECOMMENCER :
 				f.j = new Jeu(prop);
 
+
 				if (f.ia1 != null)
 				{
-					if (f.ia1.type() == "IA Facile")
+					System.out.println("type ia : " + f.ia1.type());
+					if (f.ia1.type().equals("IA Facile"))
 					{
-						f.ia1 = IA.nouvelle(f.j,"controleurIA.IAAleatoire",f.ia1.type());
+						System.out.println("ia1 : Facile");
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia1.type());
 					}
-					else if (f.ia1.type() == "IA Normal")
+					else if (f.ia1.type().equals("IA Normal"))
 					{
-						f.ia1 = IA.nouvelle(f.j,"controleurIA.IAAleatoire",f.ia1.type());
+						System.out.println("ia1 : Normal");
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia1.type());
 					}
-					else if (f.ia1.type() == "IA Difficile");
+					else if (f.ia1.type().equals("IA Difficile"))
 					{
-						f.ia1 = IA.nouvelle(f.j,"controleurIA.IAAleatoire",f.ia1.type());
+						System.out.println("ia1 : Difficile	");
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia1.type());
 					}
 					f.ia1.activeIA();
 				}
 
 				if (f.ia2 != null)
 				{
-					if (f.ia2.type() == "IA Facile")
+					System.out.println("type ia : " + f.ia2.type());
+					if (f.ia2.type().equals("IA Facile"))
 					{
-						f.ia2 = IA.nouvelle(f.j,"controleurIA.IAAleatoire",f.ia2.type());
+						System.out.println("ia2 : Facile");
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia2.type());
 					}
-					else if (f.ia1.type() == "IA Normal")
+					else if (f.ia2.type().equals("IA Normal"))
 					{
-						f.ia2 = IA.nouvelle(f.j,"controleurIA.IAAleatoire",f.ia2.type());
+						System.out.println("ia2 : Normal");
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia2.type());
 					}
-					else if (f.ia2.type() == "IA Difficile");
+					else if (f.ia2.type().equals("IA Difficile"))
 					{
-						f.ia2 = IA.nouvelle(f.j,"controleurIA.IAAleatoire",f.ia2.type());
+						System.out.println("ia2 : Difficile");
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia2.type());
 					}
 					f.ia2.activeIA();
 				}
@@ -234,6 +243,24 @@ public class GestionBouton extends JButton implements ActionListener
 				f.gestionFenetre();
 				f.frame.repaint();*/
 			break;
+			case QUITTER :
+				f.frame.dispose();
+			break;
+			case OPTION :
+				f.ChangerFenetres(NomFenetres.OPTION,f.f);
+				f.gestionFenetre ();
+				f.frame.repaint();
+			break;
+			case RETOUR_OPTION:
+				f.ChangerFenetres(f.f_avant);
+				f.gestionFenetre();
+				f.frame.repaint();
+			break;
+			case RETABLIR_DEFAUT :
+				prop.retablirDefaut();
+				f.gestionFenetre();
+				f.frame.repaint();
+			break;
 
 		}
 	}
@@ -256,21 +283,21 @@ public class GestionBouton extends JButton implements ActionListener
 		}
 		else if (j2ToString =="IA Facile")
 		{
-			f.ia1 = IA.nouvelle(f.j,"controleurIA.IAAleatoire","IA Facile");
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
 			f.ia1.activeIA();
 			System.out.println("joueur vs ia facile");
 			retour = true;
 		}
 		else if (j2ToString =="IA Normal")
 		{
-			f.ia1 = IA.nouvelle(f.j,"controleurIA.IAAleatoire","IA Normal");
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
 			f.ia1.activeIA();
 			System.out.println("joueur vs ia normal");
 			retour = true;
 		}
 		else if (j2ToString =="IA Difficile")
 		{
-			f.ia1 = IA.nouvelle(f.j,"controleurIA.IAAleatoire","IA Difficile");
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
 			f.ia1.activeIA();
 			System.out.println("joueur vs ia difficile");
 			retour = true;
@@ -279,21 +306,21 @@ public class GestionBouton extends JButton implements ActionListener
 
 		if (j1ToString =="IA Facile")
 		{
-			f.ia2 = IA.nouvelle(f.j,"controleurIA.IAAleatoire","IA Facile");
+			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
 			f.ia2.activeIA();
 			System.out.println("joueur vs ia facile");
 			retour = true;
 		}
 		else if (j1ToString =="IA Normal")
 		{
-			f.ia2 = IA.nouvelle(f.j,"controleurIA.IAAleatoire","IA Normal");
+			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
 			f.ia2.activeIA();
 			System.out.println("joueur vs ia facile");
 			retour = true;
 		}
 		else if (j1ToString =="IA Difficile")
 		{
-			f.ia2 = IA.nouvelle(f.j,"controleurIA.IAAleatoire","IA Difficile");
+			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
 			f.ia2.activeIA();
 			System.out.println("joueur vs ia facile");
 			retour = true;

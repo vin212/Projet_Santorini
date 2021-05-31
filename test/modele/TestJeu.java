@@ -1,11 +1,15 @@
 package test.modele;
 
+import modele.Coup;
+import modele.Historique;
 import modele.Jeu;
 import modele.Plateau;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import structure.Point;
+import structure.VerificateurEtage;
+import structure.VerificateurPion;
 
 public class TestJeu {
     Jeu jeu;
@@ -337,16 +341,130 @@ public class TestJeu {
 
     @Test
     public void testHistoire() {
-        // a tester
+        Historique h = new Historique();
+        jeu.poserPersonnage(new Point(1,2), 1);
+        jeu.poserPersonnage(new Point(2,2), 1);
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,4),2);
+
+        // ajoute le coup a la historique
+        jeu.deplacerPersonnage(new Point(2,2), new Point(2,3));
+        jeu.histoAjouterCoup(new Coup(new Point(2,2),1));
+
+        jeu.deplacerPersonnage(new Point(2,3), new Point(3,3));
+        jeu.histoAjouterCoup(new Coup(new Point(2,3),1));
+
+        // test si coup a ajoute a la positionne
+        Assertions.assertEquals(2,jeu.histoPosition());
+
+        // annuler coup
+        jeu.histoAnnulerCoup();
+
+        // test annuler coup
+        Assertions.assertEquals(1, jeu.histoPosition());
+
+        // retablir coup
+        jeu.histoRetablir();
+
+        // test retablir coup
+        Assertions.assertEquals(2,jeu.histoPosition());
+
+        // try with inexisting value
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> jeu.histoRetablir());
+
+        // check if annuler throws error
+        jeu.histoAnnulerCoup();
+        jeu.histoAnnulerCoup();
+
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> jeu.histoAnnulerCoup());
     }
 
     @Test
     public void testGagnant() {
-        // a tester
+        //check before start game
+        Assertions.assertEquals(0,jeu.quiGagnant());
+        Assertions.assertFalse(jeu.estGagnant());
+
+        jeu.poserPersonnage(new Point(1,2), 1);
+        jeu.poserPersonnage(new Point(2,2), 1);
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,4),2);
+
+        jeu.Construire(new Point(2,3));
+        jeu.deplacerPersonnage(new Point(2,2), new Point(2,3));
+
+        jeu.Construire(new Point(3,4));
+        jeu.Construire(new Point(3,4));
+
+        //check random time in game
+        Assertions.assertEquals(0,jeu.quiGagnant());
+        Assertions.assertFalse(jeu.estGagnant());
+
+        jeu.deplacerPersonnage(new Point(2,3), new Point(3,4));
+
+        jeu.Construire(new Point(2,3));
+        jeu.Construire(new Point(2,3));
+
+        jeu.deplacerPersonnage(new Point(3,4),new Point(2,3));
+
+        // after perso1 wins
+        Assertions.assertEquals(1,jeu.quiGagnant());
+        Assertions.assertTrue(jeu.estGagnant());
     }
 
     @Test
-    public void testToString() {
+    public void testCalculJouerEnJeu() {
+        Assertions.assertEquals(0,jeu.calculJoueurEnJeu());
+
+        jeu.poserPersonnage(new Point(1,2), 1);
+        jeu.poserPersonnage(new Point(2,2), 1);
+
+        Assertions.assertEquals(0,jeu.calculJoueurEnJeu());
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,4),2);
+
+        jeu.deplacerPersonnage(new Point(1,2),new Point(2,3));
+        jeu.Construire(new Point(1,2));
+
+        jeu.deplacerPersonnage(new Point(2,2),new Point(2,4));
+        jeu.Construire(new Point(1,2));
+
+        Assertions.assertEquals(0,jeu.calculJoueurEnJeu());
+    }
+
+    @Test
+    public void testGetNbVoisin() {
+        VerificateurPion vp = new VerificateurPion(jeu);
+        VerificateurEtage ve = new VerificateurEtage(jeu);
+
+        jeu.poserPersonnage(new Point(1,2), 1);
+        jeu.poserPersonnage(new Point(2,2), 1);
+
+        jeu.poserPersonnage(new Point(3,3),2);
+        jeu.poserPersonnage(new Point(4,4),2);
+
+        jeu.deplacerPersonnage(new Point(4,4), new Point(3,4));
+        jeu.Construire(new Point(4,4));
+
+        Assertions.assertEquals(7, jeu.getNbVoisin(new Point(1,2), vp));
+        Assertions.assertEquals(6, jeu.getNbVoisin(new Point(3,3), vp));
+
+        Assertions.assertEquals(4, jeu.getNbVoisin(new Point(3,4), ve));
+
+        // test with negative values
+        Assertions.assertEquals(0, jeu.getNbVoisin(new Point(1,-2), vp));
+        Assertions.assertEquals(0, jeu.getNbVoisin(new Point(-3,4), ve));
+
+        // test with bigger than board values
+        Assertions.assertEquals(0, jeu.getNbVoisin(new Point(7,8), vp));
+        Assertions.assertEquals(0, jeu.getNbVoisin(new Point(9,8), ve));
+    }
+
+    @Test
+    public void testToStringEtgetJoueurEnJeu() {
         Plateau p = new Plateau(5, 5);
         // before placing personnages
         String expected = "Au joueur " + jeu.getJoueurEnJeu() + " de jouer sur le plateau :\n" + p;
