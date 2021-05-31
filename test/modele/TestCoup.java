@@ -54,14 +54,14 @@ public class TestCoup {
         Assertions.assertEquals(0 , coup.getConstruction().CompareTo(new Point(2,1)));
         Assertions.assertEquals(0 , coupDeplacement.getConstruction().CompareTo(new Point(3,3)));
 
-       // test construction with negative values
+       // construction de test avec des valeurs négatives
         coup.setConstruction(new Point(-2,-2));
         coupVide.setConstruction(new Point(-1,-2));
 
         Assertions.assertEquals( 0 , coup.getConstruction().CompareTo(new Point(-2,-2))); // should fail!!!
         Assertions.assertEquals( 0 , coupVide.getConstruction().CompareTo(new Point(-1,-2))); // should fail!!!
 
-        // test with bigger than plateau values
+        //test avec des valeurs supérieures au plateau
         coup.setConstruction(new Point(500,500));
         coupVide.setConstruction(new Point(400,400));
 
@@ -74,7 +74,7 @@ public class TestCoup {
         Assertions.assertEquals( 0 , coupVide.getDepart().CompareTo(new Point(1,1)));
         Assertions.assertEquals(0, coupDeplacement.getDepart().CompareTo(new Point(3,2)));
 
-        // with big numbers
+        // avec de grands nombres
         coupVide.setDeplacement(new Point(500,500),new Point(600, 600));
 
         Assertions.assertEquals( 0 , coupVide.getDepart().CompareTo(new Point(500,500))); // should fail!!!

@@ -26,16 +26,16 @@ public class TestVerificateurPion {
         jeu.poserPersonnage(new Point(4,3),2);
         jeu.deplacerPersonnage(new Point(1,2), new Point(2,3));
 
-        // make a valid move
+        // faire un geste valable
         Assertions.assertTrue(vPion.verifie(new Point(3,4), new Point(4,4)));
 
-        // try to move outside of the allowed space
+        // essayez de sortir de l'espace autorisé
         Assertions.assertFalse(vPion.verifie(new Point(2,3), new Point(3,4)));
 
-        // move to a negative point
+        // passer à un point négatif
         Assertions.assertFalse(vPion.verifie(new Point(0,0),new Point(0,-1)));
 
-        // move to a point bigger than board size
+        // déplacer vers un point plus grand que la taille du tableau
         Assertions.assertFalse(vPion.verifie(new Point(5,5),new Point(6,5)));
     }
 }

@@ -19,28 +19,28 @@ public class TestActionUser {
     // TODO CHECK FOR RETABLIR COUP
     @Test
     public void testJouerAction() {
-        // place players
+        // placer les joueurs
         jeu.poserPersonnage(new Point(1,1),1);
         jeu.poserPersonnage(new Point(2,1),1);
 
         jeu.poserPersonnage(new Point(3,3),2);
         jeu.poserPersonnage(new Point(4,4),2);
 
-        // select and move person
+        // selectionner et avancer personnage
         actionUser.selectionnerPerso(new Point(2,1));
 
         actionUser.avancerPerso(new Point(1,2),true,false);
 
-        // test new position
+        // tester position nouveau
         Assertions.assertEquals(1, jeu.quiEstIci(new Point(1,2)));
 
-        // construct after deplacement
+        // construire après déplacement
         actionUser.construireIci(new Point(2,2),true);
 
-        // check if construct worked
+        // vérifier si la construction a fonctionné
         Assertions.assertEquals(1,jeu.getNbEtage(new Point(2,2)));
 
-        // check position
+        // vérifier la position
         Assertions.assertEquals(0, actionUser.recupPosiPerso().CompareTo(new Point(1,2)));
     }
 
@@ -52,12 +52,12 @@ public class TestActionUser {
         jeu.poserPersonnage(new Point(3,3),2);
         jeu.poserPersonnage(new Point(4,4),2);
 
-        // test before selectionner perso
+        // test avant selectionner perso
         actionUser.deplacer(new Point(2,2),true);
 
         Assertions.assertEquals(0,jeu.quiEstIci(new Point(2,2)));
 
-        // select and move person
+        // sélectionner et déplacer la personne
         actionUser.selectionnerPerso(new Point(2,1));
         actionUser.deplacer(new Point(2,2),true);
 

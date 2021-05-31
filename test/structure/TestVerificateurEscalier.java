@@ -28,24 +28,24 @@ public class TestVerificateurEscalier {
         jeu.deplacerPersonnage(new Point(1,2), new Point(1,1));
         jeu.Construire(new Point(1,1));
 
-        // check construction
+        // vérifier la construction
         Assertions.assertEquals(1,jeu.getNbEtage(new Point(1,1)));
 
-        // check for different ngEtages
+        // vérifier les différents ngEtages
         Assertions.assertFalse(vEscalier.verifie(new Point(1,1),new Point(1,2)));
 
         jeu.Construire(new Point(1,0));
 
-        // check construction
+        // vérifier la construction
         Assertions.assertEquals(1,jeu.getNbEtage(new Point(1,0)));
 
-        // check for same ngEtages
+        // vérifier les mêmes ngEtages
         Assertions.assertTrue(vEscalier.verifie(new Point(1,1),new Point(1,0)));
 
-        // check for negative points
+        // vérifier les points négatifs
         Assertions.assertFalse(vEscalier.verifie(new Point(-1,-2),new Point(-1,-1)));
 
-        // check for bigger than board points
+        // vérifier les points plus gros que le conseil
         Assertions.assertFalse(vEscalier.verifie(new Point(5,5),new Point(5,5)));
     }
 }

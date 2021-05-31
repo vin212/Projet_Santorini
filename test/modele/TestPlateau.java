@@ -19,14 +19,6 @@ public class TestPlateau {
         Assertions.assertEquals(6, plateau.getLargeur());
     }
 
-    //TODO
-    @Test
-    public void testAfficherPlateau_CMD() {
-        //doCallRealMethod().when(plateau2).afficher_CMD();
-        //plateau2.afficher_CMD();
-        //verify(plateau2, times(1)).afficher_CMD();
-    }
-
     @Test
     public void testConstruire() {
         Point point = new Point(1,0);
@@ -39,7 +31,7 @@ public class TestPlateau {
 
         Assertions.assertEquals(3,plateau.getNbEtage(point));
 
-        // construire more than 4 etage
+        // construire plus de 4 etage
         plateau.Construire(point);
         plateau.Construire(point);
         plateau.Construire(point);
@@ -58,7 +50,7 @@ public class TestPlateau {
 
         Assertions.assertEquals(1, plateau.getNbEtage(point));
 
-        // detruire after 0 etage
+        // detruire apres 0 etage
         plateau.detruireEtage(point);
         plateau.detruireEtage(point);
 
@@ -99,23 +91,23 @@ public class TestPlateau {
         plateau.poserPersonnage(new Point(1,1), 1);
         plateau.poserPersonnage(new Point(1,3), 2);
 
-        //check if person can be placed after poserPersonnage
+        // vérifier si la personne peut être placée après poserPersonnage
         Assertions.assertFalse(plateau.peutPoserUnPerso(new Point(1,1)));
         Assertions.assertFalse(plateau.peutPoserUnPerso(new Point(1,3)));
 
-        // change position of the person
+        // changer la position de la personne
         plateau.deplacerPersonnage(new Point(1,3), new Point(2,2));
 
-        // checks if new position is available to poser personnage
+        // vérifie si un nouveau poste est disponible pour poser personnage
         Assertions.assertFalse(plateau.peutPoserUnPerso(new Point(2,2)));
 
-        //checks if old position is placable for poser personnage
+        // vérifie si l'ancienne position est plausible pour poseur personnage
         Assertions.assertTrue(plateau.peutPoserUnPerso(new Point(1,3)));
 
-        // check for out of border
+        // vérifier hors frontière
         Assertions.assertFalse(plateau.peutPoserUnPerso(new Point(7,7)));
 
-        // check for negative values
+        // vérifier les valeurs négatives
         Assertions.assertFalse(plateau.peutPoserUnPerso(new Point(-2,-2)));
     }
 
@@ -124,24 +116,24 @@ public class TestPlateau {
         plateau.poserPersonnage(new Point(1,1), 1);
         plateau.poserPersonnage(new Point(1,3), 2);
 
-        //check if there is a person
+        // vérifier s'il y a une personne
         Assertions.assertTrue(plateau.aPersonnage(new Point(1,1)));
         Assertions.assertTrue(plateau.aPersonnage(new Point(1,3)));
         Assertions.assertFalse(plateau.aPersonnage(new Point(1,2)));
 
-        // change position of the person
+        // changer la position de la personne
         plateau.deplacerPersonnage(new Point(1,3), new Point(2,2));
 
-        // checks old position
+        // vérifie l'ancienne position
         Assertions.assertTrue(plateau.aPersonnage(new Point(2,2)));
 
-        //checks new position
+        //vérifie la nouvelle position
         Assertions.assertFalse(plateau.aPersonnage(new Point(1,3)));
 
-        // check for out of border
+        // vérifier hors frontière
         Assertions.assertFalse(plateau.aPersonnage(new Point(7,7)));
 
-        // check for negative values
+        // vérifier les valeurs négatives
         Assertions.assertFalse(plateau.aPersonnage(new Point(-1,-3)));
     }
 }

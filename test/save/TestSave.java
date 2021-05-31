@@ -30,14 +30,14 @@ public class TestSave {
 
         save.sauver("test");
 
-        // check creation of the file
+        // vérifier la création du fichier
         File file = new File("sauvegardes/test.data");
         Assertions.assertTrue(file.exists());
 
-        // try to create same file
+        // essayez de créer le même fichier
         save.sauver("");
 
-        // check creation of the file for empty string
+        // vérifier la création du fichier pour la chaîne vide
         File file1 = new File("sauvegardes/.data");
         Assertions.assertTrue(file1.exists());
     }
@@ -51,11 +51,11 @@ public class TestSave {
     public void testSupprimer() {
         save.supprSave("test");
 
-        // check creation of the file
+        // vérifier la création du fichier
         File file = new File("sauvegardes/test.data");
         Assertions.assertFalse(file.exists());
 
-        // try to create same file
+        // supprimer le fichier
         save.supprSave("");
 
         // check creation of the file for empty string

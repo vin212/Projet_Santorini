@@ -28,13 +28,13 @@ public class TestVerificateurEtage {
 
         Assertions.assertTrue(vEtage.verifie(new Point(2,3),new Point(3,4)));
 
-        // try construire while a person on that point
+        // essayez de construire une personne sur ce point
         Assertions.assertFalse(vEtage.verifie(new Point(2,3),new Point(4,3)));
 
-        // try negative value
+        // essayez une valeur négative
         Assertions.assertFalse(vEtage.verifie(new Point(2,3),new Point(-4,-3)));
 
-        // try bigger than board size
+        // essayez plus grand que la taille de la planche
         Assertions.assertFalse(vEtage.verifie(new Point(2,3),new Point(7,7)));
     }
 }
