@@ -17,10 +17,10 @@ public class Heuristique {
         this.j = jeu;
     }
 
-    public ArrayList<Collection<Point>> observes(Point p) {
+    public ArrayList<ArrayList<Point>> observes(Point p) {
         ArrayList<Point> deplacement = new ArrayList<Point>(0);
         ConcurrentSkipListSet<Point> construction = new ConcurrentSkipListSet<Point>();
-        ArrayList<Collection<Point>> successeur = new ArrayList<Collection<Point>>(2);
+        ArrayList<ArrayList<Point>> successeur = new ArrayList<ArrayList<Point>>(2);
         VerificateurPion vp = new VerificateurPion(j);
         VerificateurEtage ve = new VerificateurEtage(j);
 
@@ -36,7 +36,7 @@ public class Heuristique {
             }
         }
         successeur.add(0, deplacement);
-        successeur.add(1, construction);
+        successeur.add(1, new ArrayList<Point>(construction));
         return successeur;
     }
 
@@ -90,43 +90,45 @@ public class Heuristique {
         return res;
     }
 
-    // Retourne -1 si l'adversaire peut construire sur le point donné.
-    public int evaluationConstructionAdverse(Point p, Collection<Point> c) {
+    // Retourne vrai si l'adversaire peut construire sur le point donné.
+    public boolean constructionAdverse(Point p, Collection<Point> c) {
         if (c.contains(p)) {
-            return -1;
+            return true;
         }
-        return 0;
+        return false;
     }
 
     // Retourne une liste de point de troisième étage de la liste.
     public ArrayList<Point> peutMonter3(ArrayList<Point> deplacement) {
         Iterator<Point> it = deplacement.iterator();
         Point d;
-        ArrayList<Point> res = new ArrayList<Point>(0);
+        ConcurrentSkipListSet<Point> res = new ConcurrentSkipListSet<Point>();
         while (it.hasNext()) {
             d = it.next();
             if (j.getNbEtage(d) == 3) {
                 res.add(d);
             }
         }
-        return res;
+        return new ArrayList<Point>(res);
     }
 
     // Retourne le nombre de déplacement possible.
-    public int peutBouger(Point p, ArrayList<Point> deplacement) {
+    public int peutBouger(ArrayList<Point> deplacement) {
         return deplacement.size();
     }
 
     // Retourne le nombre de construction qui empêche un pion adverse de monter
-    public int constructionBloquante(Point pionAdverse, ArrayList<Point> construction) {
+    public int constructionBloquante(Point [] pionAdverse, ArrayList<Point> construction) {
         Iterator<Point> it = construction.iterator();
         Point c;
         int res = 0;
         while (it.hasNext()) {
             c = it.next();
             // Si l'ennemi peut monter
-            if ((j.getNbEtage(c) == (j.getNbEtage(pionAdverse) + 1)) && j.peutPoserUnPerso(pionAdverse, c)) {
+            if ((j.getNbEtage(c) == (j.getNbEtage(pionAdverse[0]) + 1)) && (j.peutPoserUnPerso(pionAdverse[0], c))) {
                 res++;
+            } else if (( j.getNbEtage(c) == (j.getNbEtage(pionAdverse[1]) + 1)) && (j.peutPoserUnPerso(pionAdverse[1], c))) {
+                res ++;
             }
         }
         return res;
@@ -134,13 +136,13 @@ public class Heuristique {
 
     // Retourne le nombre de construction qui empêche un pion adverse de monter sur
     // un 3eme etage
-    public int constructionBloquante3(Point pionAdverse, ArrayList<Point> construction) {
+    public int constructionBloquante3(Point [] pionAdverse, ArrayList<Point> construction) {
         Iterator<Point> it = construction.iterator();
         Point c;
         int res = 0;
         while (it.hasNext()) {
             c = it.next();
-            if ((j.getNbEtage(c) == 3) && j.peutPoserUnPerso(pionAdverse, c)) {
+            if ((j.getNbEtage(c) == 3) && (j.peutPoserUnPerso(pionAdverse[0], c) || j.peutPoserUnPerso(pionAdverse[1], c))) {
                 res++;
             }
         }
