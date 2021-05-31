@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.io.*;
 import java.util.ArrayList;
 
+
 import modele.*;
 import structure.*;
 import controleur.*;
@@ -118,7 +119,7 @@ public class PlateauInterface_2 extends JComponent {
 		int inter_batiment_largeur = width/50; 
 		int inter_batiment_hauteur = height/50;
 
-		int taille_hauteur = height/6-height/65;
+		int taille_hauteur = height/6 - height/65;
 		int taille_largeur = width/6 - width/65;
 
 		int x_calcul = ((x-positionPremierBatiment.getx()) / (inter_batiment_largeur + taille_largeur));

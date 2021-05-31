@@ -10,6 +10,7 @@ import save.*;
 import structure.*;
 
 import interfaceUser.*;
+import global.*;
 
 public class EcouteurDeSouris extends MouseAdapter {
 
@@ -20,10 +21,15 @@ public class EcouteurDeSouris extends MouseAdapter {
 
     NomFenetres name;
     String nomFichier;
+    String nomProp;
 
     Fenetres f;
 
     Jeu j;
+
+    Configuration prop;
+
+    int nb;
 
     public EcouteurDeSouris(PlateauInterface_2 plateau, GestionUser g, IA ia1, IA ia2)
 	{
@@ -41,6 +47,14 @@ public class EcouteurDeSouris extends MouseAdapter {
 		this.nomFichier = nomFichier;
 		this.j = j;
 		this.f = f;
+	}
+
+	public EcouteurDeSouris (Configuration prop, String nomProp, int nb)
+	{
+		this.name = NomFenetres.OPTION;
+		this.prop = prop;
+		this.nomProp = nomProp;
+		this.nb = nb;
 	}
 
 	@Override
@@ -82,6 +96,10 @@ public class EcouteurDeSouris extends MouseAdapter {
 				//f.repaint();
 			}
 			System.out.println("nom fichier : " + nomFichier);
+		}
+		else if (name == NomFenetres.OPTION)
+		{
+			System.out.println("nomProp : " + nomProp);
 		}
 	}
 }
