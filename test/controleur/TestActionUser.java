@@ -63,6 +63,14 @@ public class TestActionUser {
 
         Assertions.assertEquals(1,jeu.quiEstIci(new Point(2,2)));
 
+        actionUser.construireIci(new Point(2,3), true);
 
+        // test coup annuler
+        actionUser.annuler();
+        Assertions.assertEquals(0, jeu.getNbEtage(new Point(2,3)));
+
+        // retablir coup
+        actionUser.retablirCoup();
+        Assertions.assertEquals(1, jeu.getNbEtage(new Point(2,3)));
     }
 }
