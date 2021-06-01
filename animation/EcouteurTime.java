@@ -29,9 +29,14 @@ public class EcouteurTime extends AbstractAction{
 		{
 			throw new RuntimeException("a est null");
 		}
-		else
+		else if (anim.getType() == TypeAnimation.AVANCER)
 		{
 			anim.Avancer();
+			aire.repaint();
+		}
+		else if (anim.getType() == TypeAnimation.CLIGNOTER)
+		{
+			anim.changerEtat();
 			aire.repaint();
 		}
 	}

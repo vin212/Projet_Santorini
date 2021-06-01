@@ -23,6 +23,11 @@ public class Animation {
 
 	Configuration prop;
 
+	TypeAnimation type;
+
+	Point posi;
+	int etat;
+
 	public Animation(Point posiInit,Point posiFinal,PlateauInterface_2 aire, Configuration prop)
 	{
 		this.posiInit = posiInit;
@@ -36,7 +41,16 @@ public class Animation {
 		calculDirection ();
 		fin = false;
 
+		this.type = TypeAnimation.AVANCER;
 
+
+	}
+
+	public Animation(PlateauInterface_2 aire, Configuration prop, Point posi)
+	{
+		this.type = TypeAnimation.CLIGNOTER;
+		this.etat = 0;
+		this.posi = posi;
 	}
 
 	public void defTime(Timer t)
@@ -62,6 +76,21 @@ public class Animation {
 	public boolean estFini ()
 	{
 		return fin;
+	}
+
+	public TypeAnimation getType ()
+	{
+		return type;
+	}
+
+	public int getEtat ()
+	{
+		return this.etat;
+	}
+
+	public Point getPosi ()
+	{
+		return this.posi;
 	}
 
 	public void calculDirection ()
@@ -102,7 +131,7 @@ public class Animation {
         int y;
 		//System.out.println(this.posiActuel.getx()-this.posiFinal.getx());
 		//System.out.println("direction " + this.direction);
-		if ( Math.abs(this.posiActuel.getx() -this.posiFinal.getx()) > Math.abs(this.direction.getx())+10 || Math.abs(this.posiActuel.gety() -this.posiFinal.gety()) > Math.abs(this.direction.gety())+10)
+		if ( Math.abs(this.posiActuel.getx() -this.posiFinal.getx()) > Math.abs(this.direction.getx())+5 || Math.abs(this.posiActuel.gety() -this.posiFinal.gety()) > Math.abs(this.direction.gety())+5)
 		{
 			x  = this.posiActuel.getx() + this.direction.getx();
 			y = this.posiActuel.gety() + this.direction.gety();
@@ -119,6 +148,11 @@ public class Animation {
 			fin = true;
 		}
 
+	}
+
+	void changerEtat()
+	{
+		etat = (etat + 1) % 2;
 	}
 
 }

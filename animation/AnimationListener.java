@@ -18,7 +18,20 @@ public class AnimationListener{
 	{
 		this.anim = new Animation(posiInit,posiFinal,aire,prop);
 		this.e = new EcouteurTime(anim,aire);
-		this.t = new Timer(16,this.e);
+		this.t = new Timer(10,this.e);
+		anim.defTime(this.t);
+		
+		
+		this.t.start();
+		this.aire = aire;
+		aire.repaint();
+	}
+
+	public AnimationListener (PlateauInterface_2 aire, Configuration prop, structure.Point posi)
+	{
+		this.anim = new Animation(aire,prop, posi);
+		this.e = new EcouteurTime(anim,aire);
+		this.t = new Timer(50,this.e);
 		anim.defTime(this.t);
 		
 		
@@ -45,6 +58,16 @@ public class AnimationListener{
 	public boolean estFini()
 	{
 		return anim.estFini();
+	}
+
+	public int getEtat ()
+	{
+		return anim.getEtat();
+	}
+
+	public structure.Point getPosi ()
+	{
+		return anim.getPosi();
 	}
 
 }

@@ -34,8 +34,10 @@ public class PlateauInterface_2 extends JComponent {
 	Image joueurBord;
 	Image griserDeplacement;
 	Image griserConstructible;
+	Image animation;
 
 	public AnimationListener anim;
+	AnimationListener animSelect;
 
 	//Image joueurBord;
 
@@ -95,6 +97,9 @@ public class PlateauInterface_2 extends JComponent {
 		 	in = new FileInputStream(dossierPersonnage + "J2_2D.png");
 		 	J2 = ImageIO.read(in);
 
+		 	in = new FileInputStream(dossierPersonnage + "animation.png");
+		 	animation = ImageIO.read(in);
+
 		 	in = new FileInputStream(dossierPersonnage + "J2_2D_transparent.png");
 		 	J2Transparent = ImageIO.read(in);
 
@@ -147,6 +152,35 @@ public class PlateauInterface_2 extends JComponent {
 
 		
 		activerAnimation();
+		activerAnimationClignoter();
+	}
+
+	void activerAnimationClignoter()
+	{
+		int width = getSize().width;
+		int height = getSize().height;
+
+
+		int inter_batiment_largeur = width/50;
+		int inter_batiment_hauteur = height/50;
+
+		int taille_hauteur = height/6 - height/65 + 1;
+		int taille_largeur = width/6 - width/65 + 1;
+
+		Point positionPremierBatiment = new Point(width/12,height/12);
+
+		System.out.println("action User : " + actionUser.coupJouer.getDepart());
+		if (actionUser != null && actionUser.recupPosiPerso () != null)
+		{
+		int x_calcul = (inter_batiment_largeur + taille_largeur) * actionUser.recupPosiPerso ().getx() + positionPremierBatiment.getx();
+		int y_calcul = (inter_batiment_hauteur + taille_hauteur) *  actionUser.recupPosiPerso ().gety() + positionPremierBatiment.gety(); 
+			
+		Point calcul = new Point (x_calcul,y_calcul);
+		if (j.getAction(j.getJoueurEnJeu()) == modele.Action.EN_COURS_DE_DEPLACEMENT)
+		{
+			animSelect = new AnimationListener(this,j.prop,calcul);
+		}
+		}
 	}
 
 	void activerAnimation()
@@ -407,6 +441,19 @@ public class PlateauInterface_2 extends JComponent {
 			else
 			{
 				drawable.drawImage(J2,i,k, taille_largeur,taille_hauteur,null);
+			}
+		}
+
+		if (animSelect != null && j.getAction(j.getJoueurEnJeu()) == modele.Action.EN_COURS_DE_DEPLACEMENT)
+		{
+			Point posi = animSelect.getPosi();
+			if (animSelect.getEtat() == 0)
+			{
+				//System.out.println(0);
+			}
+			else
+			{
+				drawable.drawImage(animation, posi.getx(), posi.gety(), taille_largeur,taille_hauteur,null);
 			}
 		}
 	
