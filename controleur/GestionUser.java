@@ -176,10 +176,9 @@ public class GestionUser
 			iaLocal = ia2;
 		}
 
-		if (aire1.anim != null)
-		{
-			System.out.println("fini anim : " + aire1.anim.estFini());
-		}
+	
+			//System.out.println("fini anim : " + aire1.animFaite);
+		
 		
 
 		if (j.getTour() <= 1 && (j.getAction(numJoueur) == modele.Action.AFK ||j.getAction(numJoueur) == modele.Action.PREMIER_PLACEMENT))
@@ -221,21 +220,25 @@ public class GestionUser
 		else if (j.getAction(numJoueur) != modele.Action.A_CONSTRUIRE)
 		{
 			actionUser.initActionUser (j);
+			
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 			coupIA = iaLocal.joue();
 			actionUser.jouerAction(coupIA.getDepart());
+			aire1.animationIA();
 			actionUser.jouerAction(coupIA.getArrive());
 			j.setAction (numJoueur,modele.Action.A_CONSTRUIRE);
-			aire1.animationIA(coupIA.getDepart(),coupIA.getArrive());
+			
+			aire1.animFaite = false;
+			aire1.animationIA();
 		}
-		else if (j.getAction(numJoueur) == modele.Action.A_CONSTRUIRE && aire1.anim.estFini())
+		else if ( (aire1.anim != null && j.getAction(numJoueur) == modele.Action.A_CONSTRUIRE &&aire1.anim.estFini()))
 		{
 			actionUser.jouerAction(coupIA.getConstruction());
 			j.addTour();
 			actionUser.initActionUser (j);
 			numJoueur = j.getJoueurEnJeu();
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
-			aire1.anim.anim.posiInit = new Point(-1,-1);
+			//aire1.anim.anim.posiInit = new Point(-1,-1);
 
 		}
 
