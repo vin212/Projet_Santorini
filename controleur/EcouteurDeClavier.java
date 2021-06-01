@@ -103,7 +103,9 @@ public class EcouteurDeClavier  extends KeyAdapter{
             }
         }
         else if(source==KeyEvent.VK_LEFT)
+        {
             System.out.println("Gauche");
+        }
         else
         {
             toucheAppuier[0] = -1;

@@ -25,7 +25,15 @@ public class Configuration
 
 	private void chargerProprietes(String nom) {
 
-		InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(nom);
+		FileInputStream in = null;
+		try
+		{
+			in = new FileInputStream(nom);
+		}
+		catch (Exception exept)
+		{
+
+		}
 		//System.out.println(in);
 
 		if (in != null)

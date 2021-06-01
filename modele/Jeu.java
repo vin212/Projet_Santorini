@@ -18,7 +18,7 @@ public class Jeu{
 	//TODO hash code à partir d'une base 5 (5^33 au max)
 
 	boolean aideActiver;
-	Configuration prop;
+	public Configuration prop;
 
 
 	public Jeu (Configuration prop){

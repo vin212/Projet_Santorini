@@ -7,10 +7,17 @@ public class ActionUser {
 
 	Jeu j;
 	Point posi_init;
-	Coup coupJouer;
+	public Coup coupJouer;
 
 
 	public ActionUser (Jeu j)
+	{
+		this.j = j;
+		this.posi_init = new Point(-1,-1);
+		this.coupJouer = new Coup();
+	}
+
+	public void initActionUser(Jeu j)
 	{
 		this.j = j;
 		this.posi_init = new Point(-1,-1);

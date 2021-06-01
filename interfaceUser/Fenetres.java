@@ -40,7 +40,7 @@ public class Fenetres {
 
 	Integer [] toucheAppuier;
 
-	ActionUser action;
+	ActionUser actionUser;
 
 	Configuration prop;
 
@@ -54,6 +54,7 @@ public class Fenetres {
 		this.toucheAppuier[1] = -1;
 
 		this.prop = prop;
+		this.actionUser= new ActionUser(j);
 		
 		//ia1.activeIA();
 
@@ -74,7 +75,7 @@ public class Fenetres {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(Integer.parseInt(this.prop.recupValeur("largeur_fenetre")),Integer.parseInt(prop.recupValeur("hauteur_fenetre")));
 		frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
-		this.action = new ActionUser(j);
+		//this.action = new ActionUser(j);
 	}
 
 	public NomFenetres getNomFenetres()
@@ -150,7 +151,8 @@ public class Fenetres {
 		
 		frame.getContentPane().removeAll();
 	 
-		aire2 = new PlateauInterface_2 (j);
+		
+
 
 		JPanel leJoueur = new JPanel ();
 		JLabel action = new JLabel("AFK");
@@ -159,6 +161,9 @@ public class Fenetres {
 		action.setForeground(new Color(255,255,255));
 
 		leJoueur.add(action);
+
+		aire2 = new PlateauInterface_2 (j,actionUser);
+		this.g = new GestionUser( this.j, ia1, ia2, aire2,leJoueur,action, actionUser);
 
 		
 		JButton boutonRetour = new JButton("<");
@@ -203,7 +208,7 @@ public class Fenetres {
 		frame.add(containerEst,BorderLayout.EAST);
 		frame.setVisible(true);
 
-		this.g = new GestionUser( this.j, ia1, ia2, aire2,leJoueur,action);
+		
 		this.chrono = new Timer( 50, new EvenementTemp(g));
 		chrono.start();
 

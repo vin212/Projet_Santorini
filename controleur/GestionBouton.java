@@ -61,7 +61,6 @@ public class GestionBouton extends JButton implements ActionListener
 	{
 		this.type = type;
 		this.action = new ActionUser(j);
-		this.aire2 = aire2;
 
 		this.f = f;
 		this.texte = texte;
