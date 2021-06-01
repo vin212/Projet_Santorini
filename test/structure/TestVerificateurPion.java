@@ -36,6 +36,6 @@ public class TestVerificateurPion {
         Assertions.assertFalse(vPion.verifie(new Point(0,0),new Point(0,-1)));
 
         // déplacer vers un point plus grand que la taille du tableau
-        Assertions.assertFalse(vPion.verifie(new Point(5,5),new Point(6,5)));
+        Assertions.assertFalse(vPion.verifie(new Point(4,4),new Point(4,5)));
     }
 }

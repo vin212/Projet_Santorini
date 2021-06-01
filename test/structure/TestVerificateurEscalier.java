@@ -45,7 +45,7 @@ public class TestVerificateurEscalier {
         // vérifier les points négatifs
         Assertions.assertFalse(vEscalier.verifie(new Point(-1,-2),new Point(-1,-1)));
 
-        // vérifier les points plus gros que le conseil
-        Assertions.assertFalse(vEscalier.verifie(new Point(5,5),new Point(5,5)));
+        // vérifier les points plus gros que le tableau
+        Assertions.assertFalse(vEscalier.verifie(new Point(5,5),new Point(6,5)));
     }
 }
