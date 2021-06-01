@@ -55,5 +55,14 @@ public class TestVerificateurMonte {
         jeu.detruireEtage(new Point(3,2));
 
         Assertions.assertFalse(vMonte.verifie(new Point(3,2),new Point(2,3)));
+
+        // tester avec un étage 4
+        jeu.Construire(new Point(3,2));
+        jeu.deplacerPersonnage(new Point(2,3), new Point(3,2));
+        jeu.Construire(new Point(2,3));
+
+        Assertions.assertFalse(vMonte.verifie(new Point(3,2), new Point(2,3)));
+
+
     }
 }

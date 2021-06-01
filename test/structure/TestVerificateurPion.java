@@ -29,13 +29,16 @@ public class TestVerificateurPion {
         // faire un geste valable
         Assertions.assertTrue(vPion.verifie(new Point(3,4), new Point(4,4)));
 
-        // essayez de sortir de l'espace autorisé
+        // essayer de poser un pion sur un autre
         Assertions.assertFalse(vPion.verifie(new Point(2,3), new Point(3,4)));
 
         // passer à un point négatif
         Assertions.assertFalse(vPion.verifie(new Point(0,0),new Point(0,-1)));
 
         // déplacer vers un point plus grand que la taille du tableau
-        Assertions.assertFalse(vPion.verifie(new Point(4,4),new Point(4,5)));
+        Assertions.assertFalse(vPion.verifie(new Point(4,4),new Point(5,4)));
+
+        // déplacer un pion de l'extérieur à l'intérieur du tableau
+        Assertions.assertFalse(vPion.verifie(new Point(5,5), new Point(4,4)));
     }
 }

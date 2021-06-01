@@ -6,6 +6,30 @@ import org.junit.jupiter.api.Test;
 public class PointTest {
 
     @Test
+    public void testGetXCoordinate() {
+        Point pointTest = new Point(1, 2);
+        Assertions.assertEquals(1, pointTest.getx());
+    }
+
+    @Test
+    public void testGetNegativeXCoordinate() {
+        Point pointTest = new Point(-1, -2);
+        Assertions.assertEquals(1, pointTest.getx());
+    }
+
+    @Test
+    public void testGetYCoordinate() {
+        Point pointTest = new Point(1, 2);
+        Assertions.assertEquals(2, pointTest.gety());
+    }
+
+    @Test
+    public void testGetNegativeYCoordinate() {
+        Point pointTest = new Point(-1, -2);
+        Assertions.assertEquals(-2, pointTest.gety());
+    }
+
+    @Test
     public void testSameCoordinatevalues() {
         Point comparePoint = new Point(1, 2);
         Assertions.assertEquals(0, new Point(1, 2).CompareTo(comparePoint));
