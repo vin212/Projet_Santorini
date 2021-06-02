@@ -37,13 +37,13 @@ public class Joueur {
 	public int enleverPerso (Point p) 
 	{
 		int retour = 0;
-		if (this.perso2 != null && p.CompareTo(this.perso2) == 0 )
+		if (this.perso2 != null && p.compareTo(this.perso2) == 0 )
 		{
 			nbPersoPlacer--;
 			this.perso2 = null;
 			retour = 0;
 		}
-		else if (this.perso1 != null && p.CompareTo(this.perso1) == 0)
+		else if (this.perso1 != null && p.compareTo(this.perso1) == 0)
 		{
 			nbPersoPlacer--;
 			this.perso1 = null;
@@ -76,7 +76,7 @@ public class Joueur {
 		int retour;
 		int perso = checkPerso(posi_init);
 
-		if (posi_init.CompareTo(posi_final) != 0){
+		if (posi_init.compareTo(posi_final) != 0){
 			if (perso == 1){
 				placerPerso1(posi_final);
 				retour = 0;
@@ -95,10 +95,10 @@ public class Joueur {
 	} 
 
 	public int checkPerso (Point posi_init){
-		if (this.perso1.CompareTo (posi_init) == 0){
+		if (this.perso1.compareTo (posi_init) == 0){
 			return 1;
 		}
-		else if (this.perso2.CompareTo (posi_init) == 0)
+		else if (this.perso2.compareTo (posi_init) == 0)
 		{
 			return 2;
 		} else {
