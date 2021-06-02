@@ -39,7 +39,6 @@ public class GestionUser
 		this.aire1 = aire1;
 
 		this.leJoueur = leJoueur;
-		this.gagnant = gagnant;
 
 		this.labelAction = labelAction;
 
