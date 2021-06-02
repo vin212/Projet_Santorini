@@ -262,7 +262,6 @@ public class GestionBouton extends JButton implements ActionListener
 		String j1ToString = j1.getSelectedItem().toString();
 		String j2ToString = j2.getSelectedItem().toString();
 
-		boolean retour = false;
 		f.j = new Jeu(prop);
 
 		f.ia1 = null;
@@ -270,29 +269,21 @@ public class GestionBouton extends JButton implements ActionListener
 
 		if (j1ToString == "Joueur" && j2ToString == "Joueur")
 		{
-			System.out.println("joueur vs joueur");
-			retour = true;
 		}
 		else if (j2ToString =="IA Facile")
 		{
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
 			f.ia1.activeIA();
-			System.out.println("joueur vs ia facile");
-			retour = true;
 		}
 		else if (j2ToString =="IA Normal")
 		{
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
 			f.ia1.activeIA();
-			System.out.println("joueur vs ia normal");
-			retour = true;
 		}
 		else if (j2ToString =="IA Difficile")
 		{
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
 			f.ia1.activeIA();
-			System.out.println("joueur vs ia difficile");
-			retour = true;
 		}
 
 
@@ -300,25 +291,19 @@ public class GestionBouton extends JButton implements ActionListener
 		{
 			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
 			f.ia2.activeIA();
-			System.out.println("joueur vs ia facile");
-			retour = true;
 		}
 		else if (j1ToString =="IA Normal")
 		{
 			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
 			f.ia2.activeIA();
-			System.out.println("joueur vs ia facile");
-			retour = true;
 		}
 		else if (j1ToString =="IA Difficile")
 		{
 			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
 			f.ia2.activeIA();
-			System.out.println("joueur vs ia facile");
-			retour = true;
 		}
 		System.out.println(j1ToString + " vs " + j2ToString);
 
-		return retour;
+		return true;
 	} 
 }
