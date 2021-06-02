@@ -70,44 +70,36 @@ public class EcouteurDeSouris extends MouseAdapter {
 	{
 		if (name == NomFenetres.JEU && ia2 != null && !ia2.estActive() && g.iaJoue && ia1 != null && !ia1.estActive())
         {
-        	System.out.println("reactover ia-----------------------");
             ia1.activeIA();
             ia2.activeIA();
         }
         else if (name == NomFenetres.JEU && ia1 != null && !ia1.estActive() && g.iaJoue )
         {
-            System.out.println("reactover ia-----------------------");
             ia1.activeIA();
         }
         else if (name == NomFenetres.JEU && ia2 != null && !ia2.estActive() && g.iaJoue )
         {
-            System.out.println("reactover ia-----------------------");
             ia2.activeIA();
         }
 
 		else if (name == NomFenetres.JEU && !g.iaJoue)
 		{
-			System.out.println("faire action: ");
 			plateau.FaireActionUser (e.getX(),e.getY());
 		}
 		else if (name == NomFenetres.CHARGER)
 		{
-			//System.out.println("ok ");
 			//j.Construire(new Point(0,0));
-			f.j = null;
 			Save save = new Save(f.j);
 			f.j = save.chargerSauvegarde(nomFichier);
 			if (f.j != null)
 			{
 				f.ChangerFenetres(NomFenetres.JEU);
 				f.gestionFenetre ();
-				//f.repaint();
 			}
-			//System.out.println("nom fichier : " + nomFichier);
 		}
 		else if (name == NomFenetres.OPTION)
 		{
-			System.out.println("nomProp : " + nomProp);
+			prop.envoyerLogger("La propriété : " + nomProp + " a été changer",TypeLogger.WARNING);
 			if (clv != null)
 			{
 				frame.removeKeyListener(clv);

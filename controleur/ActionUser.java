@@ -3,25 +3,30 @@ package controleur;
 import modele.*;
 import structure.*;
 
+import global.*;
+
 public class ActionUser {
 
 	Jeu j;
 	Point posi_init;
 	public Coup coupJouer;
+	Configuration prop;
 
 
-	public ActionUser (Jeu j)
+	public ActionUser (Jeu j, Configuration prop)
 	{
 		this.j = j;
 		this.posi_init = new Point(-1,-1);
 		this.coupJouer = new Coup();
+		this.prop = prop;
 	}
 
-	public void initActionUser(Jeu j)
+	public void initActionUser(Jeu j, Configuration prop)
 	{
 		this.j = j;
 		this.posi_init = new Point(-1,-1);
 		this.coupJouer = new Coup();
+		this.prop = prop;
 	}
 
 	public Point recupPosiPerso ()
@@ -44,6 +49,7 @@ public class ActionUser {
 				break;
 				case A_CONSTRUIRE :
 					construireIci (posi_final,true);
+					
 				break;
 				case PREMIER_PLACEMENT :
 					placerPerso (posi_final,a,true);
@@ -52,13 +58,12 @@ public class ActionUser {
 					placerPerso (posi_final,a,true);
 				break;
 				case AFK :
-					System.out.println("afk");
+					//System.out.println("afk");
 				break;
 				default:
-					System.out.println("bug");
+					prop.envoyerLogger("action invalide",TypeLogger.WARNING);;
 			}
 		}
-		//avancerPerso (posi_final);
 	}
 
 	public void selectionnerPerso(Point posi_final){
@@ -66,6 +71,7 @@ public class ActionUser {
 		if (perso == j.getJoueurEnJeu()) {
 			this.posi_init = posi_final;
 			j.setAction (j.getJoueurEnJeu(),Action.EN_COURS_DE_DEPLACEMENT);
+			prop.envoyerLogger("Joueur " + j.getJoueurEnJeu() + " a selectionner " + posi_init ,TypeLogger.SEVERE);
 		}
 	}
 
@@ -76,13 +82,11 @@ public class ActionUser {
 			if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 ) {
                 if ((j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1) ||( cheat == true ))
 				{
-					
 					deplacer(posi_final,histoActiv);
-					
 				}
 				else
 				{
-					System.out.println("Coup INVALIDE deplacer !!! " + posi_final+ posi_init);
+					prop.envoyerLogger("Coup INVALIDE deplacer!!! " + posi_final + posi_init,TypeLogger.WARNING);
 				}
 				
 			}
@@ -94,7 +98,7 @@ public class ActionUser {
 				}
 				else
 				{
-					System.out.println("Coup INVALIDE deplacer!!! " + posi_final+ posi_init);
+					prop.envoyerLogger("Coup INVALIDE deplacer!!! " + posi_final + posi_init,TypeLogger.WARNING);
 				}
 			}
 			else if (perso == j.getJoueurEnJeu())
@@ -103,7 +107,7 @@ public class ActionUser {
 			}
 			else
 			{
-				System.out.println("Coup INVALIDE autre!!! " + posi_final + posi_init);
+				prop.envoyerLogger("Coup INVALIDE autre!!! " + posi_final + posi_init,TypeLogger.WARNING);
 			}
 		}
         else if (perso == j.getJoueurEnJeu())
@@ -122,7 +126,7 @@ public class ActionUser {
 			}
 			else
 			{
-				System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
+				prop.envoyerLogger("Coup INVALIDE !!! " + posi_final + posi_init,TypeLogger.WARNING);
 			}
 		}
 		else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
@@ -131,7 +135,7 @@ public class ActionUser {
 		}
 		else
 		{
-			System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
+			prop.envoyerLogger("Coup INVALIDE !!! " + posi_final + posi_init,TypeLogger.WARNING);
 		}
 	}
 
@@ -188,7 +192,7 @@ public class ActionUser {
 		try{
 				c = j.histoAnnulerCoup();
 			} catch(IndexOutOfBoundsException e){
-				System.err.println("Plus de coup a annuler");
+				prop.envoyerLogger("Plus de coup a annuler",TypeLogger.WARNING);
 				return;
 			}
 			int nbJ2 = c.getJoueur() %2 + 1;
@@ -225,23 +229,23 @@ public class ActionUser {
 	public void retablirCoup(){
 		Coup c;
 		int numJoueur;
-
-		System.out.println("tour : " + j.getTour());
 		if (j.getAction(j.getJoueurEnJeu()) == Action.A_DEPLACER || j.getAction(j.getJoueurEnJeu()) == Action.DEUXIEME_PLACEMENT  )
 		{
-			try{
+			try
+			{
 				c = j.histoRetablir();
-			} catch(IndexOutOfBoundsException e){
-				System.err.println("Plus de coup à rétablir.");
+			}
+			catch(IndexOutOfBoundsException e)
+			{
+				prop.envoyerLogger("Plus de coup à rétablir.",TypeLogger.WARNING);
+
 				return;
 			}
-			
-			if (c.estDeplacement()){
-
+			if (c.estDeplacement())
+			{
 				selectionnerPerso(c.getDepart());
 				avancerPerso(c.getArrive(),false,false);
 				construireIci(c.getConstruction(),false);
-				
 				if (j.getTour() > 1)
 				{
 					j.addTour();
@@ -279,6 +283,7 @@ public class ActionUser {
 		j.deplacerPersonnage (posi_init,posi_final);
 		j.setAction (j.getJoueurEnJeu(),Action.A_CONSTRUIRE);
 		this.posi_init = posi_final;
+		prop.envoyerLogger("Joueur " + j.getJoueurEnJeu() + " a avancer sur la case " + posi_final ,TypeLogger.SEVERE);
 	}
 
 	public void construire (Point posi_final, boolean histoActiv)
@@ -287,29 +292,19 @@ public class ActionUser {
 		{
 			j.setAction (j.getJoueurEnJeu(),Action.AFK);
 			j.Construire (posi_final);
-
+			prop.envoyerLogger("le joueur : " + j.getJoueurEnJeu() + " a construit en " + posi_final,TypeLogger.SEVERE);
 			if (histoActiv)
 			{
 				coupJouer.setConstruction (posi_final);
 				j.histoAjouterCoup(coupJouer);
+				prop.envoyerLogger(coupJouer.toString(),TypeLogger.INFO);
 				coupJouer = new Coup();
+
 			}
 		}
 		else
 		{
-			System.out.println("Coup INVALIDE !!! " + posi_final + posi_init);
-		}
-	}
-
-	// Fonction spécial pour l'IA.
-	public void tour(Coup c){
-		j.histoAjouterCoup(c);
-		if (c.estDeplacement()){
-			selectionnerPerso(c.getDepart());
-			avancerPerso(c.getArrive(),true,false);
-			construireIci(c.getConstruction(),true);
-		} else {
-			placerPerso(c.getDepart(), j.getAction(j.getJoueurEnJeu()),true);
+			prop.envoyerLogger("Coup INVALIDE !!! " + posi_final + posi_init,TypeLogger.WARNING);
 		}
 	}
 

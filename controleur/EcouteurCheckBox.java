@@ -23,15 +23,14 @@ public class EcouteurCheckBox extends AbstractAction {
     	JCheckBox cb = (JCheckBox) e.getSource();
     	if (cb.isSelected())
     	{
-    		System.out.println("aide : " + true);
     		prop.changerValeur(nomProp,"true",0);
+    		prop.envoyerLogger(nomProp + " activer ",TypeLogger.INFO);
     	}
     	else
     	{
-    		System.out.println("aide : " + false);
     		prop.changerValeur(nomProp,"false",0);
+    		prop.envoyerLogger(nomProp + " desactiver ",TypeLogger.INFO);
     	}
     	j.reactuProp();
-        System.out.println(nomProp);
     }
 }
