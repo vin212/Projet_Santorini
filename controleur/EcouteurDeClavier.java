@@ -27,7 +27,7 @@ public class EcouteurDeClavier  extends KeyAdapter{
         this.j = j;
 
         this.aire2 = aire;
-        this.action  = new ActionUser (j) ;
+        this.action  = new ActionUser (j,prop) ;
 
         toucheRetour = new Integer[2];
         toucheRetablir = new Integer[2];
@@ -95,17 +95,16 @@ public class EcouteurDeClavier  extends KeyAdapter{
                 toucheAppuier[1] = 89;
             }
         }
+        else if(source==KeyEvent.VK_LEFT)
+        {
+        }
         else
         {
             toucheAppuier[0] = -1;
             toucheAppuier[1] = -1;
         }
-    
-        if (toucheAppuier[0] == toucheRetablir[0]  && toucheAppuier[1] == toucheRetablir[1])
-        {
-            
-        }
-        else if (toucheAppuier[0] == toucheRetour[0] && toucheAppuier[1] == toucheRetour[1])
+
+        if (toucheAppuier[0] == toucheRetour[0] && toucheAppuier[1] == toucheRetour[1])
         {
             try
             {
@@ -150,7 +149,7 @@ public class EcouteurDeClavier  extends KeyAdapter{
             }
             catch (IndexOutOfBoundsException except)
             {
-                prop.envoyerLogger("Impossible retablir",TypeLogger.WARNING);
+               prop.envoyerLogger("Impossible de retablir",TypeLogger.WARNING);
             }
             aire2.repaint();
         }
