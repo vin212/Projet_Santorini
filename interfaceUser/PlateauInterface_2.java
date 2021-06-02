@@ -13,6 +13,7 @@ import modele.*;
 import structure.*;
 import controleur.*;
 import animation.*;
+import global.*;
 
 public class PlateauInterface_2 extends JComponent {
 
@@ -39,16 +40,14 @@ public class PlateauInterface_2 extends JComponent {
 	public AnimationListener anim;
 	AnimationListener animSelect;
 
-	//Image joueurBord;
-
 	ActionUser actionUser;
 	int posiHisto;
 
 	public boolean animFaite;
 
-	public PlateauInterface_2(Jeu j,ActionUser actionUser) {
+	public PlateauInterface_2(Jeu j,ActionUser actionUser, Configuration prop) {
 		this.j = j;
-		actionUser.initActionUser(j);
+		actionUser.initActionUser(j,prop);
 		this.actionUser = actionUser;
 
 		String dossierTexture = "ressource/texture/";
@@ -59,10 +58,8 @@ public class PlateauInterface_2 extends JComponent {
 
 		animFaite = false;
 
-
 		try {
 			
-
 			InputStream  in = new FileInputStream("ressource/texture/Plateau/Plateau_2D.jpg");
 		 	plateau = ImageIO.read(in);
 
@@ -90,7 +87,6 @@ public class PlateauInterface_2 extends JComponent {
 		 	in = new FileInputStream(dossierCase +"couple_2D_bord.png");
 		 	coupoleBord = ImageIO.read(in);
 
-
 		 	in = new FileInputStream(dossierPersonnage + "J1_2D.png");
 		 	J1 = ImageIO.read(in);
 
@@ -115,13 +111,10 @@ public class PlateauInterface_2 extends JComponent {
 		 	in = new FileInputStream(dossierCase + "griserConstructible.png");
 		 	griserConstructible = ImageIO.read(in);
 
-
-
 		} catch (Exception e) {
 			System.out.print("erreur 2D \n");
 			System.exit(1);
 		}
-		//counter = 1;
 	}
 
 	public void FaireActionUser (int x, int y)
@@ -141,11 +134,8 @@ public class PlateauInterface_2 extends JComponent {
 		int x_calcul = ((x-positionPremierBatiment.getx()) / (inter_batiment_largeur + taille_largeur));
 		int y_calcul =((y-positionPremierBatiment.gety())/ (inter_batiment_hauteur + taille_hauteur));
 
-		//System.out.println( x_calcul+ "," + y_calcul);
-		
 		if (x >= positionPremierBatiment.getx() && y >= positionPremierBatiment.gety() && x_calcul >= 0 && y_calcul >= 0 && x_calcul < j.getLargeurPlateau() && y_calcul < j.getHauteurPlateau())
 		{
-			//System.out.println("ok");
 			actionUser.jouerAction(new Point(x_calcul,y_calcul));
 			this.repaint();
 		}
@@ -197,10 +187,6 @@ public class PlateauInterface_2 extends JComponent {
 
 		Point positionPremierBatiment = new Point(width/12,height/12);
 
-		//int x_calcul = ((x-positionPremierBatiment.getx()) / (inter_batiment_largeur + taille_largeur));
-		//int y_calcul =((y-positionPremierBatiment.gety())/ (inter_batiment_hauteur + taille_hauteur));
-
-
 		if (anim != null && anim.estFini() == true && j.getAction (j.getJoueurEnJeu()) == modele.Action.A_CONSTRUIRE)
 		{
 			animFaite = true;
@@ -220,9 +206,6 @@ public class PlateauInterface_2 extends JComponent {
 			
 			Point calcul_Arrive = new Point (x_calcul_Arrive,y_calcul_Arrive);
 
-
-			//System.out.println(calcul_depart + " " + calcul_Arrive);
-		
 			this.anim = new AnimationListener(this,j.prop ,calcul_depart,calcul_Arrive);
 		}
 		else if (j.getAction (j.getJoueurEnJeu()) == modele.Action.A_CONSTRUIRE && animFaite == true)
@@ -259,12 +242,8 @@ public class PlateauInterface_2 extends JComponent {
 
 		Point positionPremierBatiment = new Point(width/12,height/12);
 
-
 		drawable.clearRect(0, 0, width, height);
-
 		drawable.drawImage(plateau,0,0,width,height,null);
-
-
 		for (int i = 0; i < j.getLargeurPlateau(); i++)
 		{
 			for (int k = 0; k < j.getHauteurPlateau (); k++)
@@ -285,9 +264,6 @@ public class PlateauInterface_2 extends JComponent {
 				{
 					drawable.drawImage(coupole, positionPremierBatiment.getx() + taille_largeur*i+inter_batiment_largeur*i, positionPremierBatiment.gety() + taille_hauteur*k + inter_batiment_hauteur * k, taille_largeur,taille_hauteur,null);
 				}
-
-
-
 				if ((j.aPersonnage (new Point(i,k))) && (anim == null || anim.estFini() || actionUser.coupJouer.getArrive() == null || (anim != null && actionUser.coupJouer.getArrive() != null &&actionUser.coupJouer.getArrive().CompareTo(new Point(i,k)) != 0)))
 				{
 					int perso = j.quiEstIci (new Point(i,k));
@@ -426,8 +402,6 @@ public class PlateauInterface_2 extends JComponent {
 				k = debut.gety();
 				drawable.drawImage(joueurBord, positionPremierBatiment.getx() + taille_largeur*i+inter_batiment_largeur*i, positionPremierBatiment.gety() + taille_hauteur*k + inter_batiment_hauteur * k, taille_largeur,taille_hauteur,null);
 			}
-		
-
 		if (anim != null && !anim.estFini() && j.getAction(j.getJoueurEnJeu()) == modele.Action.A_CONSTRUIRE)
 		{
 			Point  p= anim.getPointActuel();
@@ -443,23 +417,16 @@ public class PlateauInterface_2 extends JComponent {
 				drawable.drawImage(J2,i,k, taille_largeur,taille_hauteur,null);
 			}
 		}
-
 		if (animSelect != null && j.getAction(j.getJoueurEnJeu()) == modele.Action.EN_COURS_DE_DEPLACEMENT)
 		{
 			Point posi = animSelect.getPosi();
 			if (animSelect.getEtat() == 0)
 			{
-				//System.out.println(0);
 			}
 			else
 			{
 				drawable.drawImage(animation, posi.getx(), posi.gety(), taille_largeur,taille_hauteur,null);
 			}
 		}
-	
-		//drawable.drawImage(P1_J1, positionPremierBatiment.getx() + taille_largeur*0 + inter_batiment_largeur*0, positionPremierBatiment.gety() +taille_hauteur*0 - hauteur*0 - inter_batiment_hauteur*0, taille_largeur,taille_hauteur,null);
-
-
-
 	}
 }

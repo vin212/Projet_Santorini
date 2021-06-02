@@ -120,7 +120,6 @@ public class Animation {
 		}
 
 		this.direction = new Point(x,y);
-        //System.out.println("avancer x :" + this.direction.getx() + "avancer y  " + this.direction.gety());
 	}
 
 
@@ -129,8 +128,6 @@ public class Animation {
 	{
         int x; 
         int y;
-		//System.out.println(this.posiActuel.getx()-this.posiFinal.getx());
-		//System.out.println("direction " + this.direction);
 		if ( Math.abs(this.posiActuel.getx() -this.posiFinal.getx()) > Math.abs(this.direction.getx())+5 || Math.abs(this.posiActuel.gety() -this.posiFinal.gety()) > Math.abs(this.direction.gety())+5)
 		{
 			x  = this.posiActuel.getx() + this.direction.getx();
@@ -144,13 +141,12 @@ public class Animation {
 			y = this.posiFinal.gety();
 			this.posiActuel.modifValeur (x,y);
 			this.t.stop();
-			//System.out.println("fin avancer \n");
 			fin = true;
 		}
 
 	}
 
-	void changerEtat()
+	public void changerEtat()
 	{
 		etat = (etat + 1) % 2;
 	}

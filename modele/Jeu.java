@@ -128,12 +128,10 @@ public class Jeu{
 	}
 
 	public Coup histoAnnulerCoup() throws IndexOutOfBoundsException{
-		//System.out.println("historique : "+historique);
 		return historique.annuler();
 	}
 
 	public Coup histoRetablir() throws IndexOutOfBoundsException{
-		//System.out.println("historique : "+historique);
 		return historique.retablir();
 	}
 

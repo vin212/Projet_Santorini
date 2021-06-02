@@ -5,13 +5,25 @@ import java.util.Properties;
 import java.util.Iterator;
 import java.util.ArrayList;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 public class Configuration
 {
 	Properties prop;
+	Logger log;
+
 	String defaut;
 	String user;
 
 	public Configuration ()
+	{
+		creePropriete ();
+		creeLogger ();
+	}
+
+	private void creePropriete ()
 	{
 		defaut = "ressource/defaut.cfg";
 		user = "ressource/user.cfg";
@@ -34,8 +46,6 @@ public class Configuration
 		{
 
 		}
-		//System.out.println(in);
-
 		if (in != null)
 		{
 
@@ -119,11 +129,8 @@ public class Configuration
 			if (keyDecoup[0].equals("modifiable"))
 			{
 				clefs.add(keyDecoup[1]);
-				//System.out.println("OK");
 			}
-			//System.out.println("***" + keyDecoup[0] + "***");
 		} 
-
 		return clefs;
 	}
 
@@ -154,6 +161,32 @@ public class Configuration
 			}
 		}
 
+	}
+
+	public void creeLogger ()
+	{
+		if (this.log == null) 
+		{
+			System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s : %5$s%n");
+			log = Logger.getLogger("Santorini.Logger");
+			log.setLevel(Level.parse("ALL"));
+		}
+	}
+
+	public void envoyerLogger (String valeur, TypeLogger type)
+	{
+		switch (type)
+		{
+			case INFO :
+				log.info(valeur);
+			break;
+			case WARNING :
+				log.warning(valeur);
+			break;
+			case SEVERE :
+				log.severe(valeur);
+			break; 
+		}
 	}
 
 }
