@@ -18,7 +18,7 @@ public class Jeu{
 	//TODO hash code à partir d'une base 5 (5^33 au max)
 
 	boolean aideActiver;
-	Configuration prop;
+	public Configuration prop;
 
 
 	public Jeu (Configuration prop){
@@ -128,12 +128,10 @@ public class Jeu{
 	}
 
 	public Coup histoAnnulerCoup() throws IndexOutOfBoundsException{
-		System.out.println("historique : "+historique);
 		return historique.annuler();
 	}
 
 	public Coup histoRetablir() throws IndexOutOfBoundsException{
-		System.out.println("historique : "+historique);
 		return historique.retablir();
 	}
 
@@ -211,7 +209,7 @@ public class Jeu{
 			else
 				decalage = BigInteger.valueOf((long) 5).pow(29);
 
-			if (posi[0].CompareTo(posi[1]) == -1){
+			if (posi[0].compareTo(posi[1]) == -1){
 				x0 = posi[0].getx();
 				y0 = posi[0].gety();
 				x1 = posi[1].getx();
@@ -427,6 +425,11 @@ public class Jeu{
                 voisins.add(new Point(x-1, y+1));
         }
         return voisins;
+    }
+
+    public void reactuProp ()
+    {
+    	this.aideActiver = Boolean.valueOf(prop.recupValeur("aide")).booleanValue();
     }
 
    

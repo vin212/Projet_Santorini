@@ -1,7 +1,7 @@
 package interfaceUser;
 
 public enum NomFenetres {
-	PAGE_ACCUEIL, MENU_PAUSE, JEU, AUTRE, POPUP_SAUVEGARDE, CHARGER, NOUVELLE_PARTIE;
+	PAGE_ACCUEIL, MENU_PAUSE, JEU, AUTRE, POPUP_SAUVEGARDE, CHARGER, NOUVELLE_PARTIE, OPTION;
 
 	public String toString()
 	{
@@ -17,6 +17,14 @@ public enum NomFenetres {
 				return "POPUP_SAUVEGARDE";
 			case CHARGER :
 				return "CHARGER";
+			case NOUVELLE_PARTIE :
+				return "NOUVELLE_PARTIE";
+			case OPTION :
+				return "OPTION";
+			case AUTRE:
+				break;
+			default:
+				break;
 		}
 		return "";
 	}

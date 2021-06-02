@@ -32,10 +32,10 @@ public class Historique{
 
     // Reviens en arrière de un coup.
     public Coup annuler(){
-        System.out.println(historique);
+        //System.out.println(historique);
         if (verifAnnulerCoup()){
             position --;
-            System.out.println(historique);
+            //System.out.println(historique);
             return historique.get(position);
         }
         throw new IndexOutOfBoundsException();
@@ -44,8 +44,8 @@ public class Historique{
     // Rétablie un coup, aucune robustesse.
     public Coup retablir(){
         Coup c;
-        System.out.println("position : " + position);
-        System.out.println("taille : " + taille);
+        //System.out.println("position : " + position);
+        //System.out.println("taille : " + taille);
         if(verifRetablirCoup()){
              c = historique.get(position);
             position ++; 
@@ -69,7 +69,7 @@ public class Historique{
         return position;
     }
 
-    public ArrayList getHisto(){
+    public ArrayList<Coup> getHisto(){
         return this.historique;
     }
 

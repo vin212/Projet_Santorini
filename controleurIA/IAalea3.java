@@ -37,7 +37,6 @@ public class IAalea3 extends IA {
         VerificateurMonte vm = new VerificateurMonte(j);
         VerificateurPion vp = new VerificateurPion(j);
         VerificateurEscalier ves = new VerificateurEscalier(j);
-        VerificateurEtage vet = new VerificateurEtage(j);
         Point[] p = j.getPosiPions(j.getJoueurEnJeu());
         boolean b = r.nextBoolean();
         int taille, taille2;

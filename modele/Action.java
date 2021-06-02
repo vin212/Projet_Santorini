@@ -9,22 +9,16 @@ PREMIER_PLACEMENT, DEUXIEME_PLACEMENT, A_DEPLACER, EN_COURS_DE_DEPLACEMENT, A_CO
 		{
 			case AFK :
 				return "AFK";
-			//break;
 			case A_CONSTRUIRE :
-				return "A_CONSTRUIRE";
-			//break;
+				return "Choisir case de construction";
 			case EN_COURS_DE_DEPLACEMENT :
-				return "EN_COURS_DE_DEPLACEMENT";
-			//break;
+				return "Choisir la destination";
 			case A_DEPLACER:
-				return "A_DEPLACER";
-			//break;
+				return "Choisir le pion";
 			case DEUXIEME_PLACEMENT :
-				return "DEUXIEME_PLACEMENT";
-			//break;
+				return "Placer 2nd pion";
 			case PREMIER_PLACEMENT :
-				return "PREMIER_PLACEMENT";
-			//break;
+				return "Placer 1er pion";
 		}
 		return "";
 	}
