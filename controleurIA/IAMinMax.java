@@ -68,8 +68,13 @@ public abstract class IAMinMax extends IA {
         int taille = successeur.size();
         int valeur;
         Coup c;
+        int horizon;
 
-        int horizon = horizonMax;
+        if (successeur.size() <= 30){
+            horizon = horizonMax = 4;
+        } else {
+            horizon = horizonMax = 4;
+        }
 
         if (taille == 0) {
             System.err.println("Aucun coup possible !");
@@ -100,13 +105,13 @@ public abstract class IAMinMax extends IA {
         if (chiffrage != null) {
             return -chiffrage * 2 / 3;
         } else if (j.estGagnant() || horizon == 0) {
-            return (int) ((int) chiffrage(j) * Math.pow(-1, horizonMax - horizon));
+            return (int) ((int) chiffrage(j) * Math.pow(-1, horizonMax - horizon + 1));
         } else {
             //TODO à vérifier en priorité !
             chiffrage = minimum;
         }
 
-        while (I.hasNext() && ((maximum >= chiffrage) && (chiffrage >= minimum))) {
+        while (I.hasNext() && ((maximum > chiffrage) && (chiffrage > minimum))) {
             c = I.next();
             tour(c);
             chiffrage = Math.max(chiffrage, calcul(j, horizon - 1, -chiffrage, -maximum));
