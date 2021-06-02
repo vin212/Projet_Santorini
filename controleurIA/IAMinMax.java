@@ -1,7 +1,6 @@
 package controleurIA;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -13,7 +12,7 @@ import modele.Jeu;
 import modele.Coup;
 import structure.*;
 
-public class IAMinMax extends IA {
+public abstract class IAMinMax extends IA {
     Random r;
     int horizonMax;
     Hashtable<BigInteger, Integer> table;
@@ -21,6 +20,19 @@ public class IAMinMax extends IA {
     public IAMinMax() {
         r = new Random((long) 0);
         horizonMax = 4;
+    }
+
+    public static IA nouveau(Jeu j, String classIAString, String type){
+        IA instance = null;
+        
+        try{
+            instance = (IA) ClassLoader.getSystemClassLoader().loadClass(classIAString).getDeclaredConstructor().newInstance();
+            instance.j = j;
+            instance.type = type;
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        return instance;
     }
 
     @Override
@@ -69,14 +81,14 @@ public class IAMinMax extends IA {
         while (I.hasNext()) {
             c = I.next();
             tour(c);
-            valeur = calcul(j, horizon - 1, Integer.MAX_VALUE);
+            valeur = calcul(j, horizon - 1, Integer.MAX_VALUE, Integer.MIN_VALUE);
             gagnant.ajouter(valeur, c);
             annulerCoup();
         }
         return gagnant.extraire();
     }
 
-    private int calcul(Jeu j, int horizon, int maximum) {
+    public int calcul(Jeu j, int horizon, int maximum, int minimum) {
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
         Integer chiffrage = table.get(j.getHashCode());
@@ -86,27 +98,25 @@ public class IAMinMax extends IA {
         Coup c;
 
         if (chiffrage != null) {
-            return chiffrage;
+            return -chiffrage * 2 / 3;
         } else if (j.estGagnant() || horizon == 0) {
-            return chiffrage(j);
+            return (int) ((int) chiffrage(j) * Math.pow(-1, horizonMax - horizon));
         } else {
             //TODO à vérifier en priorité !
-            chiffrage = (int) ((int) Integer.MAX_VALUE * Math.pow(-1, horizonMax - horizon));
-            chiffrage = Integer.MAX_VALUE;
-            // Max value pour moi, et min value pour l'adversaire
+            chiffrage = minimum;
         }
 
-        while (I.hasNext() && (maximum >= chiffrage)) {
+        while (I.hasNext() && ((maximum >= chiffrage) && (chiffrage >= minimum))) {
             c = I.next();
             tour(c);
-            chiffrage = Math.max(chiffrage, calcul(j, horizon - 1, chiffrage));
+            chiffrage = Math.max(chiffrage, calcul(j, horizon - 1, -chiffrage, -maximum));
             table.put(j.getHashCode(), chiffrage);
             annulerCoup();
         }
-        return -chiffrage / 2;
+        return -chiffrage * 2 / 3;
     }
 
-    private ArrayList<Coup> successeur(Jeu j) {
+    public ArrayList<Coup> successeur(Jeu j) {
         ArrayList<Point> deplacement = new ArrayList<Point>(0);
         ArrayList<Point> construction = new ArrayList<Point>(0);
         ArrayList<Coup> successeur = new ArrayList<Coup>(0);
@@ -137,7 +147,8 @@ public class IAMinMax extends IA {
      * négatif = plus de chance de gagner que de perdre
      */
 
-    private int chiffrage(Jeu j) {
+
+    public Integer chiffrage(Jeu j) {
         Heuristique h = new Heuristique(j);
         Point[] p1 = j.getPosiPions(j.getJoueurEnJeu() % 2 + 1);
         if (h.victoireEtage(p1) == -1) {
@@ -164,10 +175,8 @@ public class IAMinMax extends IA {
         //TODO
         
         ArrayList<Point> sommetsVictorieux = h.peutMonter3(tampon);
-        if (sommetsVictorieux.size() > 1){
+        if (sommetsVictorieux.size() >= 1){
             return -100; // Le joueur a au moins deux possibilités de gagner
-        } else if(sommetsVictorieux.size() == 1) { // Un étage à 3
-            return -100;
         }
         tampon = new ArrayList<Point>(successeurP1J2.get(0));
         tampon.addAll(successeurP2J2.get(0));
@@ -186,23 +195,23 @@ public class IAMinMax extends IA {
             }
         }
 
-        // Fusion avec ligne 152-154 ?
+        // Fusion avec ligne 162-156 ?
         if (h.peutBouger(successeurP1J1.get(0)) == 0){
             if (h.peutBouger(successeurP2J1.get(0)) == 0){
-                // Déjà vu en 152
+                // Déjà vu en 162
                 return -100;
             } else {
                 //TODO
                 // On a un pion bloqué
             }
         } else if (h.peutBouger(successeurP2J1.get(0)) == 0){
-            // On a un pion bloqué, encore
+            // On a un autre pion bloqué, encore
             //TODO
         }
 
         if (h.peutBouger(successeurP1J2.get(0)) == 0){
             if (h.peutBouger(successeurP2J2.get(0)) == 0){
-                return 100;
+                // Situation compliqué à calculer, non pris en compte pour le moment.
             } else {
                 //TODO
                 // L'adversaire a un pion bloqué
@@ -231,10 +240,9 @@ public class IAMinMax extends IA {
         */
 
         return 2*hauteurJ1 - hauteurJ2 + bloquant +3* bloquant3;
-
     }
 
-    private void tour(Coup c) {
+    public void tour(Coup c) {
         j.histoAjouterCoup(c);
         if (c.estDeplacement()) {
             j.deplacerPersonnage(c.getDepart(), c.getArrive());
@@ -245,7 +253,7 @@ public class IAMinMax extends IA {
         j.addTour();
     }
 
-    private void annulerCoup() {
+    public void annulerCoup() {
         int pos;
         Coup c;
         j.subTour();
