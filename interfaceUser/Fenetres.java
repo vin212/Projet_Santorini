@@ -4,7 +4,6 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import javax.imageio.ImageIO;
-import java.util.Properties;
 import java.util.ArrayList;
 
 import modele.*;
@@ -13,11 +12,6 @@ import controleurIA.*;
 import global.*;
 import javax.swing.border.Border;
 import java.awt.event.KeyEvent;
-
-
-/*public enum EnumFenetre {
-	MENU,MENU_PAUSE,PLATEAU;
-}*/
 
 public class Fenetres {
 	public NomFenetres f;
@@ -172,9 +166,6 @@ public class Fenetres {
 		boutonRetour.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR,this,prop));
 		boutonPause.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.PAUSE,this,prop));
 		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this,prop));
-
-	
-
 
 		
 		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
@@ -409,10 +400,10 @@ public class Fenetres {
 
 		couleur.setLayout(new GridBagLayout());
 		containerMain.setLayout(new GridBagLayout());
-		String [] element = new String[] {"Joueur","IA Facile", "IA Normal", "IA Difficile"};
+		String [] element = new String[] {"Joueur", "IA Facile", "IA Normal", "IA Difficile"};
 
-		JComboBox menuBar1 = new JComboBox(element);
-		JComboBox menuBar2 = new JComboBox(element);
+		JComboBox<String> menuBar1 = new JComboBox<String>(element);
+		JComboBox<String> menuBar2 = new JComboBox<String>(element);
 		/*menuBar.add(new JLabel("Element 1"));
 		menuBar.add(new JLabel("Element 2"));*/
 
@@ -512,13 +503,10 @@ public class Fenetres {
 		container.setLayout(new GridBagLayout());
 
 		clefs = prop.recupClesModifiable ();
-		//System.out.println("taille : " + clefs.size());
 		for (int i = 0; i < clefs.size(); i++)
 		{
-			//System.out.println("celf : " + clefs.get(i));
 			bloc = new JPanel ();
 			JLabel label = new JLabel (clefs.get(i) + ":");
-			//System.out.println("valeur : " + prop.recupValeur(clefs.get(i)));
 			gbc.gridx = 0;
 			gbc.gridy = 0;
 			bloc.add (label,gbc);

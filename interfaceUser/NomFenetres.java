@@ -21,6 +21,10 @@ public enum NomFenetres {
 				return "NOUVELLE_PARTIE";
 			case OPTION :
 				return "OPTION";
+			case AUTRE:
+				break;
+			default:
+				break;
 		}
 		return "";
 	}

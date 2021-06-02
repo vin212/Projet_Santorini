@@ -3,7 +3,6 @@ package controleur;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.concurrent.TimeUnit;
 
 import modele.*;
 import interfaceUser.*;
@@ -24,12 +23,12 @@ public class GestionBouton extends JButton implements ActionListener
 	JFrame popUp;
 	JLabel messageErreur;
 
-	JComboBox j1;
-	JComboBox j2;
+	JComboBox<String> j1;
+	JComboBox<String> j2;
 
 	Configuration prop;
 
-	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox j1, JComboBox j2,Configuration prop)
+	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox<String> j1, JComboBox<String> j2,Configuration prop)
 	{
 		this.j1 = j1;
 		this.j2 = j2;
@@ -61,7 +60,6 @@ public class GestionBouton extends JButton implements ActionListener
 	{
 		this.type = type;
 		this.action = new ActionUser(j);
-		this.aire2 = aire2;
 
 		this.f = f;
 		this.texte = texte;
@@ -325,6 +323,7 @@ public class GestionBouton extends JButton implements ActionListener
 			System.out.println("joueur vs ia facile");
 			retour = true;
 		}
+		System.out.println(j1ToString + " vs " + j2ToString);
 
 		return retour;
 	} 

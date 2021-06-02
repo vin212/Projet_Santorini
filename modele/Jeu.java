@@ -211,7 +211,7 @@ public class Jeu{
 			else
 				decalage = BigInteger.valueOf((long) 5).pow(29);
 
-			if (posi[0].CompareTo(posi[1]) == -1){
+			if (posi[0].compareTo(posi[1]) == -1){
 				x0 = posi[0].getx();
 				y0 = posi[0].gety();
 				x1 = posi[1].getx();

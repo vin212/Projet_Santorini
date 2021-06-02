@@ -69,7 +69,7 @@ public class Historique{
         return position;
     }
 
-    public ArrayList getHisto(){
+    public ArrayList<Coup> getHisto(){
         return this.historique;
     }
 

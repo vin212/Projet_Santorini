@@ -3,11 +3,9 @@ package controleur;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.*;
 import modele.*;
 import controleurIA.*;
 import save.*;
-import structure.*;
 
 import interfaceUser.*;
 import global.*;
@@ -42,7 +40,6 @@ public class EcouteurDeSouris extends MouseAdapter {
         this.ia1 = ia1;
         this.ia2 = ia2;
         this.name = NomFenetres.JEU;
-        this.f = f;
 	}
 
 	public EcouteurDeSouris(String nomFichier, Jeu j, Fenetres f)
@@ -114,6 +111,10 @@ public class EcouteurDeSouris extends MouseAdapter {
 			}
 			frame.addKeyListener(new ChangerToucheClavier(prop,nomProp,frame,nb,f));
 
+		}
+		else if (name == NomFenetres.OPTION)
+		{
+			System.out.println("nomProp : " + nomProp);
 		}
 	}
 }
