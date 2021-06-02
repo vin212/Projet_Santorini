@@ -58,15 +58,15 @@ public class TestCoup {
         coup.setConstruction(new Point(-2,-2));
         coupVide.setConstruction(new Point(-1,-2));
 
-        Assertions.assertEquals( 0 , coup.getConstruction().CompareTo(new Point(-2,-2))); // should fail!!!
-        Assertions.assertEquals( 0 , coupVide.getConstruction().CompareTo(new Point(-1,-2))); // should fail!!!
+        Assertions.assertEquals( -1 , coup.getConstruction().CompareTo(new Point(-2,-2)));
+        Assertions.assertEquals( -1 , coupVide.getConstruction().CompareTo(new Point(-1,-2)));
 
         //test avec des valeurs supérieures au plateau
         coup.setConstruction(new Point(500,500));
         coupVide.setConstruction(new Point(400,400));
 
-        Assertions.assertEquals( 0 , coup.getConstruction().CompareTo(new Point(500,500))); // should fail!!!
-        Assertions.assertEquals( 0 , coupVide.getConstruction().CompareTo(new Point(400,400))); // should fail!!!
+        Assertions.assertEquals( -1 , coup.getConstruction().CompareTo(new Point(500,500)));
+        Assertions.assertEquals( -1 , coupVide.getConstruction().CompareTo(new Point(400,400)));
 
         // test deplacement
         coupVide.setDeplacement(new Point(1,1),new Point(2,1));
@@ -77,7 +77,7 @@ public class TestCoup {
         // avec de grands nombres
         coupVide.setDeplacement(new Point(500,500),new Point(600, 600));
 
-        Assertions.assertEquals( 0 , coupVide.getDepart().CompareTo(new Point(500,500))); // should fail!!!
+        Assertions.assertEquals( -1 , coupVide.getDepart().CompareTo(new Point(500,500)));
 
         // test joueur
         Assertions.assertEquals(0, coupVide.getJoueur());
