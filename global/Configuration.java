@@ -76,10 +76,10 @@ public class Configuration
 		}
 	}
 
-	public ArrayList recupClesModifiable ()
+	public ArrayList<String> recupClesModifiable ()
 	{
 		ArrayList <String> clefs = new ArrayList <String> (0);
-		Iterator it = prop.keySet().iterator();
+		Iterator<Object> it = prop.keySet().iterator();
 		while (it.hasNext()) 
 		{
 			String key = (String) it.next();

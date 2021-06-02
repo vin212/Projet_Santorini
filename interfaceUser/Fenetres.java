@@ -4,7 +4,6 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import javax.imageio.ImageIO;
-import java.util.Properties;
 import java.util.ArrayList;
 
 import modele.*;
@@ -172,9 +171,6 @@ public class Fenetres {
 		boutonRetour.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR,this,prop));
 		boutonPause.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.PAUSE,this,prop));
 		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this,prop));
-
-	
-
 
 		
 		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
