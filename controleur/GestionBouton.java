@@ -246,6 +246,24 @@ public class GestionBouton extends JButton implements ActionListener
 				f.gestionFenetre();
 				f.frame.repaint();
 			break;
+			case QUITTER :
+				f.frame.dispose();
+			break;
+			case OPTION :
+				f.ChangerFenetres(NomFenetres.OPTION,f.f);
+				f.gestionFenetre ();
+				f.frame.repaint();
+			break;
+			case RETOUR_OPTION:
+				f.ChangerFenetres(f.f_avant);
+				f.gestionFenetre();
+				f.frame.repaint();
+			break;
+			case RETABLIR_DEFAUT :
+				prop.retablirDefaut();
+				f.gestionFenetre();
+				f.frame.repaint();
+			break;
 
 		}
 	}
