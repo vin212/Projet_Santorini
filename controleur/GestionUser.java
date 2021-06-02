@@ -9,6 +9,7 @@ import modele.*;
 import interfaceUser.*;
 import java.util.concurrent.TimeUnit;
 import global.*;
+import structure.*;
 
 public class GestionUser
 {
@@ -27,8 +28,11 @@ public class GestionUser
 	JLabel labelAction;
 
 	Configuration prop;
+	ActionUser actionUser;
 
-	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1, JPanel leJoueur,JLabel labelAction)
+	Coup coupIA;
+
+	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1, JPanel leJoueur,JLabel labelAction, ActionUser actionUser, Configuration prop)
 	{
 		this.j = j;
 		this.commencer = false;
@@ -42,6 +46,9 @@ public class GestionUser
 		this.gagnant = gagnant;
 
 		this.labelAction = labelAction;
+		this.actionUser = actionUser;
+
+		this.prop = prop;
 
 	}
 
@@ -51,7 +58,6 @@ public class GestionUser
 		int numJoueur;
 		modele.Action action;
 		numJoueur = j.getJoueurEnJeu();
-		//System.out.println("ici");
 		int quiGagne = j.quiGagnant() ;
 		if (j != null && quiGagne == 0)
 		{
@@ -126,7 +132,6 @@ public class GestionUser
 		}
 		else
 		{
-			//numJoueur = j.getJoueurEnJeu();
 			if (quiGagne == 1)
 			{
 				leJoueur.setBackground(new Color(0,110,255));
@@ -137,8 +142,6 @@ public class GestionUser
 			}
 
 			labelAction.setText("Gagné !!");
-			//leJoueur.setText("Le Joueur " + quiGagne + " a gagné ! ");
-
 		}
 		
 		aire1.repaint();
@@ -147,22 +150,8 @@ public class GestionUser
 	private void JouerIA(int numIA)
 	{
 
-		Coup coupIA;
 		int numJoueur = j.getJoueurEnJeu();
-		//System.out.println("ia action : " + j.getTour() +"----------------------------------------------------------------");
-
-		ActionUser a;
-
 		IA iaLocal;
-
-		try
-		{
-			TimeUnit.SECONDS.sleep(1);
-		}
-		catch (Exception exept)
-		{
-
-		}
 
 		if (numIA ==1 )
 		{
@@ -173,15 +162,14 @@ public class GestionUser
 			iaLocal = ia2;
 		}
 
-		a = new ActionUser (j);
-
 		if (j.getTour() <= 1 && (j.getAction(numJoueur) == modele.Action.AFK ||j.getAction(numJoueur) == modele.Action.PREMIER_PLACEMENT))
 		{
+			actionUser.initActionUser (j,prop);
 			j.setAction (numJoueur,modele.Action.PREMIER_PLACEMENT);
 			coupIA = iaLocal.debuterPartie();
-			a.jouerAction (coupIA.getDepart());
+			actionUser.jouerAction (coupIA.getDepart());
 			coupIA = iaLocal.debuterPartie();
-			a.jouerAction (coupIA.getDepart());
+			actionUser.jouerAction (coupIA.getDepart());
 			j.addTour();
 			numJoueur = j.getJoueurEnJeu();
 			if (j.getTour() > 1)
@@ -195,9 +183,10 @@ public class GestionUser
 		}
         else if (j.getTour() <= 1 && modele.Action.DEUXIEME_PLACEMENT == j.getAction(numJoueur))
         {
+        	actionUser.initActionUser (j,prop);
             j.setAction (numJoueur,modele.Action.DEUXIEME_PLACEMENT);
 			coupIA = iaLocal.debuterPartie();
-			a.jouerAction (coupIA.getDepart());
+			actionUser.jouerAction (coupIA.getDepart());
 			j.addTour();
 			numJoueur = j.getJoueurEnJeu();
 			if (j.getTour() > 1)
@@ -209,18 +198,29 @@ public class GestionUser
 				j.setAction (numJoueur,modele.Action.PREMIER_PLACEMENT);
 			}
         }
-		else 
+		else if (j.getAction(numJoueur) != modele.Action.A_CONSTRUIRE)
 		{
+			actionUser.initActionUser (j,prop);
+			
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 			coupIA = iaLocal.joue();
-			a.jouerAction(coupIA.getDepart());
-			a.jouerAction(coupIA.getArrive());
-			a.jouerAction(coupIA.getConstruction());
+			actionUser.jouerAction(coupIA.getDepart());
+			aire1.animationIA();
+			actionUser.jouerAction(coupIA.getArrive());
+			j.setAction (numJoueur,modele.Action.A_CONSTRUIRE);
+			
+			aire1.animFaite = false;
+			aire1.animationIA();
+		}
+		else if ( (aire1.anim != null && j.getAction(numJoueur) == modele.Action.A_CONSTRUIRE &&aire1.anim.estFini()))
+		{
+			actionUser.jouerAction(coupIA.getConstruction());
 			j.addTour();
+			actionUser.initActionUser (j,prop);
 			numJoueur = j.getJoueurEnJeu();
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
+
 		}
-		
 
 	}
 }

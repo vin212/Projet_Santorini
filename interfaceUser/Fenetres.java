@@ -11,13 +11,9 @@ import modele.*;
 import controleur.*;
 import controleurIA.*;
 import global.*;
+import save.*;
 import javax.swing.border.Border;
 import java.awt.event.KeyEvent;
-
-
-/*public enum EnumFenetre {
-	MENU,MENU_PAUSE,PLATEAU;
-}*/
 
 public class Fenetres {
 	public NomFenetres f;
@@ -40,7 +36,7 @@ public class Fenetres {
 
 	Integer [] toucheAppuier;
 
-	ActionUser action;
+	ActionUser actionUser;
 
 	Configuration prop;
 
@@ -54,10 +50,8 @@ public class Fenetres {
 		this.toucheAppuier[1] = -1;
 
 		this.prop = prop;
+		this.actionUser= new ActionUser(j,prop);
 		
-		//ia1.activeIA();
-
-
 		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		frame = new JFrame("Santorini");
 
@@ -68,13 +62,13 @@ public class Fenetres {
 		}
 		catch (Exception except)
 		{
-			System.err.println("erreur icone introuvable");
+			prop.envoyerLogger("erreur icone introuvable",TypeLogger.WARNING);
 		}
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(Integer.parseInt(this.prop.recupValeur("largeur_fenetre")),Integer.parseInt(prop.recupValeur("hauteur_fenetre")));
 		frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
-		this.action = new ActionUser(j);
+		//this.action = new ActionUser(j);
 	}
 
 	public NomFenetres getNomFenetres()
@@ -98,35 +92,43 @@ public class Fenetres {
 		switch (f)
 		{
 			case JEU :
+				prop.envoyerLogger("Fenetre jeu ouverte",TypeLogger.INFO);
 				afficherFenetre1 ();
 				frame.repaint();
 			break;
 			case MENU_PAUSE :
+				prop.envoyerLogger("Fenetre menu pause ouverte",TypeLogger.INFO);
 				afficherMenuPause(); 
 				frame.repaint();
 			break;
 			case PAGE_ACCUEIL :
+				prop.envoyerLogger("Fenetre d'accueil",TypeLogger.INFO);
 				afficherAccueil();
 				frame.repaint();
 			break;
 			case POPUP_SAUVEGARDE :
+				prop.envoyerLogger("Pop up sauvegarde",TypeLogger.INFO);
 				afficherPopUpSauvegarde();
 				frame.repaint();
 			break;
 			case CHARGER :
+				prop.envoyerLogger("Fenetre charger sauvegarde",TypeLogger.INFO);
 				afficherCharger();
 				frame.repaint();
 			break;
 			case NOUVELLE_PARTIE :
+				prop.envoyerLogger("Fenetre faire nouvelle partie",TypeLogger.INFO);
 				afficherNouvellePartie ();
 				frame.repaint();
 			break;
 			case OPTION :
+				prop.envoyerLogger("Fenetre option",TypeLogger.INFO);
 				afficherOption ();
 				frame.repaint();
 			break;
 			case AUTRE :	
 			    //Toolkit.getDefaultToolkit().getScreenSize();
+				prop.envoyerLogger("easter egg",TypeLogger.INFO);
     			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
 				frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
 				aire1 = new PlateauInterface_1 (j);
@@ -134,6 +136,7 @@ public class Fenetres {
 				frame.setVisible(true);
 			break;
 			default :
+				prop.envoyerLogger("Fenetre non defini",TypeLogger.WARNING);
 				frame.setVisible(false);
 				frame = new JFrame("default");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -150,7 +153,8 @@ public class Fenetres {
 		
 		frame.getContentPane().removeAll();
 	 
-		aire2 = new PlateauInterface_2 (j);
+		
+
 
 		JPanel leJoueur = new JPanel ();
 		JLabel action = new JLabel("AFK");
@@ -159,6 +163,9 @@ public class Fenetres {
 		action.setForeground(new Color(255,255,255));
 
 		leJoueur.add(action);
+
+		aire2 = new PlateauInterface_2 (j,actionUser,prop);
+		this.g = new GestionUser( this.j, ia1, ia2, aire2,leJoueur,action, actionUser,prop);
 
 		
 		JButton boutonRetour = new JButton("<");
@@ -183,8 +190,8 @@ public class Fenetres {
 		JPanel container = new JPanel();
 		JPanel containerEst = new JPanel();
 		container.setFocusable(false);
-		containerEst.setPreferredSize(new Dimension(200, 500));
-		container.setPreferredSize(new Dimension(200, 450));
+		containerEst.setPreferredSize(new Dimension(200, 400));
+		container.setPreferredSize(new Dimension(200, 400));
 		container.add(leJoueur,BorderLayout.NORTH);
 		containerEst.add(container,BorderLayout.CENTER);
 
@@ -203,7 +210,7 @@ public class Fenetres {
 		frame.add(containerEst,BorderLayout.EAST);
 		frame.setVisible(true);
 
-		this.g = new GestionUser( this.j, ia1, ia2, aire2,leJoueur,action);
+		
 		this.chrono = new Timer( 50, new EvenementTemp(g));
 		chrono.start();
 
@@ -390,10 +397,68 @@ public class Fenetres {
 	public void afficherCharger ()
 	{
 		frame.getContentPane().removeAll();
+		//frame.setLayout(null);
 
-		ChargerPage aire = new ChargerPage(frame,this,prop,this.j );
-		frame.add(aire);
-	
+		int width = frame.getSize().width;
+		int height = frame.getSize().height;
+
+		Save saves = new Save(this.j);
+
+		ArrayList <String> nomSave;
+		nomSave = saves.lesSauvegardes();
+
+		JPanel container = new JPanel();
+		JPanel containerMain = new JPanel();
+		JScrollPane scrPane = new JScrollPane(container);
+		container.setBackground(new Color(150,150,150));
+
+		container.setLayout(new GridBagLayout());
+		containerMain.setLayout(new GridBagLayout());
+
+		JPanel test = new JPanel ();
+		test.setLayout(new GridBagLayout());
+		test.setPreferredSize(new Dimension(width,height));
+
+		test.setBackground(new Color(50,0,0));
+
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		JPanel save;
+		for (int i = 0; i < nomSave.size(); i++)
+		{
+			Border lineborder = BorderFactory.createLineBorder(Color.black, 2);
+
+
+    		//associer à JLabel
+			save = new JPanel();
+			gbc.gridx = 0;
+			gbc.gridy = i*height/5;
+			save.add(new JLabel(nomSave.get(i)),gbc);
+			save.addMouseListener(new EcouteurDeSouris(nomSave.get(i), this.j, this));
+			save.setBorder(lineborder);
+			save.setPreferredSize(new Dimension(width * 7/8, height/5));
+			//save.setResizable(true);
+
+			container.add(save,gbc);
+			
+		}
+		/*JScrollPane scroll1 = new JScrollPane();
+		container.add(scroll1);*/
+		containerMain.setPreferredSize(new Dimension(width,height));
+		container.setPreferredSize(new Dimension(width - width/10,height/5*nomSave.size()));
+		scrPane.setPreferredSize(new Dimension(width, 3*height/4));
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		containerMain.add(scrPane,gbc);
+		JButton bouton = new JButton ("Retour Menu");
+		bouton.addActionListener(new GestionBouton(Bouton.RETOUR_MENU,this,prop));
+		gbc.gridx = 0;
+		gbc.gridy = height/2;
+		containerMain.add (bouton,gbc);
+
+		//test.add(containerMain);
+		frame.add(containerMain);
+
 		frame.setVisible(true);
 
 	}

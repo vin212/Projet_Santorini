@@ -2,11 +2,7 @@ package interfaceUser;
 
 import javax.swing.*;
 import java.util.concurrent.TimeUnit;
-
-
 import global.*;
-//import java.util.Properties;
-
 import modele.*;
 
 public class Fenetre implements Runnable {
@@ -25,25 +21,15 @@ public class Fenetre implements Runnable {
 
 	public void run()
 	{
-
-		
 		f.gestionFenetre ();
-
-		try 
+		try
 		{
 			TimeUnit.SECONDS.sleep(1);
 		}
 		catch (Exception e)
 		{
-			System.out.println(e);
+			prop.envoyerLogger("Timer mal utiliser",TypeLogger.WARNING);
 		}
-
-		/*System.out.println("fin timer");
-
-		f.ChangerFenetres (1);
-		f.gestionFenetre ();*/
-
-
 	}
 
 }

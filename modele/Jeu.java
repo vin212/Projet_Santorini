@@ -18,7 +18,7 @@ public class Jeu{
 	//TODO hash code à partir d'une base 5 (5^33 au max)
 
 	boolean aideActiver;
-	Configuration prop;
+	public Configuration prop;
 
 
 	public Jeu (Configuration prop){
@@ -128,12 +128,10 @@ public class Jeu{
 	}
 
 	public Coup histoAnnulerCoup() throws IndexOutOfBoundsException{
-		//System.out.println("historique : "+historique);
 		return historique.annuler();
 	}
 
 	public Coup histoRetablir() throws IndexOutOfBoundsException{
-		//System.out.println("historique : "+historique);
 		return historique.retablir();
 	}
 
