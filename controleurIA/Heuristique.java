@@ -156,7 +156,7 @@ public class Heuristique {
         while (it1.hasNext()) {
             p = it1.next();
             if (j.getNbEtage(p) == 2) {
-                if (constructionToi.contains(p)) {
+                if (!(constructionToi.contains(p))) {
                     return 1;
                 }
             }
