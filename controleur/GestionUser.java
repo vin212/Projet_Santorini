@@ -7,9 +7,8 @@ import java.awt.Color;
 
 import modele.*;
 import interfaceUser.*;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 import global.*;
-import structure.*;
 
 public class GestionUser
 {
@@ -32,7 +31,7 @@ public class GestionUser
 
 	Coup coupIA;
 
-	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1, JPanel leJoueur,JLabel labelAction, ActionUser actionUser, Configuration prop)
+	public GestionUser (Jeu j, IA ia1, IA ia2, PlateauInterface_2 aire1, JPanel leJoueur, JLabel labelAction, ActionUser actionUser, Configuration prop)
 	{
 		this.j = j;
 		this.commencer = false;

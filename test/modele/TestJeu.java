@@ -324,19 +324,19 @@ public class TestJeu {
         jeu.poserPersonnage(new Point(4,1),2);
 
         // check for posi pions
-        Assertions.assertEquals(0, jeu.getPosiPions(1)[0].CompareTo(new Point(1,1)));
-        Assertions.assertEquals(0, jeu.getPosiPions(1)[1].CompareTo(new Point(2,1)));
-        Assertions.assertEquals(0, jeu.getPosiPions(2)[0].CompareTo(new Point(3,2)));
-        Assertions.assertEquals(0, jeu.getPosiPions(2)[1].CompareTo(new Point(4,1)));
+        Assertions.assertEquals(0, jeu.getPosiPions(1)[0].compareTo(new Point(1,1)));
+        Assertions.assertEquals(0, jeu.getPosiPions(1)[1].compareTo(new Point(2,1)));
+        Assertions.assertEquals(0, jeu.getPosiPions(2)[0].compareTo(new Point(3,2)));
+        Assertions.assertEquals(0, jeu.getPosiPions(2)[1].compareTo(new Point(4,1)));
 
         // check for empty position
-        Assertions.assertEquals(-1, jeu.getPosiPions(2)[0].CompareTo(new Point(3,4)));
+        Assertions.assertEquals(-1, jeu.getPosiPions(2)[0].compareTo(new Point(3,4)));
 
         // check for negative position after deplacer
         jeu.deplacerPersonnage(new Point(3,2), new Point(-1,-2));
 
-        Assertions.assertEquals(1, jeu.getPosiPions(2)[0].CompareTo(new Point(-1,-2)));
-        Assertions.assertEquals(0, jeu.getPosiPions(2)[0].CompareTo(new Point(3,2)));
+        Assertions.assertEquals(1, jeu.getPosiPions(2)[0].compareTo(new Point(-1,-2)));
+        Assertions.assertEquals(0, jeu.getPosiPions(2)[0].compareTo(new Point(3,2)));
     }
 
     @Test

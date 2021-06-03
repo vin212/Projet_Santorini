@@ -198,7 +198,6 @@ public class ActionUser {
 			int nbJ2 = c.getJoueur() %2 + 1;
 		
 			if(c.estDeplacement()){
-			  	System.out.println(c.getArrive());
 
 				this.posi_init = c.getArrive();
 				j.setAction(c.getJoueur(), Action.EN_COURS_DE_DEPLACEMENT);

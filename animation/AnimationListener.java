@@ -2,10 +2,10 @@ package animation;
 
 import interfaceUser.*;
 import javax.swing.*;
-import java.awt.*;
+//import java.awt.*;
 
 import global.*;
-import structure.*;
+//import structure.*;
 
 public class AnimationListener{
 	Timer t;

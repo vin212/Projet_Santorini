@@ -159,7 +159,6 @@ public class PlateauInterface_2 extends JComponent {
 
 		Point positionPremierBatiment = new Point(width/12,height/12);
 
-		System.out.println("action User : " + actionUser.coupJouer.getDepart());
 		if (actionUser != null && actionUser.recupPosiPerso () != null)
 		{
 		int x_calcul = (inter_batiment_largeur + taille_largeur) * actionUser.recupPosiPerso ().getx() + positionPremierBatiment.getx();
@@ -194,8 +193,6 @@ public class PlateauInterface_2 extends JComponent {
 
 		if (j.getAction (j.getJoueurEnJeu()) == modele.Action.A_CONSTRUIRE && animFaite == false && Boolean.parseBoolean(j.prop.recupValeur("animation_active")) && actionUser != null && actionUser.coupJouer.getDepart() != null)
 		{
-			this.posiHisto = posiHisto;
-
 			int x_calcul_depart = (inter_batiment_largeur + taille_largeur) * actionUser.coupJouer.getDepart().getx() + positionPremierBatiment.getx();
 			int y_calcul_depart = (inter_batiment_hauteur + taille_hauteur) *  actionUser.coupJouer.getDepart().gety() + positionPremierBatiment.gety(); 
 			
@@ -264,7 +261,7 @@ public class PlateauInterface_2 extends JComponent {
 				{
 					drawable.drawImage(coupole, positionPremierBatiment.getx() + taille_largeur*i+inter_batiment_largeur*i, positionPremierBatiment.gety() + taille_hauteur*k + inter_batiment_hauteur * k, taille_largeur,taille_hauteur,null);
 				}
-				if ((j.aPersonnage (new Point(i,k))) && (anim == null || anim.estFini() || actionUser.coupJouer.getArrive() == null || (anim != null && actionUser.coupJouer.getArrive() != null &&actionUser.coupJouer.getArrive().CompareTo(new Point(i,k)) != 0)))
+				if ((j.aPersonnage (new Point(i,k))) && (anim == null || anim.estFini() || actionUser.coupJouer.getArrive() == null || (anim != null && actionUser.coupJouer.getArrive() != null &&actionUser.coupJouer.getArrive().compareTo(new Point(i,k)) != 0)))
 				{
 					int perso = j.quiEstIci (new Point(i,k));
 					if (perso == 1)

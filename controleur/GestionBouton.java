@@ -84,21 +84,18 @@ public class GestionBouton extends JButton implements ActionListener
                         action.annulerCoup();
                         f.ia1.desactiverIA();
                         f.ia2.desactiverIA();
-                        System.out.println(f.g.iaJoue);
 					}
                     else if (f.ia1 != null && f.ia1.estActive() && f.ia2 == null)
                     {
                         f.g.iaJoue = true;
                         action.annulerCoup();
                         f.ia1.desactiverIA();
-                        System.out.println(f.g.iaJoue);
                     }
                      else if (f.ia2 != null && f.ia2.estActive() && f.ia1 == null)
                     {
                         f.g.iaJoue = true;
                         action.annulerCoup();
                         f.ia2.desactiverIA();
-                        System.out.println(f.g.iaJoue);
                     }
                     else
                     {
@@ -298,11 +295,12 @@ public class GestionBouton extends JButton implements ActionListener
 		}
 		else if (j1ToString =="IA Difficile")
 		{
-			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
+			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
+			f.ia2 = IAMinMax.nouvelle(f.j, "controleurIA.IAPassive","IA Difficile");
 			f.ia2.activeIA();
 			retour = true;
 		}
-		System.out.println(j1ToString + " vs " + j2ToString);
+		prop.envoyerLogger(j1ToString + " vs " + j2ToString,TypeLogger.INFO);
 
 		return retour;
 	} 

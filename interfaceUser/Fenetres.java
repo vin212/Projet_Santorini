@@ -178,10 +178,6 @@ public class Fenetres {
 		boutonRetour.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR,this,prop));
 		boutonPause.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.PAUSE,this,prop));
 		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this,prop));
-
-		
-		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
-
 		
 		JPanel container = new JPanel();
 		JPanel containerEst = new JPanel();
@@ -553,7 +549,6 @@ public class Fenetres {
 
 	public void afficherOption ()
 	{
-		System.out.println();
 		frame.getContentPane().removeAll();
 
 		ArrayList <String> clefs;

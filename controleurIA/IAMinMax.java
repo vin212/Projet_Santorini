@@ -1,7 +1,6 @@
 package controleurIA;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 import java.util.Hashtable;
 import java.util.Iterator;
