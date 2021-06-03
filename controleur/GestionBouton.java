@@ -251,57 +251,39 @@ public class GestionBouton extends JButton implements ActionListener
 		String j1ToString = j1.getSelectedItem().toString();
 		String j2ToString = j2.getSelectedItem().toString();
 
-		boolean retour = false;
 		f.j = new Jeu(prop);
 
 		f.ia1 = null;
 		f.ia2 = null;
 
-		if (j1ToString == "Joueur" && j2ToString == "Joueur")
-		{
-			retour = true;
-		}
-		else if (j2ToString =="IA Facile")
-		{
+		if (j1ToString == "Joueur" && j2ToString == "Joueur") { }
+		else if (j2ToString =="IA Facile") {
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
 			f.ia1.activeIA();
-			retour = true;
-		}
-		else if (j2ToString =="IA Normal")
-		{
+		} else if (j2ToString =="IA Normal") {
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
 			f.ia1.activeIA();
-			retour = true;
-		}
-		else if (j2ToString =="IA Difficile")
-		{
-			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
+		} else if (j2ToString =="IA Difficile") {
+ 			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
+			f.ia1 = IAMinMax.nouvelle(f.j,"controleurIA.IAForte","IA Difficile");
 			f.ia1.activeIA();
-			retour = true;
 		}
 
 
-		if (j1ToString =="IA Facile")
-		{
+		if (j1ToString =="IA Facile") {
 			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
 			f.ia2.activeIA();
-			retour = true;
-		}
-		else if (j1ToString =="IA Normal")
-		{
+		} else if (j1ToString =="IA Normal") {
 			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
 			f.ia2.activeIA();
-			retour = true;
-		}
-		else if (j1ToString =="IA Difficile")
-		{
+		} else if (j1ToString =="IA Difficile") {
 			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
-			f.ia2 = IAMinMax.nouvelle(f.j, "controleurIA.IAPassive","IA Difficile");
+      f.ia2 = IAMinMax.nouvelle(f.j, "controleurIA.IAForte","IA Difficile");
 			f.ia2.activeIA();
-			retour = true;
 		}
-		prop.envoyerLogger(j1ToString + " vs " + j2ToString,TypeLogger.INFO);
+		
+		System.out.println(j1ToString + " vs " + j2ToString);
 
-		return retour;
+		return true;
 	} 
 }
