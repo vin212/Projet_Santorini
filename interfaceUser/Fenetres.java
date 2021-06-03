@@ -10,13 +10,9 @@ import modele.*;
 import controleur.*;
 import controleurIA.*;
 import global.*;
+import save.*;
 import javax.swing.border.Border;
 import java.awt.event.KeyEvent;
-
-
-/*public enum EnumFenetre {
-	MENU,MENU_PAUSE,PLATEAU;
-}*/
 
 public class Fenetres {
 	public NomFenetres f;
@@ -39,7 +35,7 @@ public class Fenetres {
 
 	Integer [] toucheAppuier;
 
-	ActionUser action;
+	ActionUser actionUser;
 
 	Configuration prop;
 
@@ -53,10 +49,8 @@ public class Fenetres {
 		this.toucheAppuier[1] = -1;
 
 		this.prop = prop;
+		this.actionUser= new ActionUser(j,prop);
 		
-		//ia1.activeIA();
-
-
 		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		frame = new JFrame("Santorini");
 
@@ -67,13 +61,13 @@ public class Fenetres {
 		}
 		catch (Exception except)
 		{
-			System.err.println("erreur icone introuvable");
+			prop.envoyerLogger("erreur icone introuvable",TypeLogger.WARNING);
 		}
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(Integer.parseInt(this.prop.recupValeur("largeur_fenetre")),Integer.parseInt(prop.recupValeur("hauteur_fenetre")));
 		frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
-		this.action = new ActionUser(j);
+		//this.action = new ActionUser(j);
 	}
 
 	public NomFenetres getNomFenetres()
@@ -97,35 +91,43 @@ public class Fenetres {
 		switch (f)
 		{
 			case JEU :
+				prop.envoyerLogger("Fenetre jeu ouverte",TypeLogger.INFO);
 				afficherFenetre1 ();
 				frame.repaint();
 			break;
 			case MENU_PAUSE :
+				prop.envoyerLogger("Fenetre menu pause ouverte",TypeLogger.INFO);
 				afficherMenuPause(); 
 				frame.repaint();
 			break;
 			case PAGE_ACCUEIL :
+				prop.envoyerLogger("Fenetre d'accueil",TypeLogger.INFO);
 				afficherAccueil();
 				frame.repaint();
 			break;
 			case POPUP_SAUVEGARDE :
+				prop.envoyerLogger("Pop up sauvegarde",TypeLogger.INFO);
 				afficherPopUpSauvegarde();
 				frame.repaint();
 			break;
 			case CHARGER :
+				prop.envoyerLogger("Fenetre charger sauvegarde",TypeLogger.INFO);
 				afficherCharger();
 				frame.repaint();
 			break;
 			case NOUVELLE_PARTIE :
+				prop.envoyerLogger("Fenetre faire nouvelle partie",TypeLogger.INFO);
 				afficherNouvellePartie ();
 				frame.repaint();
 			break;
 			case OPTION :
+				prop.envoyerLogger("Fenetre option",TypeLogger.INFO);
 				afficherOption ();
 				frame.repaint();
 			break;
 			case AUTRE :	
 			    //Toolkit.getDefaultToolkit().getScreenSize();
+				prop.envoyerLogger("easter egg",TypeLogger.INFO);
     			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
 				frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
 				aire1 = new PlateauInterface_1 (j);
@@ -133,6 +135,7 @@ public class Fenetres {
 				frame.setVisible(true);
 			break;
 			default :
+				prop.envoyerLogger("Fenetre non defini",TypeLogger.WARNING);
 				frame.setVisible(false);
 				frame = new JFrame("default");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -149,7 +152,8 @@ public class Fenetres {
 		
 		frame.getContentPane().removeAll();
 	 
-		aire2 = new PlateauInterface_2 (j);
+		
+
 
 		JPanel leJoueur = new JPanel ();
 		JLabel action = new JLabel("AFK");
@@ -158,6 +162,9 @@ public class Fenetres {
 		action.setForeground(new Color(255,255,255));
 
 		leJoueur.add(action);
+
+		aire2 = new PlateauInterface_2 (j,actionUser,prop);
+		this.g = new GestionUser( this.j, ia1, ia2, aire2,leJoueur,action, actionUser,prop);
 
 		
 		JButton boutonRetour = new JButton("<");
@@ -171,16 +178,12 @@ public class Fenetres {
 		boutonRetour.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR,this,prop));
 		boutonPause.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.PAUSE,this,prop));
 		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this,prop));
-
-		
-		Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
-
 		
 		JPanel container = new JPanel();
 		JPanel containerEst = new JPanel();
 		container.setFocusable(false);
-		containerEst.setPreferredSize(new Dimension(200, 500));
-		container.setPreferredSize(new Dimension(200, 450));
+		containerEst.setPreferredSize(new Dimension(200, 400));
+		container.setPreferredSize(new Dimension(200, 400));
 		container.add(leJoueur,BorderLayout.NORTH);
 		containerEst.add(container,BorderLayout.CENTER);
 
@@ -199,7 +202,7 @@ public class Fenetres {
 		frame.add(containerEst,BorderLayout.EAST);
 		frame.setVisible(true);
 
-		this.g = new GestionUser( this.j, ia1, ia2, aire2,leJoueur,action);
+		
 		this.chrono = new Timer( 50, new EvenementTemp(g));
 		chrono.start();
 
@@ -386,10 +389,68 @@ public class Fenetres {
 	public void afficherCharger ()
 	{
 		frame.getContentPane().removeAll();
+		//frame.setLayout(null);
 
-		ChargerPage aire = new ChargerPage(frame,this,prop,this.j );
-		frame.add(aire);
-	
+		int width = frame.getSize().width;
+		int height = frame.getSize().height;
+
+		Save saves = new Save(this.j);
+
+		ArrayList <String> nomSave;
+		nomSave = saves.lesSauvegardes();
+
+		JPanel container = new JPanel();
+		JPanel containerMain = new JPanel();
+		JScrollPane scrPane = new JScrollPane(container);
+		container.setBackground(new Color(150,150,150));
+
+		container.setLayout(new GridBagLayout());
+		containerMain.setLayout(new GridBagLayout());
+
+		JPanel test = new JPanel ();
+		test.setLayout(new GridBagLayout());
+		test.setPreferredSize(new Dimension(width,height));
+
+		test.setBackground(new Color(50,0,0));
+
+		GridBagConstraints gbc = new GridBagConstraints();
+
+		JPanel save;
+		for (int i = 0; i < nomSave.size(); i++)
+		{
+			Border lineborder = BorderFactory.createLineBorder(Color.black, 2);
+
+
+    		//associer à JLabel
+			save = new JPanel();
+			gbc.gridx = 0;
+			gbc.gridy = i*height/5;
+			save.add(new JLabel(nomSave.get(i)),gbc);
+			save.addMouseListener(new EcouteurDeSouris(nomSave.get(i), this.j, this));
+			save.setBorder(lineborder);
+			save.setPreferredSize(new Dimension(width * 7/8, height/5));
+			//save.setResizable(true);
+
+			container.add(save,gbc);
+			
+		}
+		/*JScrollPane scroll1 = new JScrollPane();
+		container.add(scroll1);*/
+		containerMain.setPreferredSize(new Dimension(width,height));
+		container.setPreferredSize(new Dimension(width - width/10,height/5*nomSave.size()));
+		scrPane.setPreferredSize(new Dimension(width, 3*height/4));
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		containerMain.add(scrPane,gbc);
+		JButton bouton = new JButton ("Retour Menu");
+		bouton.addActionListener(new GestionBouton(Bouton.RETOUR_MENU,this,prop));
+		gbc.gridx = 0;
+		gbc.gridy = height/2;
+		containerMain.add (bouton,gbc);
+
+		//test.add(containerMain);
+		frame.add(containerMain);
+
 		frame.setVisible(true);
 
 	}
@@ -401,7 +462,9 @@ public class Fenetres {
 		GridBagConstraints gbc = new GridBagConstraints();
 		JPanel container = new JPanel ();
 		JPanel containerMain = new JPanel ();
+		JPanel couleur = new JPanel ();
 
+		couleur.setLayout(new GridBagLayout());
 		containerMain.setLayout(new GridBagLayout());
 		String [] element = new String[] {"Joueur", "IA Facile", "IA Normal", "IA Difficile"};
 
@@ -409,19 +472,60 @@ public class Fenetres {
 		JComboBox<String> menuBar2 = new JComboBox<String>(element);
 		/*menuBar.add(new JLabel("Element 1"));
 		menuBar.add(new JLabel("Element 2"));*/
+
+		JPanel boite = new JPanel();
+		boite.setBackground(new Color(0,110,255));
+		boite.setPreferredSize(new Dimension(100, 25));
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+
+		couleur.add(boite,gbc);
+
+		boite = new JPanel ();
+		boite.setBackground(new Color(238,238,238));
+		boite.setPreferredSize(new Dimension(25, 25));
+
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+
+		couleur.add(boite,gbc);
+
+		boite = new JPanel ();
+		boite.setBackground(new Color(255,0,0));
+		boite.setPreferredSize(new Dimension(100, 25));
+
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+
+		couleur.add(boite,gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+
+		containerMain.add(couleur,gbc);
+
 		container.add(menuBar1);
 		container.add(new JLabel("VS"));
 		container.add(menuBar2);
 
 		gbc.gridx = 0;
-		gbc.gridy = 0;
+		gbc.gridy = 1;
 		containerMain.add(container,gbc);
 
+
+		container = new JPanel();
+		container.setBackground(new Color(238,238,238));
+		container.setPreferredSize(new Dimension(100, 100));
+
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		containerMain.add(container,gbc);
 
 		JButton boutonCestParti = new JButton ("C'est parti !"); 
 
 		gbc.gridx = 0;
-		gbc.gridy = 1;
+		gbc.gridy = 3;
 		containerMain.add(boutonCestParti,gbc);
 
 		//container = new JPanel ();
@@ -429,7 +533,7 @@ public class Fenetres {
 		JButton boutonRetourMenu = new JButton ("Retour Menu");
 
 		gbc.gridx = 0;
-		gbc.gridy = 2;
+		gbc.gridy = 4;
 		containerMain.add(boutonRetourMenu,gbc);
 		boutonRetourMenu.addActionListener(new GestionBouton (j,aire2,Bouton.RETOUR_MENU,this,prop));
 		boutonCestParti.addActionListener(new GestionBouton (j,Bouton.LANCER_PARTIE,this,menuBar1,menuBar2,prop));
@@ -445,7 +549,6 @@ public class Fenetres {
 
 	public void afficherOption ()
 	{
-		System.out.println();
 		frame.getContentPane().removeAll();
 
 		ArrayList <String> clefs;
@@ -465,13 +568,10 @@ public class Fenetres {
 		container.setLayout(new GridBagLayout());
 
 		clefs = prop.recupClesModifiable ();
-		System.out.println("taille : " + clefs.size());
 		for (int i = 0; i < clefs.size(); i++)
 		{
-			System.out.println("celf : " + clefs.get(i));
 			bloc = new JPanel ();
 			JLabel label = new JLabel (clefs.get(i) + ":");
-			System.out.println("valeur : " + prop.recupValeur(clefs.get(i)));
 			gbc.gridx = 0;
 			gbc.gridy = 0;
 			bloc.add (label,gbc);
@@ -484,7 +584,7 @@ public class Fenetres {
 				gbc.gridy = 0;
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(prop.recupValeur(clefs.get(i)))));
 				label.setBorder(lineborder);
-				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0));
+				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0,frame,this));
 
 				bloc.add (label,gbc);
 				gbc.gridx = 0;
@@ -505,6 +605,7 @@ public class Fenetres {
 				{
 					checkBox.setSelected(false);
 				}
+				checkBox.addActionListener(new EcouteurCheckBox(clefs.get(i),prop,j));
 				bloc.add (checkBox,gbc);
 				gbc.gridx = 0;
 				gbc.gridy = clefs.size() + i;
@@ -517,7 +618,7 @@ public class Fenetres {
 				gbc.gridy = 0;
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[0])));
 				label.setBorder(lineborder);
-				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0));
+				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0,frame,this));
 
 				bloc.add (label,gbc);
 
@@ -529,7 +630,7 @@ public class Fenetres {
 				gbc.gridx = 3;
 				gbc.gridy = 0;
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[1])));
-				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),1));
+				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),1,frame,this));
 				label.setBorder(lineborder);
 
 				bloc.add (label,gbc);
@@ -551,7 +652,17 @@ public class Fenetres {
 		JButton boutonRetour = new JButton ("Retour");
 		boutonRetour.addActionListener(new GestionBouton(Bouton.RETOUR_OPTION,this,prop));
 		container.add(boutonRetour);
+		boutonRetour.setFocusable(false);
 
+
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		containerMain.add(container,gbc);
+
+		container = new JPanel ();
+		JButton boutonDefaut = new JButton("Rétablir par defaut");
+		boutonDefaut.addActionListener(new GestionBouton(Bouton.RETABLIR_DEFAUT,this,prop));
+		container.add(boutonDefaut);
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -561,6 +672,7 @@ public class Fenetres {
 		frame.add(containerMain);
 
 		frame.setVisible(true);
+		frame.requestFocus();
 
 
 	}

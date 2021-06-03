@@ -41,7 +41,7 @@ public class TestActionUser {
         Assertions.assertEquals(1,jeu.getNbEtage(new Point(2,2)));
 
         // check position
-        Assertions.assertEquals(0, actionUser.recupPosiPerso().CompareTo(new Point(1,2)));
+        Assertions.assertEquals(0, actionUser.recupPosiPerso().compareTo(new Point(1,2)));
     }
 
     @Test

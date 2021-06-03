@@ -72,13 +72,13 @@ public class TestPoint {
 		try {
 			Point pointNorm = new Point(2, 3);
 			Point pointNeg = new Point(-1, -1);
-			System.out.println("Test de comparaison : point négatif et point négatif (identiques=true) : " + (pointNeg.CompareTo(pointNeg)==0));
-			System.out.println("Test de comparaison : point négatif et point normal (différents=true) : " + (pointNeg.CompareTo(pointNorm)==-1));
-			System.out.println("Test de comparaison : point négatif et point normal (différents=true) : " + (pointNorm.CompareTo(pointNeg)==1));
+			System.out.println("Test de comparaison : point négatif et point négatif (identiques=true) : " + (pointNeg.compareTo(pointNeg)==0));
+			System.out.println("Test de comparaison : point négatif et point normal (différents=true) : " + (pointNeg.compareTo(pointNorm)==-1));
+			System.out.println("Test de comparaison : point négatif et point normal (différents=true) : " + (pointNorm.compareTo(pointNeg)==1));
 
 		}
 		catch (Throwable e) {
-			System.out.println("Erreur : CompareTo");
+			System.out.println("Erreur : compareTo");
 			System.out.println(e);
 		}
 

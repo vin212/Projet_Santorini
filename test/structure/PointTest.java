@@ -8,7 +8,7 @@ public class PointTest {
     @Test
     public void testSameCoordinatevalues() {
         Point comparePoint = new Point(1, 2);
-        Assertions.assertEquals(0, new Point(1, 2).CompareTo(comparePoint));
+        Assertions.assertEquals(0, new Point(1, 2).compareTo(comparePoint));
     }
 
     @Test
@@ -16,34 +16,34 @@ public class PointTest {
         Point comparePoint = new Point(1, 2);
 
         comparePoint.modifValeur(3,4);
-        Assertions.assertEquals(0, new Point(3, 4).CompareTo(comparePoint));
+        Assertions.assertEquals(0, new Point(3, 4).compareTo(comparePoint));
     }
 
     @Test
     public void testGreaterYCoordinateOfCurrentPoint() {
         Point comparePoint = new Point(1, 1);
-        Assertions.assertEquals(1, new Point(1, 3).CompareTo(comparePoint));
+        Assertions.assertEquals(1, new Point(1, 3).compareTo(comparePoint));
 
     }
 
     @Test
     public void testGreaterYCoordinateOfInputPoint() {
         Point comparePoint = new Point(1, 3);
-        Assertions.assertEquals(-1, new Point(1, 1).CompareTo(comparePoint));
+        Assertions.assertEquals(-1, new Point(1, 1).compareTo(comparePoint));
 
     }
 
     @Test
     public void testLesserXCoordinateOfInputPoint() {
         Point comparePoint = new Point(1, 1);
-        Assertions.assertEquals(1, new Point(2, 1).CompareTo(comparePoint));
+        Assertions.assertEquals(1, new Point(2, 1).compareTo(comparePoint));
 
     }
 
     @Test
     public void testGreaterXCoordinateOfInputPoint() {
         Point comparePoint = new Point(3, 2);
-        Assertions.assertEquals(-1, new Point(1, 2).CompareTo(comparePoint));
+        Assertions.assertEquals(-1, new Point(1, 2).compareTo(comparePoint));
 
     }
 

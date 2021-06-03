@@ -103,3 +103,4 @@ public class IAalea2 extends IA {
         return new Coup(pion, deplacement, construction, j.getJoueurEnJeu());
     }
 }
+
