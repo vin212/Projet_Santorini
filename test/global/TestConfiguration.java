@@ -24,6 +24,7 @@ public class TestConfiguration {
         Assertions.assertEquals("700", prop.recupValeur("largeur_fenetre"));
         Assertions.assertEquals("500", prop.recupValeur("hauteur_fenetre"));
         Assertions.assertEquals("true", prop.recupValeur("aide"));
+        Assertions.assertEquals("2", prop.recupValeur("vitesse_animation"));
         Assertions.assertNull(prop.recupValeur(""));
     }
 
