@@ -48,14 +48,14 @@ public class TestIAalea2 {
         iaa.debuterPartie();
 
         // vérifier que iaa n'est pas au même point que le joueur
-        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().CompareTo(firstPoint));
-        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().CompareTo(secondPoint));
-        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().CompareTo(thirdPoint));
-        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().CompareTo(fourthPoint));
+        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().compareTo(firstPoint));
+        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().compareTo(secondPoint));
+        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().compareTo(thirdPoint));
+        Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().compareTo(fourthPoint));
 
         // vérifier si je me place au point négatif ou plus grand que la taille de la planche
-        Assertions.assertEquals(1,iaa.debuterPartie().getDepart().CompareTo(new Point(-1,-1)));
-        Assertions.assertEquals(-1,iaa.debuterPartie().getDepart().CompareTo(new Point(6,5)));
+        Assertions.assertEquals(1,iaa.debuterPartie().getDepart().compareTo(new Point(-1,-1)));
+        Assertions.assertEquals(-1,iaa.debuterPartie().getDepart().compareTo(new Point(6,5)));
 
         // vérifiez si ia peut trouver un endroit pour déménager et construire
         Assertions.assertTrue(iaa.getVoisin(iaa.debuterPartie().getDepart(), vp).size() > 0);
@@ -65,11 +65,11 @@ public class TestIAalea2 {
         iaa.joue();
 
         // vérifier que les points de construction ne sont pas égaux au premier ou au deuxième personnage ou au point auquel nous arrivons
-        Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(firstPoint));
-        Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(secondPoint));
-        Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(thirdPoint));
-        Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(fourthPoint));
-        Assertions.assertNotEquals(0, iaa.joue().getConstruction().CompareTo(iaa.joue().getDepart()));
+        Assertions.assertNotEquals(0, iaa.joue().getConstruction().compareTo(firstPoint));
+        Assertions.assertNotEquals(0, iaa.joue().getConstruction().compareTo(secondPoint));
+        Assertions.assertNotEquals(0, iaa.joue().getConstruction().compareTo(thirdPoint));
+        Assertions.assertNotEquals(0, iaa.joue().getConstruction().compareTo(fourthPoint));
+        Assertions.assertNotEquals(0, iaa.joue().getConstruction().compareTo(iaa.joue().getDepart()));
     }
 
     @Test

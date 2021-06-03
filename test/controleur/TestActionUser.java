@@ -1,6 +1,7 @@
 package test.controleur;
 
 import controleur.ActionUser;
+import global.Configuration;
 import modele.Jeu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,13 +11,12 @@ import structure.Point;
 public class TestActionUser {
     ActionUser actionUser;
     Jeu jeu = new Jeu();
-
+    Configuration prop = new Configuration();
     @BeforeEach
     public void setup() {
-        actionUser = new ActionUser(jeu);
+        actionUser = new ActionUser(jeu, prop);
     }
 
-    // TODO CHECK FOR RETABLIR COUP
     @Test
     public void testJouerAction() {
         // placer les joueurs
@@ -41,7 +41,7 @@ public class TestActionUser {
         Assertions.assertEquals(1,jeu.getNbEtage(new Point(2,2)));
 
         // vérifier la position
-        Assertions.assertEquals(0, actionUser.recupPosiPerso().CompareTo(new Point(1,2)));
+        Assertions.assertEquals(0, actionUser.recupPosiPerso().compareTo(new Point(1,2)));
     }
 
     @Test

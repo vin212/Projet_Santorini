@@ -47,14 +47,14 @@ public class TestIAMinMax {
         iaMinMax.debuterPartie();
 
         // check iaa is not at the same point as the personnages
-        Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().CompareTo(firstPoint));
-        Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().CompareTo(secondPoint));
-        Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().CompareTo(thirdPoint));
-        Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().CompareTo(fourthPoint));
+        Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(firstPoint));
+        Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(secondPoint));
+        Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(thirdPoint));
+        Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(fourthPoint));
 
         // check if ia place itself at negative point or bigger than board size
-        Assertions.assertEquals(1,iaMinMax.debuterPartie().getDepart().CompareTo(new Point(-1,-1)));
-        Assertions.assertEquals(-1,iaMinMax.debuterPartie().getDepart().CompareTo(new Point(6,5)));
+        Assertions.assertEquals(1,iaMinMax.debuterPartie().getDepart().compareTo(new Point(-1,-1)));
+        Assertions.assertEquals(-1,iaMinMax.debuterPartie().getDepart().compareTo(new Point(6,5)));
 
         // check if ia can find a place to move and build
         Assertions.assertTrue(iaMinMax.getVoisin(iaMinMax.debuterPartie().getDepart(), vp).size() > 0);
@@ -64,11 +64,11 @@ public class TestIAMinMax {
         iaMinMax.joue();
 
         // verify construction points are not equal to first personnage or second personnage or the point we arrive
-        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().CompareTo(firstPoint));
-        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().CompareTo(secondPoint));
-        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().CompareTo(thirdPoint));
-        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().CompareTo(fourthPoint));
-        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().CompareTo(iaMinMax.joue().getDepart()));
+        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(firstPoint));
+        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(secondPoint));
+        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(thirdPoint));
+        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(fourthPoint));
+        Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(iaMinMax.joue().getDepart()));
     }
 
     private static List<Arguments> pointPersonnage() {
