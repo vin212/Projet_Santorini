@@ -56,7 +56,7 @@ public class GestionBouton extends JButton implements ActionListener
 		this.prop = prop;
 	}
 
-	public GestionBouton (Jeu j, Bouton type, Fenetres f, JTextArea texte, JFrame popUp, JLabel messageErreur)
+	public GestionBouton (Jeu j, Bouton type, Fenetres f, JTextArea texte, JFrame popUp, JLabel messageErreur, Configuration prop)
 	{
 		this.type = type;
 		this.action = new ActionUser(j,prop);
@@ -68,6 +68,7 @@ public class GestionBouton extends JButton implements ActionListener
 		this.messageErreur = messageErreur;
 
 		this.j = j;
+		this.prop = prop;
 	}
 
 	public void actionPerformed(ActionEvent e) 
@@ -140,15 +141,15 @@ public class GestionBouton extends JButton implements ActionListener
 				{
 					if (f.ia1.type().equals("IA Facile"))
 					{
-						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia1.type());
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia1.type(),prop);
 					}
 					else if (f.ia1.type().equals("IA Normal"))
 					{
-						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia1.type());
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia1.type(),prop);
 					}
 					else if (f.ia1.type().equals("IA Difficile"))
 					{
-						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia1.type());
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia1.type(),prop);
 					}
 					f.ia1.activeIA();
 				}
@@ -157,15 +158,15 @@ public class GestionBouton extends JButton implements ActionListener
 				{
 					if (f.ia2.type().equals("IA Facile"))
 					{
-						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia2.type());
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia2.type(),prop);
 					}
 					else if (f.ia2.type().equals("IA Normal"))
 					{
-						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia2.type());
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia2.type(),prop);
 					}
 					else if (f.ia2.type().equals("IA Difficile"))
 					{
-						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia2.type());
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia2.type(),prop);
 					}
 					f.ia2.activeIA();
 				}
@@ -202,7 +203,8 @@ public class GestionBouton extends JButton implements ActionListener
 
 			break;
 			case ANNULER_SAUVEGARDE :
-				popUp.setVisible(false); break;
+				popUp.setVisible(false); 
+			break;
 			case CHARGER :
 				f.ChangerFenetres(NomFenetres.CHARGER);
 				f.gestionFenetre();
@@ -263,19 +265,19 @@ public class GestionBouton extends JButton implements ActionListener
 		}
 		else if (j2ToString =="IA Facile")
 		{
-			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile",prop);
 			f.ia1.activeIA();
 			retour = true;
 		}
 		else if (j2ToString =="IA Normal")
 		{
-			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal",prop);
 			f.ia1.activeIA();
 			retour = true;
 		}
 		else if (j2ToString =="IA Difficile")
 		{
-			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile",prop);
 			f.ia1.activeIA();
 			retour = true;
 		}
@@ -283,20 +285,20 @@ public class GestionBouton extends JButton implements ActionListener
 
 		if (j1ToString =="IA Facile")
 		{
-			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
+			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile",prop);
 			f.ia2.activeIA();
 			retour = true;
 		}
 		else if (j1ToString =="IA Normal")
 		{
-			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
+			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal",prop);
 			f.ia2.activeIA();
 			retour = true;
 		}
 		else if (j1ToString =="IA Difficile")
 		{
 			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
-			f.ia2 = IAMinMax.nouvelle(f.j, "controleurIA.IAPassive","IA Difficile");
+			f.ia2 = IAMinMax.nouvelle(f.j, "controleurIA.IAPassive","IA Difficile",prop);
 			f.ia2.activeIA();
 			retour = true;
 		}

@@ -4,20 +4,24 @@ import modele.Jeu;
 import modele.Coup;
 import structure.*;
 import java.util.ArrayList;
+import global.*;
 
 public abstract class IA {
     public Jeu j;
     private boolean active = false;
     public String type; 
+    public Configuration prop;
 
     // Instancie l'IA demandé et la renvoie.
-    public static IA nouvelle(Jeu j, String classIaString, String type){
+    public static IA nouvelle(Jeu j, String classIaString, String type, Configuration prop){
         IA instance = null;
+        
 
         try {
             instance = (IA) ClassLoader.getSystemClassLoader().loadClass(classIaString).getDeclaredConstructor().newInstance();
             instance.j = j;
             instance.type = type;
+            instance.prop = prop;
         } catch(Exception e){
             System.err.println(e);
         }

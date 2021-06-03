@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import modele.Jeu;
 import modele.Coup;
 import structure.*;
+import global.*;
 
 public abstract class IAMinMax extends IA {
     Random r;
@@ -37,7 +38,7 @@ public abstract class IAMinMax extends IA {
 
     @Override
     public void initialise() {
-        System.err.println("Systeme de log absent, IA MinMax activée");
+        prop.envoyerLogger("IA MinMax activer",TypeLogger.INFO);
     }
 
     @Override

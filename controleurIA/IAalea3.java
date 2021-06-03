@@ -5,6 +5,7 @@ import java.util.Random;
 
 import modele.Coup;
 import structure.*;
+import global.*;
 
 public class IAalea3 extends IA {
     Random r;
@@ -15,7 +16,7 @@ public class IAalea3 extends IA {
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log absent, IA Alea 3");
+        prop.envoyerLogger("IA Alea 3 activer",TypeLogger.INFO);
     }
 
     @Override
