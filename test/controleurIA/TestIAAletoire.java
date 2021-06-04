@@ -2,6 +2,7 @@ package test.controleurIA;
 
 import controleurIA.IA;
 import controleurIA.IAAleatoire;
+import global.Configuration;
 import modele.Jeu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,7 @@ public class TestIAAletoire {
     Jeu jeu;
     VerificateurEtage ve;
     VerificateurPion vp;
+    Configuration prop = new Configuration();
 
     @BeforeEach
     public void setup() {
@@ -33,7 +35,7 @@ public class TestIAAletoire {
     @ParameterizedTest
     @MethodSource("pointPersonnage")
     public void testIA(Point firstPoint, Point secondPoint, Point thirdPoint, Point fourthPoint, String iaType) {
-        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", iaType);
+        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", iaType, prop);
 
         // simulate le jeu
         iaa.activeIA();
@@ -75,7 +77,7 @@ public class TestIAAletoire {
 
     @Test
     public void testAvecPointsEnormes() {
-        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", "IA Normal");
+        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", "IA Normal", prop);
 
         iaa.activeIA();
 
@@ -90,7 +92,7 @@ public class TestIAAletoire {
 
     @Test
     public void testAvecPointsNegatives() {
-        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", "IA Normal");
+        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", "IA Normal", prop);
 
         iaa.activeIA();
 

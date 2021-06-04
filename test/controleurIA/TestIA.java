@@ -1,6 +1,7 @@
 package test.controleurIA;
 
 import controleurIA.IA;
+import global.Configuration;
 import modele.Jeu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,11 +12,12 @@ import structure.VerificateurPion;
 
 public class TestIA extends IA{
     IA ia;
+    Configuration prop = new Configuration();
 
     @BeforeEach
     public void setup() {
         j = new Jeu();
-        ia = IA.nouvelle(j,"controleurIA.IAAleatoire", "IA Facile");
+        ia = IA.nouvelle(j,"controleurIA.IAAleatoire", "IA Facile", prop);
         ia.activeIA();
     }
 

@@ -2,6 +2,7 @@ package test.controleurIA;
 
 import controleurIA.IA;
 import controleurIA.IAMinMax;
+import global.Configuration;
 import modele.Jeu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ public class TestIAMinMax {
     Jeu jeu;
     VerificateurEtage ve;
     VerificateurPion vp;
+    Configuration prop = new Configuration();
 
     @BeforeEach
     public void setup() {
@@ -32,7 +34,7 @@ public class TestIAMinMax {
     @ParameterizedTest
     @MethodSource("pointPersonnage")
     public void testIAMinMax(Point firstPoint, Point secondPoint, Point thirdPoint, Point fourthPoint, String iaType) {
-        iaMinMax = (IAMinMax) IA.nouvelle(jeu,"controleurIA.IAMinMax", iaType);
+        iaMinMax = (IAMinMax) IA.nouvelle(jeu,"controleurIA.IAMinMax", iaType, prop);
 
         // simulate le jeu
         iaMinMax.activeIA();
