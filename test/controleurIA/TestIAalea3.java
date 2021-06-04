@@ -1,7 +1,7 @@
 package test.controleurIA;
 
 import controleurIA.IA;
-import controleurIA.IAAleatoire;
+import controleurIA.IAalea3;
 import modele.Jeu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,15 +16,15 @@ import structure.VerificateurPion;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestIAAletoire {
-    IAAleatoire iaa;
+public class TestIAalea3 {
+    IAalea3 iaa;
     Jeu jeu;
     VerificateurEtage ve;
     VerificateurPion vp;
 
     @BeforeEach
     public void setup() {
-        // initialise l'IA
+        // initialize l'IA
         jeu = new Jeu();
         ve = new VerificateurEtage(jeu);
         vp = new VerificateurPion(jeu);
@@ -33,7 +33,7 @@ public class TestIAAletoire {
     @ParameterizedTest
     @MethodSource("pointPersonnage")
     public void testIA(Point firstPoint, Point secondPoint, Point thirdPoint, Point fourthPoint, String iaType) {
-        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", iaType);
+        iaa = (IAalea3) IA.nouvelle(jeu,"controleurIA.IAalea3", iaType);
 
         // simulate le jeu
         iaa.activeIA();
@@ -69,13 +69,12 @@ public class TestIAAletoire {
         Assertions.assertNotEquals(0, iaa.joue().getConstruction().compareTo(secondPoint));
         Assertions.assertNotEquals(0, iaa.joue().getConstruction().compareTo(thirdPoint));
         Assertions.assertNotEquals(0, iaa.joue().getConstruction().compareTo(fourthPoint));
-
         Assertions.assertNotEquals(0, iaa.joue().getConstruction().compareTo(iaa.joue().getDepart()));
     }
 
     @Test
     public void testAvecPointsEnormes() {
-        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", "IA Normal");
+        iaa = (IAalea3) IA.nouvelle(jeu,"controleurIA.IAalea3", "IA Normal");
 
         iaa.activeIA();
 
@@ -90,7 +89,7 @@ public class TestIAAletoire {
 
     @Test
     public void testAvecPointsNegatives() {
-        iaa = (IAAleatoire) IA.nouvelle(jeu,"controleurIA.IAAleatoire", "IA Normal");
+        iaa = (IAalea3) IA.nouvelle(jeu,"controleurIA.IAalea3", "IA Normal");
 
         iaa.activeIA();
 
@@ -117,5 +116,4 @@ public class TestIAAletoire {
                 Arguments.of(new Point(4,4), new Point(2,4), new Point(1,3), new Point(1,1), "IA Normal"),
                 Arguments.of(new Point(0,0), new Point(4,4), new Point(3,1), new Point(3,2), "IA Difficile"));
     }
-
 }
