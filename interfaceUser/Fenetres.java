@@ -202,11 +202,14 @@ public class Fenetres {
 		boutonSauvegarder.setBackground(backgroundColor);
 		boutonSauvegarder.setPreferredSize(new Dimension(frame.getSize().height/16,frame.getSize().height/16));
 		boutonSauvegarder.setToolTipText("sauvegarder ");
+		boutonSauvegarder.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.SAUVEGARDER,this,prop));
+		
 		icon = new ImageIcon( new ImageIcon(lieuIcone + "icone_recommencer.png").getImage().getScaledInstance(frame.getSize().height/16, frame.getSize().height/16, Image.SCALE_DEFAULT)); 
 		JButton boutonRecommencer = new JButton(icon);
 		boutonRecommencer.setBackground(backgroundColor);
 		boutonRecommencer.setPreferredSize(new Dimension(frame.getSize().height/16,frame.getSize().height/16));
 		boutonRecommencer.setToolTipText("recommencer ");
+		boutonRecommencer.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RECOMMENCER,this,prop));
 
 		JButton boutonRetour = new JButton(new ImageIcon(lieuIcone + "icone_retour.png"));
 		boutonRetour.setBackground(buttonColor);
@@ -503,7 +506,7 @@ public class Fenetres {
 		int width = frame.getSize().width;
 		int height = frame.getSize().height;
 
-		Save saves = new Save(this.j);
+		Save saves = new Save(this.j,prop);
 
 		ArrayList <String> nomSave;
 		nomSave = saves.lesSauvegardes();
@@ -541,7 +544,7 @@ public class Fenetres {
 			name.setFont(policeSave);
 
 			save.add(name,gbc);
-			save.addMouseListener(new EcouteurDeSouris(nomSave.get(i), this.j, this));
+			save.addMouseListener(new EcouteurDeSouris(nomSave.get(i), this.j, this, prop));
 			save.setBorder(lineborder);
 			save.setPreferredSize(new Dimension(width * 7/8, height/5-height/80));
 			//save.setResizable(true);

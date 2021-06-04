@@ -190,15 +190,28 @@ public class GestionBouton extends JButton implements ActionListener
 
 				if (texte.getText().length() <= 0)
 				{
-					this.messageErreur.setText("Erreur fichier deja existant ou nom inccorect");
+					this.messageErreur.setText("Nom inccorect");
 				}
 				else
 				{
-					Save s = new Save(j);
-					s.sauver(texte.getText());
+					Save s = new Save(j,prop);
+					int res = s.sauver(texte.getText());
+					if (res == 0)
+					{
+						this.messageErreur.setText("");
+						popUp.setVisible(false);
+					}
+					else if (res == 1)
+					{
+						this.messageErreur.setText("Fichier déjà existant");
+					}
+					else if (res == 2)
+					{
+						this.messageErreur.setText("Fichier invalide, pas assez de coup joué");
+					}
+				
 
-					this.messageErreur.setText("");
-					popUp.setVisible(false);
+					
 				}
 
 			break;

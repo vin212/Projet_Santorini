@@ -121,6 +121,7 @@ public class Jeu{
 	public void addTour(){
 		this.t++;
 		calculJoueurEnJeu();
+		System.out.println("tour : " + this.t);
 	}
 
 	public void histoAjouterCoup(Coup c){
@@ -137,6 +138,10 @@ public class Jeu{
 
 	public int histoPosition(){
 		return historique.positionnement();
+	}
+
+	public void setPosition (int i){
+		historique.setPosition(i);
 	}
 
 

@@ -93,4 +93,9 @@ public class Historique{
         }
         return msg;
     }
+
+    public void setPosition (int i)
+    {
+        this.position = i;
+    }
 }
