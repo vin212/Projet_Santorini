@@ -10,7 +10,7 @@ public class Main {
 
 		Configuration prop = new Configuration();
 
-		prop.envoyerLogger("Demarage du jeu",TypeLogger.INFO);
+		prop.envoyerLogger("Demarage du jeu", TypeLogger.INFO);
 
 		Jeu j = new Jeu(prop);
 
