@@ -1,6 +1,6 @@
 package structure;
 
-public class Point implements Comparable<Point>{
+public class Point implements Comparable<Point>, Cloneable{
 	int x;
 	int y;
 
@@ -54,6 +54,12 @@ public class Point implements Comparable<Point>{
 		} else {
 			return -2;
 		}
+	}
+
+	@Override
+	public Point clone(){
+		Point resultat = new Point(x,y);
+		return resultat;
 	}
 
 	public String toString (){

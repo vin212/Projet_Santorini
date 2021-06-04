@@ -3,7 +3,9 @@ package controleurIA;
 import java.util.ArrayList;
 import java.util.Random;
 
+import global.TypeLogger;
 import modele.Coup;
+import modele.Jeu;
 import structure.*;
 
 public class IAalea3 extends IA {
@@ -15,11 +17,11 @@ public class IAalea3 extends IA {
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log absent, IA Alea 3");
+        prop.envoyerLogger("IA Aléa 3 activée", TypeLogger.INFO);
     }
 
     @Override
-    public Coup debuterPartie(){
+    public Coup debuterPartie(Jeu j){
         ArrayList<Point> liste = new ArrayList<Point>(0);
         for(int i = 0; i < j.getLargeurPlateau(); i++){
             for(int k = 0; k < j.getHauteurPlateau(); k++){
@@ -32,7 +34,7 @@ public class IAalea3 extends IA {
     }
 
     @Override
-    public Coup joue(){
+    public Coup joue(Jeu j){
         ArrayList<Point> liste = new ArrayList<Point>(0), liste2 = new ArrayList<Point>(0);
         VerificateurMonte vm = new VerificateurMonte(j);
         VerificateurPion vp = new VerificateurPion(j);
@@ -44,8 +46,8 @@ public class IAalea3 extends IA {
         Point deplacement;
         Point construction;
 
-        liste = getVoisin(p[0], vm);
-        liste2 = getVoisin(p[1], vm);
+        liste = j.getVoisin(p[0], vm);
+        liste2 = j.getVoisin(p[1], vm);
         taille = liste.size();
         taille2 = liste2.size();
         if(taille == 0 && taille2 == 0){
@@ -54,7 +56,7 @@ public class IAalea3 extends IA {
             // Pion 2 qui joue
             else
                 pion = p[1];
-            liste = getVoisin(pion, vp);
+            liste = j.getVoisin(pion, vp);
             taille = liste.size();
             if (taille == 0){
                 // On regarde l'autre pion
@@ -65,7 +67,7 @@ public class IAalea3 extends IA {
                     pion = p[0];
                 else
                     pion = p[1];
-                liste = getVoisin(pion, vp);
+                liste = j.getVoisin(pion, vp);
                 taille = liste.size();
                 if (taille == 0){
                     // Ne devrait pas arriver. Seul le futur nous dira si c'est vrai ou pas.
@@ -92,7 +94,7 @@ public class IAalea3 extends IA {
             }
 
         }
-        liste = getVoisin(deplacement, ves);
+        liste = j.getVoisin(deplacement, ves);
         taille = liste.size();
         // Si on a pu bouger, c'est qu'on peut poser de là d'où on vient.
         if (taille == 0){

@@ -8,15 +8,13 @@ import java.util.ArrayList;
 import global.*;
 
 
-public class Jeu{
+public class Jeu implements Cloneable {
 	Plateau p;
 	int t;
 	Joueur []joueurs;
 	int joueurEnJeu;
 	public Historique historique;
 	public BigInteger hashCode;
-	//TODO hash code à partir d'une base 5 (5^33 au max)
-
 	boolean aideActiver;
 	public Configuration prop;
 
@@ -58,6 +56,10 @@ public class Jeu{
 				this.joueurs[i] = new Joueur();
 			}
 		}
+	}
+
+	public Plateau plateau(){
+		return p;
 	}
 
 	public int getHauteurPlateau(){
@@ -381,6 +383,25 @@ public class Jeu{
 		}
 }
 
+	@Override
+	public Jeu clone() {
+		try{
+			Jeu resultat = (Jeu) super.clone();
+			resultat.p = p.clone();
+			resultat.t = t;
+			resultat.joueurs = new Joueur [2];
+			resultat.joueurs[0] = joueurs[0].clone();
+			resultat.joueurs[1] = joueurs[1].clone();
+			resultat.joueurEnJeu = joueurEnJeu;
+			resultat.historique = historique.clone();
+			resultat.hashCode = new BigInteger(hashCode.toString());
+			resultat.prop = prop;
+			return resultat;
+		} catch (CloneNotSupportedException e){
+			System.err.println("Bug interne, plateau non clonable");
+		}
+		return null;
+	}
 
 	public boolean aideEstActiver ()
 	{

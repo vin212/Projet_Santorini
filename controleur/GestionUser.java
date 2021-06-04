@@ -164,10 +164,10 @@ public class GestionUser
 		{
 			actionUser.initActionUser (j,prop);
 			j.setAction (numJoueur,modele.Action.PREMIER_PLACEMENT);
-			coupIA = iaLocal.debuterPartie();
-			actionUser.jouerAction (coupIA.getDepart());
-			coupIA = iaLocal.debuterPartie();
-			actionUser.jouerAction (coupIA.getDepart());
+			coupIA = iaLocal.debuterPartie(j);
+			actionUser.jouerAction (coupIA.getDepart(), false);
+			coupIA = iaLocal.debuterPartie(j);
+			actionUser.jouerAction (coupIA.getDepart(), false);
 			j.addTour();
 			numJoueur = j.getJoueurEnJeu();
 			if (j.getTour() > 1)
@@ -183,8 +183,8 @@ public class GestionUser
         {
         	actionUser.initActionUser (j,prop);
             j.setAction (numJoueur,modele.Action.DEUXIEME_PLACEMENT);
-			coupIA = iaLocal.debuterPartie();
-			actionUser.jouerAction (coupIA.getDepart());
+			coupIA = iaLocal.debuterPartie(j);
+			actionUser.jouerAction (coupIA.getDepart(), false);
 			j.addTour();
 			numJoueur = j.getJoueurEnJeu();
 			if (j.getTour() > 1)
@@ -201,10 +201,10 @@ public class GestionUser
 			actionUser.initActionUser (j,prop);
 			
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
-			coupIA = iaLocal.joue();
-			actionUser.jouerAction(coupIA.getDepart());
+			coupIA = iaLocal.joue(j);
+			actionUser.jouerAction(coupIA.getDepart(), false);
 			aire1.animationIA();
-			actionUser.jouerAction(coupIA.getArrive());
+			actionUser.jouerAction(coupIA.getArrive(), false);
 			j.setAction (numJoueur,modele.Action.A_CONSTRUIRE);
 			
 			aire1.animFaite = false;
@@ -212,12 +212,18 @@ public class GestionUser
 		}
 		else if ( (aire1.anim != null && j.getAction(numJoueur) == modele.Action.A_CONSTRUIRE &&aire1.anim.estFini()))
 		{
-			actionUser.jouerAction(coupIA.getConstruction());
+			actionUser.jouerAction(coupIA.getConstruction(), false);
 			j.addTour();
 			actionUser.initActionUser (j,prop);
 			numJoueur = j.getJoueurEnJeu();
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 
+		} else if  (aire1.anim == null && j.getAction(numJoueur) == modele.Action.A_CONSTRUIRE) {
+			actionUser.jouerAction(coupIA.getConstruction(), false);
+			j.addTour();
+			actionUser.initActionUser (j,prop);
+			numJoueur = j.getJoueurEnJeu();
+			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 		}
 
 	}

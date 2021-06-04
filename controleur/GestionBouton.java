@@ -265,7 +265,7 @@ public class GestionBouton extends JButton implements ActionListener
 			f.ia1.activeIA();
 		} else if (j2ToString =="IA Difficile") {
  			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
-			f.ia1 = IAMinMax.nouvelle(f.j,"controleurIA.IAForte","IA Difficile");
+			f.ia1 = IA.nouvelle(f.j, prop.recupValeur("IADifficile"),"IA Difficile");
 			f.ia1.activeIA();
 		}
 
@@ -278,7 +278,7 @@ public class GestionBouton extends JButton implements ActionListener
 			f.ia2.activeIA();
 		} else if (j1ToString =="IA Difficile") {
 			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
-      f.ia2 = IAMinMax.nouvelle(f.j, "controleurIA.IAForte","IA Difficile");
+      		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IADifficile"),"IA Difficile");
 			f.ia2.activeIA();
 		}
 		

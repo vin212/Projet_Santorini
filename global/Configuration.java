@@ -169,7 +169,7 @@ public class Configuration
 		{
 			System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s : %5$s%n");
 			log = Logger.getLogger("Santorini.Logger");
-			log.setLevel(Level.parse("INFO"));
+			log.setLevel(Level.OFF);
 		}
 	}
 

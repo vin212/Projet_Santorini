@@ -136,7 +136,7 @@ public class PlateauInterface_2 extends JComponent {
 
 		if (x >= positionPremierBatiment.getx() && y >= positionPremierBatiment.gety() && x_calcul >= 0 && y_calcul >= 0 && x_calcul < j.getLargeurPlateau() && y_calcul < j.getHauteurPlateau())
 		{
-			actionUser.jouerAction(new Point(x_calcul,y_calcul));
+			actionUser.jouerAction(new Point(x_calcul,y_calcul), false);
 			this.repaint();
 		}
 

@@ -3,17 +3,17 @@ package controleurIA;
 import java.util.ArrayList;
 
 //import controleur.ActionUser;
+import global.TypeLogger;
 import modele.Jeu;
 import structure.*;
 
-public class IAPassive extends IAMinMax{
+public class IAPassive extends IA{
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log absent, IA Agressive activée");
+        prop.envoyerLogger("IA Passive activée", TypeLogger.INFO);
     }
 
-    @Override
     public Integer chiffrage(Jeu j){
         Heuristique h = new Heuristique(j);
         Point[] p1 = j.getPosiPions(j.getJoueurEnJeu() % 2 + 1);

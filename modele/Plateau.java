@@ -2,7 +2,7 @@ package modele;
 
 import structure.*;
 
-public class Plateau{
+public class Plateau implements Cloneable{
 
 	int hauteur;
 	int largeur;
@@ -236,6 +236,25 @@ public class Plateau{
 			System.out.println();
 		}
 		System.out.println();
+	}
+
+	@Override
+	public Plateau clone(){
+		try {
+			Plateau resultat = (Plateau) super.clone();
+			resultat.hauteur = hauteur;
+			resultat.largeur = largeur;
+			resultat.cases = new Case[hauteur][largeur];
+			for (int i = 0; i<hauteur;i++ ){
+				for (int j = 0; j<largeur; j++){
+					resultat.cases[i][j] = cases[i][j].clone();
+				}
+			}
+			return resultat;
+		} catch (CloneNotSupportedException e){
+			System.err.println("Bug interne, plateau non clonable");
+		}
+		return null;
 	}
 
 	public String toString(){

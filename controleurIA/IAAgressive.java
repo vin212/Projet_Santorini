@@ -1,19 +1,123 @@
 package controleurIA;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.math.BigInteger;
 
 //TODO doit se baser sur un instant présent.
+import global.TypeLogger;
+import modele.Coup;
 import modele.Jeu;
 import structure.*;
 
-public class IAAgressive extends IAMinMax{
+public class IAAgressive extends IA{
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log absent, IA Agressive activée");
+        prop.envoyerLogger("IA Aggressive activée", TypeLogger.INFO);
     }
 
     @Override
+    public Coup joue(Jeu jeu) {
+        Jeu j = jeu.clone();
+        table = new Hashtable<BigInteger, Integer>();
+        ArrayList<Coup> successeur = successeur(j);
+        ListGagnant gagnant = new ListGagnant();
+        Iterator<Coup> I = successeur.iterator();
+        int taille = successeur.size();
+        int valeur = Integer.MIN_VALUE;
+        Coup c;
+        
+        int horizon = horizonMax;
+
+        /*if (successeur.size() <= 30){
+            horizon = horizonMax = 4;
+        } else {
+            horizon = horizonMax = 4;
+        }*/
+
+        if (taille == 0) {
+            System.err.println("Aucun coup possible !");
+            return null;
+        } else if (taille == 1) {
+            return I.next();
+        }
+
+        while (I.hasNext()) {
+            c = I.next();
+            tour(c, j);
+            valeur = calcul(j, horizon - 1, Integer.MAX_VALUE, valeur);
+            valeur = gagnant.ajouter(valeur, c);
+            control.annulerCoup();
+        }
+        return gagnant.extraire();
+    }
+
+    public int calcul(Jeu j, int horizon, int maximum, int minimum) {
+        ArrayList<Coup> succ = successeur(j);
+        Iterator<Coup> I = succ.iterator();
+        Integer chiffrage = table.get(j.getHashCode());
+        // Max value pour moi, et min value pour l'adversaire
+        Coup c;
+
+        if (chiffrage != null) {
+            return -chiffrage * 15 / 16;
+        } else if (j.estGagnant() || horizon == 0) {
+            return (int) ((int) chiffrage(j) * Math.pow(-1, horizonMax - horizon+1));
+        } else {
+            //TODO à vérifier en priorité !
+            chiffrage = null;
+        }
+
+        if(!I.hasNext()){
+            return -minimum;
+        }
+
+        do {
+            c = I.next();
+            tour(c, j);
+            int chiffragetmp =  calcul(j, horizon - 1, (chiffrage == null) ? -minimum : (-chiffrage)-1, -maximum);
+            chiffrage = max(chiffrage, chiffragetmp);
+            table.put(j.getHashCode(), chiffrage);
+            control.annulerCoup();
+        } while (I.hasNext() && ((maximum >= chiffrage) && (chiffrage >= minimum)));
+        return -chiffrage * 15 / 16;
+    }
+
+    private int max(Integer a, Integer b){
+        if (a == null){
+            return b;
+        }
+        return (a >= b) ? a : b;
+    }
+
+    public ArrayList<Coup> successeur(Jeu j) {
+        ArrayList<Point> deplacement = new ArrayList<Point>(0);
+        ArrayList<Point> construction = new ArrayList<Point>(0);
+        ArrayList<Coup> successeur = new ArrayList<Coup>(0);
+        VerificateurPion vp = new VerificateurPion(j);
+        VerificateurEtage ve = new VerificateurEtage(j);
+        Point[] p = j.getPosiPions(j.getJoueurEnJeu());
+
+        for (int i = 0; i < 2; i++) {
+            deplacement = j.getVoisin(p[i], vp);
+            Iterator<Point> It1 = deplacement.iterator();
+            Point depl;
+            while (It1.hasNext()) {
+                depl = It1.next();
+                construction = j.getVoisin(depl, ve);
+                construction.add(p[i]);
+                Iterator<Point> It2 = construction.iterator();
+                while (It2.hasNext()) {
+                    successeur.add(new Coup(p[i], depl, It2.next(), j.getJoueurEnJeu()));
+                }
+            }
+        }
+
+        return successeur;
+    }
+
     public Integer chiffrage(Jeu j){
         Integer compte = 0;
         Heuristique h = new Heuristique(j);

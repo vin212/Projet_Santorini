@@ -7,7 +7,8 @@ import java.util.Iterator;
 import java.lang.Math;
 import java.math.BigInteger;
 
-//import controleur.ActionUser;
+import controleur.ActionUser;
+import global.TypeLogger;
 import modele.Jeu;
 import modele.Coup;
 import structure.*;
@@ -16,20 +17,23 @@ public abstract class IAMinMax extends IA {
     Random r;
     int horizonMax;
     Hashtable<BigInteger, Integer> table;
+    ActionUser control;
 
+    //TODO les ia devront le faire elles-mêmes si besoin.
     public IAMinMax() {
         r = new Random((long) 0);
         horizonMax = 4;
+        control = new ActionUser(j, j.prop);
     }
 
     public static IA nouveau(Jeu j, String classIAString, String type){
         IA instance = null;
-        
-        try{
-            instance = (IA) ClassLoader.getSystemClassLoader().loadClass(classIAString).getDeclaredConstructor().newInstance();
+
+        try {
+            instance = (IA) ClassLoader.getSystemClassLoader().loadClass("controleurIA.IAFortes").getDeclaredConstructor().newInstance();
             instance.j = j;
             instance.type = type;
-        } catch (Exception e) {
+        } catch(Exception e){
             System.err.println(e);
         }
         return instance;
@@ -37,7 +41,7 @@ public abstract class IAMinMax extends IA {
 
     @Override
     public void initialise() {
-        System.err.println("Systeme de log absent, IA MinMax activée");
+        j.prop.envoyerLogger("IA MinMax activée", TypeLogger.INFO);
     }
 
     @Override
@@ -59,8 +63,8 @@ public abstract class IAMinMax extends IA {
     }
 
     @Override
-    public Coup joue() {
-        // ActionUser control = new ActionUser(this.j);
+    public Coup joue(Jeu jeu) {
+        j = jeu.clone();
         table = new Hashtable<BigInteger, Integer>();
         ArrayList<Coup> successeur = successeur(j);
         ListGagnant gagnant = new ListGagnant();
@@ -89,7 +93,7 @@ public abstract class IAMinMax extends IA {
             tour(c);
             valeur = calcul(j, horizon - 1, Integer.MAX_VALUE, valeur);
             valeur = gagnant.ajouter(valeur, c);
-            annulerCoup();
+            control.annulerCoup();
         }
         return gagnant.extraire();
     }
@@ -120,7 +124,7 @@ public abstract class IAMinMax extends IA {
             int chiffragetmp =  calcul(j, horizon - 1, (chiffrage == null) ? -minimum : (-chiffrage)-1, -maximum);
             chiffrage = max(chiffrage, chiffragetmp);
             table.put(j.getHashCode(), chiffrage);
-            annulerCoup();
+            control.annulerCoup();
         } while (I.hasNext() && ((maximum >= chiffrage) && (chiffrage >= minimum)));
         return -chiffrage * 15 / 16;
     }
@@ -141,12 +145,12 @@ public abstract class IAMinMax extends IA {
         Point[] p = j.getPosiPions(j.getJoueurEnJeu());
 
         for (int i = 0; i < 2; i++) {
-            deplacement = getVoisin(p[i], vp);
+            deplacement = j.getVoisin(p[i], vp);
             Iterator<Point> It1 = deplacement.iterator();
             Point depl;
             while (It1.hasNext()) {
                 depl = It1.next();
-                construction = getVoisin(depl, ve);
+                construction = j.getVoisin(depl, ve);
                 construction.add(p[i]);
                 Iterator<Point> It2 = construction.iterator();
                 while (It2.hasNext()) {
@@ -259,74 +263,12 @@ public abstract class IAMinMax extends IA {
     }
 
     public void tour(Coup c) {
-        j.histoAjouterCoup(c);
         if (c.estDeplacement()) {
-            j.deplacerPersonnage(c.getDepart(), c.getArrive());
-            j.Construire(c.getConstruction());
+            control.jouerAction(c.getDepart(), true);
+            control.jouerAction(c.getArrive(), true);
+            control.jouerAction(c.getConstruction(), true);
         } else {
-            j.poserPersonnage(c.getDepart(), c.getJoueur());
+            j.prop.envoyerLogger("Coup anormale, l'IA essaie de placer un pion", TypeLogger.SEVERE);
         }
-        j.addTour();
-    }
-
-    public void annulerCoup() {
-        int pos;
-        Coup c;
-        j.subTour();
-        try {
-            c = j.histoAnnulerCoup();
-        } catch (IndexOutOfBoundsException e) {
-            System.err.println("Plus de coup a annuler");
-            return;
-        }
-
-        if (c.estDeplacement()) {
-            // //System.out.println(c.getArrive());
-            j.deplacerPersonnage(c.getArrive(), c.getDepart());
-            j.detruireEtage(c.getConstruction());
-        } else {
-            // //System.out.println("Annulation de placement ? Vraiment ?");
-            pos = j.histoPosition();
-            if (pos % 2 == 0) {
-                j.enleverPerso(c.getDepart());
-            } else {
-                j.enleverPerso(c.getDepart());
-            }
-        }
-    }
-
-}
-
-class ListGagnant {
-    int max;
-    ArrayList<Coup> gagnant;
-    Random r;
-
-    public ListGagnant() {
-        max = Integer.MIN_VALUE;
-        gagnant = new ArrayList<Coup>();
-        r = new Random((long) 0);
-    }
-
-    public ListGagnant(int m, Coup c) {
-        r = new Random((long) 0);
-        max = m;
-        gagnant = new ArrayList<Coup>(0);
-        gagnant.add(c);
-    }
-
-    public int ajouter(int m, Coup c) {
-        if (m == max) {
-            gagnant.add(c);
-        } else if (m > max) {
-            max = m;
-            gagnant = new ArrayList<Coup>(0);
-            gagnant.add(c);
-        }
-        return max;
-    }
-
-    public Coup extraire() {
-        return gagnant.get(r.nextInt(gagnant.size()));
     }
 }

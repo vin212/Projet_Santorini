@@ -143,14 +143,13 @@ public class Save {
             Plateau p = new Plateau(hauteur, largeur);
 
             //Disposition des constructions
-            for (int i = 0; i < 5 ; i++){
-                for (int j = 0; j < 5 ; j++){
-                    Case nvCase = new Case();
+            for (int i = 0; i < hauteur ; i++){
+                for (int j = 0; j < largeur ; j++){
+                    Point pt = new Point(i, j);
                     int constru = scanner.nextInt();
                     for (int k = 0; k < constru; k++){
-                        nvCase.ajoutEtage();
+                        p.Construire(pt);
                     }
-                    p.cases[i][j] = nvCase;
                 }
             }
 
@@ -160,7 +159,7 @@ public class Save {
             //Placement des joueurs
             for (int i = 0; i < 2; i++){
                 Joueur joueur = new Joueur();
-                for (int j = 0; j < 1; j++){
+                for (int j = 0; j < 2; j++){
                     int x = scanner.nextInt();
                     int y = scanner.nextInt();
                     Point pt = new Point(x,y);        
