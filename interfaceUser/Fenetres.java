@@ -47,6 +47,8 @@ public class Fenetres {
 	Color buttonColor;
 	Color frontButtomColor;
 
+	String lieuIcone;
+
 	public Fenetres (Jeu j, Configuration prop)
 	{
 		this.j = j;
@@ -93,6 +95,8 @@ public class Fenetres {
 		backgroundColor = new Color(255,255,255);
 		buttonColor = new Color(20,93,191);
 		frontButtomColor = new Color(255,255,255);
+
+		lieuIcone = "ressource/icon_bouton/";
 	}
 
 	public NomFenetres getNomFenetres()
@@ -164,7 +168,7 @@ public class Fenetres {
 				frame.setVisible(false);
 				frame = new JFrame("default");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(650, 400);
+				//frame.setSize(650, 400);
 				frame.setVisible(true);
 				frame.repaint();
 		}
@@ -179,25 +183,46 @@ public class Fenetres {
 	 
 		JPanel leJoueur = new JPanel ();
 		JLabel action = new JLabel("AFK");
-		leJoueur.setPreferredSize(new Dimension(200, 25));
+		leJoueur.setPreferredSize(new Dimension(frame.getSize().width/8*3 * 23/24, frame.getSize().height/12));
 		leJoueur.setBackground(new Color(0,110,255));
 		action.setForeground(new Color(255,255,255));
+
+		action.setFont(police);
 
 		leJoueur.add(action);
 
 		aire2 = new PlateauInterface_2 (j,actionUser,prop);
 		this.g = new GestionUser( this.j, ia1, ia2, aire2,leJoueur,action, actionUser,prop);
 
+		Dimension tailleBouton =new Dimension(frame.getSize().height/7,frame.getSize().height/7);
 		
-		JButton boutonRetour = new JButton("<");
-		JButton boutonPause = new JButton("||");
-		JButton boutonRetablir = new JButton(">");
+
+		ImageIcon icon = new ImageIcon( new ImageIcon(lieuIcone + "icone_sauvegarde.png").getImage().getScaledInstance(frame.getSize().height/16, frame.getSize().height/16, Image.SCALE_DEFAULT)); 
+		JButton boutonSauvegarder = new JButton(icon);
+		boutonSauvegarder.setBackground(backgroundColor);
+		boutonSauvegarder.setPreferredSize(new Dimension(frame.getSize().height/16,frame.getSize().height/16));
+		boutonSauvegarder.setToolTipText("sauvegarder ");
+		icon = new ImageIcon( new ImageIcon(lieuIcone + "icone_recommencer.png").getImage().getScaledInstance(frame.getSize().height/16, frame.getSize().height/16, Image.SCALE_DEFAULT)); 
+		JButton boutonRecommencer = new JButton(icon);
+		boutonRecommencer.setBackground(backgroundColor);
+		boutonRecommencer.setPreferredSize(new Dimension(frame.getSize().height/16,frame.getSize().height/16));
+		boutonRecommencer.setToolTipText("recommencer ");
+
+		JButton boutonRetour = new JButton(new ImageIcon(lieuIcone + "icone_retour.png"));
+		boutonRetour.setBackground(buttonColor);
+		boutonRetour.setPreferredSize(tailleBouton);
+		JButton boutonPause = new JButton(new ImageIcon(lieuIcone + "icone_pause.png"));
+		boutonPause.setBackground(buttonColor);
+		boutonPause.setPreferredSize(tailleBouton);
+		JButton boutonRetablir = new JButton(new ImageIcon(lieuIcone + "icone_retablir.png"));
+		boutonRetablir.setBackground(buttonColor);
+		boutonRetablir.setPreferredSize(tailleBouton);
 
 		boutonRetour.setFocusable(false);
 		boutonPause.setFocusable(false);
 		boutonRetablir.setFocusable(false);
 
-		boutonRetour.setToolTipText("annuler un coup");
+		boutonRetour.setToolTipText("annuler un coup ");
 		//TODO modifier bubule
 		boutonPause.setToolTipText("menu pause");
 		boutonRetablir.setToolTipText("rétablir un coup");
@@ -207,17 +232,34 @@ public class Fenetres {
 		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this,prop));
 		
 		
-
+		JPanel containerBoutonHaut = new JPanel();
+		containerBoutonHaut.setPreferredSize(new Dimension(frame.getSize().width/8*3 * 23/24, frame.getSize().height/12));
+		JPanel partieHaute = new JPanel();
 		JPanel container = new JPanel();
 		JPanel containerEst = new JPanel();
+		containerBoutonHaut.setLayout(new BoxLayout(containerBoutonHaut, BoxLayout.X_AXIS));
+
+		containerBoutonHaut.add(boutonSauvegarder);
+		containerBoutonHaut.add(boutonRecommencer);
+		containerBoutonHaut.setBackground(backgroundColor);
+		
+
 		container.setFocusable(false);
-		containerEst.setPreferredSize(new Dimension(200, 400));
-		container.setPreferredSize(new Dimension(200, 400));
-		container.add(leJoueur,BorderLayout.NORTH);
+		containerEst.setPreferredSize(new Dimension(frame.getSize().width/8*3, frame.getSize().height/3*2));
+		container.setPreferredSize(new Dimension(frame.getSize().width/8*3, frame.getSize().height/3*2));
+		partieHaute.setPreferredSize(new Dimension(frame.getSize().width/8*4 * 23/24, frame.getSize().height/12*3));
+		partieHaute.setBackground(backgroundColor);
+		partieHaute.add(containerBoutonHaut,BorderLayout.NORTH);
+		partieHaute.add(leJoueur,BorderLayout.SOUTH);
+		container.add(partieHaute,BorderLayout.NORTH);
 		containerEst.add(container,BorderLayout.CENTER);
 
+		container.setBackground(backgroundColor);
+		containerEst.setBackground(backgroundColor);
+
 		container = new JPanel();
-		container.setPreferredSize(new Dimension(200, 50));
+		container.setBackground(backgroundColor);
+		container.setPreferredSize(new Dimension(frame.getSize().width/8*3 * 23/24, frame.getSize().height/2));
 		container.add(boutonRetour,BorderLayout.WEST);
 		container.add(boutonPause,BorderLayout.CENTER);
 		container.add(boutonRetablir,BorderLayout.EAST);
@@ -469,6 +511,7 @@ public class Fenetres {
 		JPanel container = new JPanel();
 		JPanel containerMain = new JPanel();
 		JScrollPane scrPane = new JScrollPane(container);
+		scrPane.getVerticalScrollBar().setUnitIncrement(16);
 
 		container.setBackground(new Color(150,150,150));
 
@@ -670,7 +713,9 @@ public class Fenetres {
 
 	public void afficherOption ()
 	{
-		Dimension dimensionbloc = new Dimension(frame.getSize().width/3,frame.getSize().height/15);
+		Font textOption = new Font(null, Font.BOLD,frame.getSize().height/25);
+		Font textOptionButton = new Font("Comic Sans MS", Font.BOLD,  frame.getSize().height/25);
+		Dimension dimensionbloc = new Dimension(frame.getSize().width/3*2,frame.getSize().height/10);
 		frame.getContentPane().removeAll();
 
 		ArrayList <String> clefs;
@@ -688,14 +733,26 @@ public class Fenetres {
 
 		containerMain.setLayout(new GridBagLayout());
 		container.setLayout(new GridBagLayout());
+		container.setBackground(backgroundColor);
+		containerMain.setBackground(backgroundColor);
+		JScrollPane scrPane = new JScrollPane(container);
+		scrPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrPane.setPreferredSize(new Dimension(dimensionbloc.getSize().width+dimensionbloc.getSize().width/10, dimensionbloc.getSize().height*4));
+		scrPane.setBackground(backgroundColor);
+		scrPane.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		clefs = prop.recupClesModifiable ();
 		for (int i = 0; i < clefs.size(); i++)
 		{
 			bloc = new JPanel ();
 			JLabel label = new JLabel (clefs.get(i) + ":");
+			bloc.setBorder(lineborder);
+			container.setAlignmentX(Component.LEFT_ALIGNMENT);
+			bloc.setLayout(new FlowLayout(FlowLayout.LEFT));
+			label.setPreferredSize(new Dimension(dimensionbloc.getSize().width/8*5,dimensionbloc.getSize().height/8*6));
+			label.setFont(textOption);
 			bloc.setPreferredSize(dimensionbloc);
-			bloc.setBackground(new Color(255,255,255));
+			bloc.setBackground(backgroundColor);
 			gbc.gridx = 0;
 			gbc.gridy = 0;
 			bloc.add (label,gbc);
@@ -709,6 +766,7 @@ public class Fenetres {
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(prop.recupValeur(clefs.get(i)))));
 				label.setBorder(lineborder);
 				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0,frame,this));
+				label.setFont(textOption);
 
 				bloc.add (label,gbc);
 				gbc.gridx = 0;
@@ -717,13 +775,17 @@ public class Fenetres {
 			}
 			else if (valDecoup.length < 2 && (prop.recupValeur(clefs.get(i)).equals("true") || prop.recupValeur(clefs.get(i)).equals("false")))
 			{
-				
+				Dimension tailleCheckBox = new Dimension(dimensionbloc.getSize().height/10*5,dimensionbloc.getSize().height/10*5);	
 				checkBox = new JCheckBox();
+				//checkBox.setPreferredSize(new Dimension(10,10));
+				checkBox.setBackground(backgroundColor);
+				checkBox.setFont(textOption);
 				gbc.gridx = 1;
 				gbc.gridy = 0;
 				if (prop.recupValeur(clefs.get(i)).equals("true") )
 				{
 					checkBox.setSelected(true);
+					
 				}
 				else
 				{
@@ -743,6 +805,7 @@ public class Fenetres {
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[0])));
 				label.setBorder(lineborder);
 				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),0,frame,this));
+				label.setFont(textOption);
 
 				bloc.add (label,gbc);
 
@@ -756,11 +819,13 @@ public class Fenetres {
 				label = new JLabel(KeyEvent.getKeyText( Integer.parseInt(valDecoup[1])));
 				label.addMouseListener(new EcouteurDeSouris(prop,clefs.get(i),1,frame,this));
 				label.setBorder(lineborder);
+				label.setFont(textOption);
 
 				bloc.add (label,gbc);
 
 				gbc.gridx = 0;
 				gbc.gridy = i;
+				
 				container.add(bloc,gbc);
 
 			}
@@ -768,28 +833,55 @@ public class Fenetres {
 			
 		}
 
+		JPanel ecart = new JPanel();
+		ecart.setBackground(backgroundColor);
+		ecart.setPreferredSize(new Dimension(frame.getSize().width/3*2 , frame.getSize().height/20));
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		containerMain.add(ecart,gbc);
+
+		ecart = new JPanel();
+		ecart.setBackground(backgroundColor);
+		ecart.setPreferredSize(new Dimension(frame.getSize().width/3*2 , frame.getSize().height/20));
+		
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		containerMain.add(ecart,gbc);
+
+
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		containerMain.add(container,gbc);
+		containerMain.add(scrPane,gbc);
 
 		container = new JPanel ();
+		container.setBackground(backgroundColor);
 		JButton boutonRetour = new JButton ("Retour");
 		boutonRetour.addActionListener(new GestionBouton(Bouton.RETOUR_OPTION,this,prop));
+		boutonRetour.setFont(textOptionButton);
+		boutonRetour.setBackground(buttonColor);
+		boutonRetour.setForeground(frontButtomColor);
 		container.add(boutonRetour);
 		boutonRetour.setFocusable(false);
 
 
+
 		gbc.gridx = 0;
-		gbc.gridy = 2;
+		gbc.gridy = 4;
 		containerMain.add(container,gbc);
 
 		container = new JPanel ();
+		container.setBackground(backgroundColor);
 		JButton boutonDefaut = new JButton("Rétablir par defaut");
 		boutonDefaut.addActionListener(new GestionBouton(Bouton.RETABLIR_DEFAUT,this,prop));
+		boutonDefaut.setBackground(buttonColor);
+		boutonDefaut.setFont(textOptionButton);
+		boutonDefaut.setForeground(frontButtomColor);
 		container.add(boutonDefaut);
+		
+		
 
 		gbc.gridx = 0;
-		gbc.gridy = 1;
+		gbc.gridy = 2;
 		containerMain.add(container,gbc);
 
 		
