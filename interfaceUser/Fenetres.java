@@ -775,7 +775,7 @@ public class Fenetres {
 			}
 			else if (valDecoup.length < 2 && (prop.recupValeur(clefs.get(i)).equals("true") || prop.recupValeur(clefs.get(i)).equals("false")))
 			{
-				Dimension tailleCheckBox = new Dimension(dimensionbloc.getSize().height/10*5,dimensionbloc.getSize().height/10*5);	
+				//Dimension tailleCheckBox = new Dimension(dimensionbloc.getSize().height/10*5,dimensionbloc.getSize().height/10*5);	
 				checkBox = new JCheckBox();
 				//checkBox.setPreferredSize(new Dimension(10,10));
 				checkBox.setBackground(backgroundColor);
