@@ -67,10 +67,16 @@ public abstract class IAMinMax extends IA {
         ListGagnant gagnant = new ListGagnant();
         Iterator<Coup> I = successeur.iterator();
         int taille = successeur.size();
-        int valeur;
+        int valeur = Integer.MIN_VALUE;
         Coup c;
-
+        
         int horizon = horizonMax;
+
+        /*if (successeur.size() <= 30){
+            horizon = horizonMax = 4;
+        } else {
+            horizon = horizonMax = 4;
+        }*/
 
         if (taille == 0) {
             System.err.println("Aucun coup possible !");
@@ -82,8 +88,8 @@ public abstract class IAMinMax extends IA {
         while (I.hasNext()) {
             c = I.next();
             tour(c);
-            valeur = calcul(j, horizon - 1, Integer.MAX_VALUE, Integer.MIN_VALUE);
-            gagnant.ajouter(valeur, c);
+            valeur = calcul(j, horizon - 1, Integer.MAX_VALUE, valeur);
+            valeur = gagnant.ajouter(valeur, c);
             annulerCoup();
         }
         return gagnant.extraire();
@@ -93,28 +99,38 @@ public abstract class IAMinMax extends IA {
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
         Integer chiffrage = table.get(j.getHashCode());
-        // int chiffrage = (int) ((int)Integer.MAX_VALUE * Math.pow(-1, horizonMax -
-        // horizon)); // -1^ (horizonMax - hori)
         // Max value pour moi, et min value pour l'adversaire
         Coup c;
 
         if (chiffrage != null) {
-            return -chiffrage * 2 / 3;
+            return -chiffrage * 15 / 16;
         } else if (j.estGagnant() || horizon == 0) {
-            return (int) ((int) chiffrage(j) * Math.pow(-1, horizonMax - horizon));
+            return (int) ((int) chiffrage(j) * Math.pow(-1, horizonMax - horizon+1));
         } else {
             //TODO à vérifier en priorité !
-            chiffrage = minimum;
+            chiffrage = null;
         }
 
-        while (I.hasNext() && ((maximum >= chiffrage) && (chiffrage >= minimum))) {
+        if(!I.hasNext()){
+            return -minimum;
+        }
+
+        do {
             c = I.next();
             tour(c);
-            chiffrage = Math.max(chiffrage, calcul(j, horizon - 1, -chiffrage, -maximum));
+            int chiffragetmp =  calcul(j, horizon - 1, (chiffrage == null) ? -minimum : (-chiffrage)-1, -maximum);
+            chiffrage = max(chiffrage, chiffragetmp);
             table.put(j.getHashCode(), chiffrage);
             annulerCoup();
+        } while (I.hasNext() && ((maximum >= chiffrage) && (chiffrage >= minimum)));
+        return -chiffrage * 15 / 16;
+    }
+
+    private int max(Integer a, Integer b){
+        if (a == null){
+            return b;
         }
-        return -chiffrage * 2 / 3;
+        return (a >= b) ? a : b;
     }
 
     public ArrayList<Coup> successeur(Jeu j) {
@@ -300,7 +316,7 @@ class ListGagnant {
         gagnant.add(c);
     }
 
-    public void ajouter(int m, Coup c) {
+    public int ajouter(int m, Coup c) {
         if (m == max) {
             gagnant.add(c);
         } else if (m > max) {
@@ -308,6 +324,7 @@ class ListGagnant {
             gagnant = new ArrayList<Coup>(0);
             gagnant.add(c);
         }
+        return max;
     }
 
     public Coup extraire() {
