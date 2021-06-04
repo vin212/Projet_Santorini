@@ -219,6 +219,14 @@ public class GestionUser
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 
 		}
+		else if  (aire1.anim == null && j.getAction(numJoueur) == modele.Action.A_CONSTRUIRE)
+		{
+			actionUser.jouerAction(coupIA.getConstruction());
+			j.addTour();
+			actionUser.initActionUser (j,prop);
+			numJoueur = j.getJoueurEnJeu();
+			j.setAction (numJoueur,modele.Action.A_DEPLACER);
+		}
 
 	}
 }

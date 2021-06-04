@@ -17,27 +17,27 @@ public enum Bouton {
 			case RETOUR :
 				return "RETOUR";
 			case RETOUR_JEU:
-				return "RETOUR_JEU";
+				return "Retour au jeu";
 			case RECOMMENCER :
-				return "RECOMMENCER";
+				return "Recommencer";
 			case RETOUR_MENU :
-				return "RETOUR_MENU";
+				return "Retour au menu";
 			case SAUVEGARDER :
-				return "SAUVEGARDER";
+				return "Sauvegarder";
 			case VALIDER_SAUVEGARDE :
 				return "VALIDER_SAUVEGARDE";
 			case ANNULER_SAUVEGARDE :
 				return "ANNULER_SAUVEGARDE";
 			case CHARGER:
-				return "CHARGER";
+				return "Charger une partie";
 			case NOUVELLE_PARTIE :
-				return "NOUVELLE_PARTIE";
+				return "Nouvelle partie";
 			case LANCER_PARTIE :
 				return "LANCER_PARTIE";
 			case QUITTER :
-				return "QUITTER";
+				return "Quitter";
 			case OPTION : 
-				return "OPTION";
+				return "Option";
 			case RETOUR_OPTION :
 				return "RETOUR_OPTION";
 			case RETABLIR_DEFAUT :

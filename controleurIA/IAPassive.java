@@ -5,12 +5,13 @@ import java.util.ArrayList;
 //import controleur.ActionUser;
 import modele.Jeu;
 import structure.*;
+import global.*;
 
 public class IAPassive extends IAMinMax{
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log absent, IA Agressive activée");
+        prop.envoyerLogger("IA Passive",TypeLogger.INFO);
     }
 
     @Override
