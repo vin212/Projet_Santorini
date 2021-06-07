@@ -16,7 +16,7 @@ import structure.VerificateurPion;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestIAMinMax {
+public class TestIAMinMaxForte {
     IAMinMax iaMinMax;
     Jeu jeu;
     VerificateurEtage ve;
@@ -34,7 +34,7 @@ public class TestIAMinMax {
     @ParameterizedTest
     @MethodSource("pointPersonnage")
     public void testIAMinMax(Point firstPoint, Point secondPoint, Point thirdPoint, Point fourthPoint, String iaType) {
-        iaMinMax = (IAMinMax) IA.nouvelle(jeu,"controleurIA.IAMinMax", iaType, prop);
+        iaMinMax = (IAMinMax) IA.nouvelle(jeu,"controleurIA.IAPassive", iaType, prop);
 
         // simulate le jeu
         iaMinMax.activeIA();
@@ -76,14 +76,14 @@ public class TestIAMinMax {
     private static List<Arguments> pointPersonnage() {
         return Arrays.asList(
                 Arguments.of(new Point(0,0), new Point(4,4), new Point(2,1), new Point(3,2), "IA Facile"),
-                Arguments.of(new Point(1,0), new Point(2,3), new Point(4,3), new Point(1,2), "IA Normal"),
+                Arguments.of(new Point(3,4), new Point(1,1), new Point(4,3), new Point(1,2), "IA Normal"),
                 Arguments.of(new Point(1,1), new Point(2,4), new Point(2,2), new Point(4,3), "IA Difficile"),
                 Arguments.of(new Point(1,2), new Point(4,3), new Point(1,1), new Point(3,3), "IA Facile"),
                 Arguments.of(new Point(4,2), new Point(2,1), new Point(1,0), new Point(3,0), "IA Difficile"),
                 Arguments.of(new Point(2,3), new Point(4,4), new Point(0,0), new Point(3,2), "IA Difficile"),
-                Arguments.of(new Point(1,1), new Point(0,0), new Point(4,1), new Point(1,0), "IA Normal"),
+                Arguments.of(new Point(1,1), new Point(0,0), new Point(4,1), new Point(1,1), "IA Normal"),
                 Arguments.of(new Point(4,2), new Point(3,2), new Point(1,0), new Point(2,0), "IA Facile"),
-                Arguments.of(new Point(3,3), new Point(3,1), new Point(2,0), new Point(1,3), "IA Difficile"),
+                Arguments.of(new Point(1,0), new Point(2,2), new Point(0,3), new Point(1,3), "IA Difficile"),
                 Arguments.of(new Point(4,4), new Point(2,4), new Point(1,3), new Point(1,1), "IA Normal"),
                 Arguments.of(new Point(0,0), new Point(4,4), new Point(3,1), new Point(3,2), "IA Difficile"));
     }
