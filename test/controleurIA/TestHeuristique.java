@@ -19,7 +19,7 @@ public class TestHeuristique {
     }
 
     @Test
-    public void testObserve() {
+    public void testObserveEtEvaluationHauteur() {
         jeu.poserPersonnage(new Point(1,1),1);
         jeu.poserPersonnage(new Point(2,2),1);
 
@@ -91,5 +91,43 @@ public class TestHeuristique {
         jeu.detruireEtage(new Point(0,0));
 
         Assertions.assertEquals(2,heuristique.peutMonter(p1[0], successeurP1J1.get(0)));
+    }
+
+    @Test
+    public void testPeutBouger() {
+        jeu.poserPersonnage(new Point(1,1),1);
+        jeu.poserPersonnage(new Point(2,2),1);
+
+        jeu.poserPersonnage(new Point(1,2),2);
+        jeu.poserPersonnage(new Point(3,1),2);
+
+        Point[] p1 = jeu.getPosiPions(1);
+        Point[] p2 = jeu.getPosiPions(2);
+
+        ArrayList<ArrayList<Point>> successeurP1J1 = heuristique.observes(p1[0]);
+
+        Assertions.assertEquals(6,heuristique.peutBouger(successeurP1J1.get(0)));
+
+        // construire autour de pion
+        jeu.Construire(new Point(2,1));
+        jeu.Construire(new Point(2,1));
+
+        jeu.Construire(new Point(1,0));
+        jeu.Construire(new Point(1,0));
+
+        jeu.Construire(new Point(0,0));
+
+        jeu.Construire(new Point(2,1));
+
+        successeurP1J1 = heuristique.observes(p1[0]);
+
+        Assertions.assertEquals(4,heuristique.peutBouger(successeurP1J1.get(0)));
+
+        // detruire et verifier
+        jeu.detruireEtage(new Point(1,0));
+
+        successeurP1J1 = heuristique.observes(p1[0]);
+
+        Assertions.assertEquals(5,heuristique.peutBouger(successeurP1J1.get(0)));
     }
 }
