@@ -28,7 +28,7 @@ public class GestionBouton extends JButton implements ActionListener
 
 	Configuration prop;
 
-	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox<String> j1, JComboBox<String> j2,Configuration prop)
+	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox<String> j1, JComboBox<String> j2,Configuration prop, ActionUser action)
 	{
 		this.j1 = j1;
 		this.j2 = j2;
@@ -38,6 +38,7 @@ public class GestionBouton extends JButton implements ActionListener
 
 		this.type = type;
 		this.prop = prop;
+		this.action = action;
 	}
 
 	public GestionBouton (Bouton type, Fenetres f,Configuration prop)
@@ -47,19 +48,19 @@ public class GestionBouton extends JButton implements ActionListener
 		this.prop = prop;
 	}
 
-	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f,Configuration prop)
+	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f,Configuration prop, ActionUser action)
 	{this.type = type;
-		this.action = new ActionUser(j,prop);
+		this.action = action;;
 		this.aire2 = aire2;
 
 		this.f = f;
 		this.prop = prop;
 	}
 
-	public GestionBouton (Jeu j, Bouton type, Fenetres f, JTextArea texte, JFrame popUp, JLabel messageErreur, Configuration prop)
+	public GestionBouton (Jeu j, Bouton type, Fenetres f, JTextArea texte, JFrame popUp, JLabel messageErreur, Configuration prop, ActionUser action)
 	{
 		this.type = type;
-		this.action = new ActionUser(j,prop);
+		this.action = action;
 
 		this.f = f;
 		this.texte = texte;
@@ -134,7 +135,9 @@ public class GestionBouton extends JButton implements ActionListener
 				f.frame.repaint();
 			break;
 			case RECOMMENCER :
+				f.aire2 = null;
 				f.j = new Jeu(prop);
+				action.initActionUser(j,prop);
 
 
 				if (f.ia1 != null)
@@ -224,13 +227,14 @@ public class GestionBouton extends JButton implements ActionListener
 				f.frame.repaint();
 			break;
 			case NOUVELLE_PARTIE :
+				f.aire2 = null;
 				f.ChangerFenetres(NomFenetres.NOUVELLE_PARTIE);
 				f.gestionFenetre();
 				f.frame.repaint();
 			break;
 			case LANCER_PARTIE :
 				prop.envoyerLogger(j1.getSelectedItem() + " VS " + j2.getSelectedItem(),TypeLogger.INFO);
-				
+				action.initActionUser(j,prop);
 				if (gestionComboBox())
 				{
 					f.ChangerFenetres(NomFenetres.JEU);
@@ -270,6 +274,7 @@ public class GestionBouton extends JButton implements ActionListener
 
 		f.ia1 = null;
 		f.ia2 = null;
+		f.aire2 = null;
 
 		if (j1ToString == "Joueur" && j2ToString == "Joueur") { }
 		else if (j2ToString =="IA Facile") {

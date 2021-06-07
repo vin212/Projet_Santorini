@@ -37,6 +37,7 @@ public class ActionUser {
 	public void jouerAction (Point posi_final)
 	{
 		Action a = j.getAction (j.getJoueurEnJeu());
+		System.out.println(a);
 
 		if (!j.estGagnant()){
 			switch (a)

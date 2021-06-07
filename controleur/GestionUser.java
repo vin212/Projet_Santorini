@@ -86,12 +86,15 @@ public class GestionUser
 				}
 				else if (nbAfk == 2 && j.getTour() < 1)
 				{
+					System.out.println("je suis ici");
 					if (commencer == false)
 					{
+						System.out.println("on commence");
 						commencer = true;
 					}
 					else
 					{
+						System.out.println("on continue ");
 						humainJoue = !humainJoue;
 						j.addTour();
 					}
@@ -181,7 +184,7 @@ public class GestionUser
 		}
         else if (j.getTour() <= 1 && modele.Action.DEUXIEME_PLACEMENT == j.getAction(numJoueur))
         {
-        	actionUser.initActionUser (j,prop);
+        	//actionUser.initActionUser (j,prop);
             j.setAction (numJoueur,modele.Action.DEUXIEME_PLACEMENT);
 			coupIA = iaLocal.debuterPartie();
 			actionUser.jouerAction (coupIA.getDepart());
@@ -198,7 +201,7 @@ public class GestionUser
         }
 		else if (j.getAction(numJoueur) != modele.Action.A_CONSTRUIRE)
 		{
-			actionUser.initActionUser (j,prop);
+			//actionUser.initActionUser (j,prop);
 			
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 			coupIA = iaLocal.joue();
@@ -214,7 +217,7 @@ public class GestionUser
 		{
 			actionUser.jouerAction(coupIA.getConstruction());
 			j.addTour();
-			actionUser.initActionUser (j,prop);
+			//actionUser.initActionUser (j,prop);
 			numJoueur = j.getJoueurEnJeu();
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 
@@ -223,7 +226,7 @@ public class GestionUser
 		{
 			actionUser.jouerAction(coupIA.getConstruction());
 			j.addTour();
-			actionUser.initActionUser (j,prop);
+			//actionUser.initActionUser (j,prop);
 			numJoueur = j.getJoueurEnJeu();
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 		}

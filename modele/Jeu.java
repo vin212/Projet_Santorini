@@ -23,7 +23,7 @@ public class Jeu{
 
 	public Jeu (Configuration prop){
 		this.p = new Plateau (5,5);
-
+		
 		this.prop = prop;
 		historique = new Historique();
 		System.out.println("Init plateau : " + this.p);
@@ -39,6 +39,7 @@ public class Jeu{
 				this.joueurs[i] = new Joueur();
 			}
 		}
+		//setAction (1, Action.PREMIER_PLACEMENT);
 	}
 
 	public Jeu (){

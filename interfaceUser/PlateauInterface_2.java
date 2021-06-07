@@ -44,6 +44,7 @@ public class PlateauInterface_2 extends JComponent {
 	int posiHisto;
 
 	public boolean animFaite;
+	boolean estLancer;
 
 	public PlateauInterface_2(Jeu j,ActionUser actionUser, Configuration prop) {
 		this.j = j;
@@ -136,6 +137,7 @@ public class PlateauInterface_2 extends JComponent {
 
 		if (x >= positionPremierBatiment.getx() && y >= positionPremierBatiment.gety() && x_calcul >= 0 && y_calcul >= 0 && x_calcul < j.getLargeurPlateau() && y_calcul < j.getHauteurPlateau())
 		{
+			System.out.println("il joue");
 			actionUser.jouerAction(new Point(x_calcul,y_calcul));
 			this.repaint();
 		}
@@ -191,7 +193,7 @@ public class PlateauInterface_2 extends JComponent {
 			animFaite = true;
 		}
 
-		if (j.getAction (j.getJoueurEnJeu()) == modele.Action.A_CONSTRUIRE && animFaite == false && Boolean.parseBoolean(j.prop.recupValeur("animation_active")) && actionUser != null && actionUser.coupJouer.getDepart() != null)
+		if (j.getAction (j.getJoueurEnJeu()) == modele.Action.A_CONSTRUIRE && animFaite == false && Boolean.parseBoolean(j.prop.recupValeur("animation_active")) && actionUser != null && actionUser.coupJouer.getDepart() != null && estLancer != true)
 		{
 			int x_calcul_depart = (inter_batiment_largeur + taille_largeur) * actionUser.coupJouer.getDepart().getx() + positionPremierBatiment.getx();
 			int y_calcul_depart = (inter_batiment_hauteur + taille_hauteur) *  actionUser.coupJouer.getDepart().gety() + positionPremierBatiment.gety(); 
@@ -202,6 +204,7 @@ public class PlateauInterface_2 extends JComponent {
 			int y_calcul_Arrive = (inter_batiment_hauteur + taille_hauteur) *  actionUser.coupJouer.getArrive().gety() + positionPremierBatiment.gety(); 
 			
 			Point calcul_Arrive = new Point (x_calcul_Arrive,y_calcul_Arrive);
+			estLancer = true;
 
 			this.anim = new AnimationListener(this,j.prop ,calcul_depart,calcul_Arrive);
 		}
@@ -213,6 +216,11 @@ public class PlateauInterface_2 extends JComponent {
 		{
 			animFaite = false;
 			anim = null;
+		}
+
+		if (j.getAction (j.getJoueurEnJeu()) != modele.Action.A_CONSTRUIRE)
+		{
+			estLancer = false;
 		}
 	}
 	

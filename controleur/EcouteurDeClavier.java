@@ -22,14 +22,14 @@ public class EcouteurDeClavier  extends KeyAdapter{
     Integer [] toucheRetablir;
    	Integer [] toucheSave;
 
-    public EcouteurDeClavier (Integer [] toucheAppuier, Fenetres f, Jeu j, PlateauInterface_2 aire, Configuration prop)
+    public EcouteurDeClavier (Integer [] toucheAppuier, Fenetres f, Jeu j, PlateauInterface_2 aire, Configuration prop, ActionUser action)
    	{
         this.toucheAppuier = toucheAppuier;
         this.f =f;
         this.j = j;
 
         this.aire2 = aire;
-        this.action  = new ActionUser (j,prop) ;
+        this.action  = action ;
 
         toucheRetour = new Integer[2];
         toucheRetablir = new Integer[2];

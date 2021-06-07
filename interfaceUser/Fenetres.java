@@ -27,7 +27,7 @@ public class Fenetres {
 
 	public JFrame frame;
 	PlateauInterface_1 aire1;
-	PlateauInterface_2 aire2;
+	public PlateauInterface_2 aire2;
 
 	EcouteurDeClavier clavier;
 
@@ -49,8 +49,12 @@ public class Fenetres {
 
 	String lieuIcone;
 
+	JPanel leJoueur;
+	JLabel action;
+
 	public Fenetres (Jeu j, Configuration prop)
 	{
+		
 		this.j = j;
 		this.f = NomFenetres.PAGE_ACCUEIL ;
 
@@ -60,6 +64,7 @@ public class Fenetres {
 
 		this.prop = prop;
 		this.actionUser= new ActionUser(j,prop);
+		actionUser.initActionUser(j,prop);
 		
 		
 
@@ -180,20 +185,22 @@ public class Fenetres {
 		frame.removeKeyListener(clavier);
 		
 		frame.getContentPane().removeAll();
-	 
-		JPanel leJoueur = new JPanel ();
-		JLabel action = new JLabel("AFK");
-		leJoueur.setPreferredSize(new Dimension(frame.getSize().width/8*3 * 23/24, frame.getSize().height/12));
-		leJoueur.setBackground(new Color(0,110,255));
-		action.setForeground(new Color(255,255,255));
+		
 
-		action.setFont(police);
+		if (aire2 == null)
+		{
+			action = new JLabel("AFK");
+			leJoueur = new JPanel ();
+			leJoueur.setPreferredSize(new Dimension(frame.getSize().width/8*3 * 23/24, frame.getSize().height/12));
+			leJoueur.setBackground(new Color(0,110,255));
+			action.setForeground(new Color(255,255,255));
 
-		leJoueur.add(action);
+			action.setFont(police);
 
-		aire2 = new PlateauInterface_2 (j,actionUser,prop);
-		this.g = new GestionUser( this.j, ia1, ia2, aire2,leJoueur,action, actionUser,prop);
-
+			leJoueur.add(action);
+			aire2 = new PlateauInterface_2 (j,actionUser,prop);
+			this.g = new GestionUser( this.j, ia1, ia2, aire2,leJoueur,action, actionUser,prop);
+		}
 		Dimension tailleBouton =new Dimension(frame.getSize().height/7,frame.getSize().height/7);
 		
 
@@ -202,14 +209,14 @@ public class Fenetres {
 		boutonSauvegarder.setBackground(backgroundColor);
 		boutonSauvegarder.setPreferredSize(new Dimension(frame.getSize().height/16,frame.getSize().height/16));
 		boutonSauvegarder.setToolTipText("sauvegarder ");
-		boutonSauvegarder.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.SAUVEGARDER,this,prop));
+		boutonSauvegarder.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.SAUVEGARDER,this,prop,actionUser));
 		
 		icon = new ImageIcon( new ImageIcon(lieuIcone + "icone_recommencer.png").getImage().getScaledInstance(frame.getSize().height/16, frame.getSize().height/16, Image.SCALE_DEFAULT)); 
 		JButton boutonRecommencer = new JButton(icon);
 		boutonRecommencer.setBackground(backgroundColor);
 		boutonRecommencer.setPreferredSize(new Dimension(frame.getSize().height/16,frame.getSize().height/16));
 		boutonRecommencer.setToolTipText("recommencer ");
-		boutonRecommencer.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RECOMMENCER,this,prop));
+		boutonRecommencer.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RECOMMENCER,this,prop,actionUser));
 
 		JButton boutonRetour = new JButton(new ImageIcon(lieuIcone + "icone_retour.png"));
 		boutonRetour.setBackground(buttonColor);
@@ -230,9 +237,9 @@ public class Fenetres {
 		boutonPause.setToolTipText("menu pause");
 		boutonRetablir.setToolTipText("rétablir un coup");
 
-		boutonRetour.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR,this,prop));
-		boutonPause.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.PAUSE,this,prop));
-		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this,prop));
+		boutonRetour.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETOUR,this,prop,actionUser));
+		boutonPause.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.PAUSE,this,prop,actionUser));
+		boutonRetablir.addActionListener(new GestionBouton(this.j,this.aire2,Bouton.RETABLIR,this,prop,actionUser));
 		
 		
 		JPanel containerBoutonHaut = new JPanel();
@@ -284,7 +291,7 @@ public class Fenetres {
 		aire2.setFocusable(false);
 
 		aire2.addMouseListener(new EcouteurDeSouris(aire2,g,ia1,ia2));
-		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2,prop);
+		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2,prop,actionUser);
 		frame.addKeyListener(clavier);
 
         frame.requestFocus();
@@ -313,7 +320,7 @@ public class Fenetres {
 		{
 			gbc.gridy = i*2;
 			bouton = new JButton (boutonName[i].toString());
-			bouton.addActionListener(new GestionBouton(this.j,this.aire2,boutonName[i],this,prop));
+			bouton.addActionListener(new GestionBouton(this.j,this.aire2,boutonName[i],this,prop,actionUser));
 			bouton.setFont(police);
 			bouton.setBackground(buttonColor);
 			bouton.setForeground(frontButtomColor);
@@ -335,7 +342,7 @@ public class Fenetres {
 
 		frame.add(container);
 
-		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2,prop);
+		clavier = new EcouteurDeClavier(toucheAppuier,this,j,aire2,prop,actionUser);
 		frame.addKeyListener(clavier);
 		frame.setVisible(true);
 	}
@@ -358,7 +365,7 @@ public class Fenetres {
 		for (int i = 0; i < boutonName.length ; i++)
 		{
 			bouton = new JButton(boutonName[i].toString());
-			bouton.addActionListener(new GestionBouton(this.j,this.aire2,boutonName[i],this,prop));
+			bouton.addActionListener(new GestionBouton(this.j,this.aire2,boutonName[i],this,prop,actionUser));
 			if (boutonName[i] != Bouton.QUITTER)
 			{
 				bouton.setPreferredSize(tailleBouton);
@@ -491,8 +498,8 @@ public class Fenetres {
 
 		popUp.add(container);
 
-		boutonValider.addActionListener(new GestionBouton(this.j,Bouton.VALIDER_SAUVEGARDE,this,textArea, popUp, messageErreur,prop));
-		boutonAnnuler.addActionListener(new GestionBouton(this.j,Bouton.ANNULER_SAUVEGARDE,this,textArea, popUp, messageErreur,prop));
+		boutonValider.addActionListener(new GestionBouton(this.j,Bouton.VALIDER_SAUVEGARDE,this,textArea, popUp, messageErreur,prop,actionUser));
+		boutonAnnuler.addActionListener(new GestionBouton(this.j,Bouton.ANNULER_SAUVEGARDE,this,textArea, popUp, messageErreur,prop,actionUser));
 
 	}
 
@@ -702,8 +709,8 @@ public class Fenetres {
 
 		gbc.gridy = 5;
 		containerMain.add(boutonRetourMenu,gbc);
-		boutonRetourMenu.addActionListener(new GestionBouton (j,aire2,Bouton.RETOUR_MENU,this,prop));
-		boutonCestParti.addActionListener(new GestionBouton (j,Bouton.LANCER_PARTIE,this,menuBar1,menuBar2,prop));
+		boutonRetourMenu.addActionListener(new GestionBouton (j,aire2,Bouton.RETOUR_MENU,this,prop,actionUser));
+		boutonCestParti.addActionListener(new GestionBouton (j,Bouton.LANCER_PARTIE,this,menuBar1,menuBar2,prop,actionUser));
 
 
 		
