@@ -130,4 +130,38 @@ public class TestHeuristique {
 
         Assertions.assertEquals(5,heuristique.peutBouger(successeurP1J1.get(0)));
     }
+
+    @Test
+    public void testConstructionAdverse() {
+        jeu.poserPersonnage(new Point(1,1),1);
+        jeu.poserPersonnage(new Point(2,2),1);
+
+        jeu.poserPersonnage(new Point(4,2),2);
+        jeu.poserPersonnage(new Point(3,1),2);
+
+        jeu.Construire(new Point(1,2));
+
+        Point[] p1 = jeu.getPosiPions(1);
+        Point[] p2 = jeu.getPosiPions(2);
+
+        ArrayList<ArrayList<Point>> successeurP1J1 = heuristique.observes(p1[0]);
+
+        // check nbPerso position
+        Assertions.assertFalse(heuristique.constructionAdverse(new Point(2,2), successeurP1J1.get(0)));
+
+        // check if returns true a point with nbEtage = 1
+        Assertions.assertTrue(heuristique.constructionAdverse(new Point(1,2), successeurP1J1.get(0)));
+
+        jeu.Construire(new Point(1,2));
+        successeurP1J1 = heuristique.observes(p1[0]);
+
+        // check if returns true a point with nbEtage = 2
+        Assertions.assertFalse(heuristique.constructionAdverse(new Point(1,2), successeurP1J1.get(0)));
+
+        jeu.detruireEtage(new Point(1,2));
+        successeurP1J1 = heuristique.observes(p1[0]);
+
+        // check same point after detruire etage
+        Assertions.assertTrue(heuristique.constructionAdverse(new Point(1,2), successeurP1J1.get(0)));
+    }
 }
