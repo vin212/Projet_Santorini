@@ -43,12 +43,13 @@ public class EcouteurDeSouris extends MouseAdapter {
         this.name = NomFenetres.JEU;
 	}
 
-	public EcouteurDeSouris(String nomFichier, Jeu j, Fenetres f)
+	public EcouteurDeSouris(String nomFichier, Jeu j, Fenetres f,Configuration prop)
 	{
 		this.name = NomFenetres.CHARGER;
 		this.nomFichier = nomFichier;
 		this.j = j;
 		this.f = f;
+		this.prop = prop;
 		
 	}
 
@@ -86,9 +87,11 @@ public class EcouteurDeSouris extends MouseAdapter {
 		}
 		else if (name == NomFenetres.CHARGER)
 		{
-			//j.Construire(new Point(0,0));
-			Save save = new Save(f.j);
+			prop.envoyerLogger("Charger une partie", TypeLogger.INFO);
+			f.j = null;
+			Save save = new Save(f.j,prop,f);
 			f.j = save.chargerSauvegarde(nomFichier);
+			f.aire2 = null;
 			if (f.j != null)
 			{
 				f.ChangerFenetres(NomFenetres.JEU);

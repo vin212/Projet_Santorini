@@ -22,11 +22,11 @@ public class Jeu{
 
 
 	public Jeu (Configuration prop){
-		this.p = new Plateau (5,5);
-
+		this.p = new Plateau (5,5,prop);
+		
 		this.prop = prop;
 		historique = new Historique();
-		System.out.println("Init plateau : " + this.p);
+		prop.envoyerLogger("Init plateau : " + this.p, TypeLogger.INFO);
 		this.t = 0;
 		this.joueurs = new Joueur [2];
 		this.joueurEnJeu = 1;
@@ -39,10 +39,11 @@ public class Jeu{
 				this.joueurs[i] = new Joueur();
 			}
 		}
+		//setAction (1, Action.PREMIER_PLACEMENT);
 	}
 
 	public Jeu (){
-		this.p = new Plateau (5,5);
+		this.p = new Plateau (5,5, prop);
 
 		historique = new Historique();
 		System.out.println("Init plateau : " + this.p);
@@ -121,6 +122,7 @@ public class Jeu{
 	public void addTour(){
 		this.t++;
 		calculJoueurEnJeu();
+		System.out.println("nb tour : " + t);
 	}
 
 	public void histoAjouterCoup(Coup c){
@@ -137,6 +139,10 @@ public class Jeu{
 
 	public int histoPosition(){
 		return historique.positionnement();
+	}
+
+	public void setPosition (int i){
+		historique.setPosition(i);
 	}
 
 

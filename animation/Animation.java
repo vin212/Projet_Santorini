@@ -128,7 +128,10 @@ public class Animation {
 	{
         int x; 
         int y;
-		if ( Math.abs(this.posiActuel.getx() -this.posiFinal.getx()) > Math.abs(this.direction.getx())+5 || Math.abs(this.posiActuel.gety() -this.posiFinal.gety()) > Math.abs(this.direction.gety())+5)
+		int ecart_x = aire.getSize().width/50;
+		int ecart_y = aire.getSize().height/50;
+
+		if ( Math.abs(this.posiActuel.getx() -this.posiFinal.getx()) > Math.abs(this.direction.getx())+ecart_x || Math.abs(this.posiActuel.gety() -this.posiFinal.gety()) > Math.abs(this.direction.gety())+ecart_y)
 		{
 			x  = this.posiActuel.getx() + this.direction.getx();
 			y = this.posiActuel.gety() + this.direction.gety();

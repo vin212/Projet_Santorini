@@ -61,6 +61,7 @@ public class GestionUser
 		{
             if ((ia1 == null && ia2 == null) || (ia1 != null && numJoueur == 1 && ia2 == null && ia1.estActive()) || (ia2 != null && numJoueur == 2  && ia1 == null && ia2.estActive())) 
 			{
+				//System.out.println("ici");
 				iaJoue = false;
 				for (int i = 1; i < 3; i++ )
 				{
@@ -92,6 +93,7 @@ public class GestionUser
 					}
 					else
 					{
+						//System.out.println("on continue ");
 						humainJoue = !humainJoue;
 						j.addTour();
 					}
@@ -107,11 +109,13 @@ public class GestionUser
 			}
 			else if  (numJoueur == 2 && ia1 != null && ia1.estActive()) 
 			{
+				//System.out.println("la");
 				iaJoue = true;
 				JouerIA (1);
 			}
 			else if (numJoueur == 1 && ia2 != null && ia2.estActive())	
 			{
+				//System.out.println("moi");
 				iaJoue = true;
 				JouerIA (2);
 			}
@@ -181,7 +185,7 @@ public class GestionUser
 		}
         else if (j.getTour() <= 1 && modele.Action.DEUXIEME_PLACEMENT == j.getAction(numJoueur))
         {
-        	actionUser.initActionUser (j,prop);
+        	//actionUser.initActionUser (j,prop);
             j.setAction (numJoueur,modele.Action.DEUXIEME_PLACEMENT);
 			coupIA = iaLocal.debuterPartie();
 			actionUser.jouerAction (coupIA.getDepart());
@@ -198,7 +202,7 @@ public class GestionUser
         }
 		else if (j.getAction(numJoueur) != modele.Action.A_CONSTRUIRE)
 		{
-			actionUser.initActionUser (j,prop);
+			//actionUser.initActionUser (j,prop);
 			
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 			coupIA = iaLocal.joue();
@@ -214,7 +218,7 @@ public class GestionUser
 		{
 			actionUser.jouerAction(coupIA.getConstruction());
 			j.addTour();
-			actionUser.initActionUser (j,prop);
+			//actionUser.initActionUser (j,prop);
 			numJoueur = j.getJoueurEnJeu();
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 
@@ -223,7 +227,7 @@ public class GestionUser
 		{
 			actionUser.jouerAction(coupIA.getConstruction());
 			j.addTour();
-			actionUser.initActionUser (j,prop);
+			//actionUser.initActionUser (j,prop);
 			numJoueur = j.getJoueurEnJeu();
 			j.setAction (numJoueur,modele.Action.A_DEPLACER);
 		}

@@ -37,7 +37,7 @@ public enum Bouton {
 			case QUITTER :
 				return "Quitter";
 			case OPTION : 
-				return "Option";
+				return "Options";
 			case RETOUR_OPTION :
 				return "RETOUR_OPTION";
 			case RETABLIR_DEFAUT :

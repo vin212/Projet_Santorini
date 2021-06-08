@@ -20,17 +20,20 @@ public class EcouteurDeClavier  extends KeyAdapter{
 
     Integer [] toucheRetour;
     Integer [] toucheRetablir;
-   	public EcouteurDeClavier (Integer [] toucheAppuier, Fenetres f, Jeu j, PlateauInterface_2 aire, Configuration prop)
+   	Integer [] toucheSave;
+
+    public EcouteurDeClavier (Integer [] toucheAppuier, Fenetres f, Jeu j, PlateauInterface_2 aire, Configuration prop, ActionUser action)
    	{
         this.toucheAppuier = toucheAppuier;
         this.f =f;
         this.j = j;
 
         this.aire2 = aire;
-        this.action  = new ActionUser (j,prop) ;
+        this.action  = action ;
 
         toucheRetour = new Integer[2];
         toucheRetablir = new Integer[2];
+        toucheSave = new Integer[2];
 
         String [] buff = prop.recupValeur("raccourci_retour").split(" ");
         toucheRetour[0] = Integer.parseInt(buff[0]);
@@ -40,6 +43,10 @@ public class EcouteurDeClavier  extends KeyAdapter{
         toucheRetablir[0] = Integer.parseInt(buff[0]);
         toucheRetablir[1] = Integer.parseInt(buff[1]);
 
+        buff = prop.recupValeur("raccourci_save").split(" ");
+        toucheSave[0] = Integer.parseInt(buff[0]);
+        toucheSave[1] = Integer.parseInt(buff[1]);
+
         this.prop = prop;
 
    	}
@@ -47,33 +54,29 @@ public class EcouteurDeClavier  extends KeyAdapter{
     //@Override
     public void keyPressed(KeyEvent event){
         int source = event.getKeyCode();
-        if(source==toucheRetablir[0])
+        if(source==toucheRetablir[0] && toucheAppuier[0] == -1)
         {
-            if (toucheAppuier[0] == -1)
-            {
-                toucheAppuier[0] = toucheRetablir[0];
-            }
+            toucheAppuier[0] = toucheRetablir[0];
         }
-        else if(source==toucheRetablir[1])
+        else if(source==toucheRetablir[1] && toucheAppuier[1] == -1)
         {
-            if (toucheAppuier[1] == -1)
-            {
-                toucheAppuier[1] = toucheRetablir[1];
-            }
+            toucheAppuier[1] = toucheRetablir[1];
         }
-        else if (source==toucheRetour[1])
+        else if (source==toucheRetour[1] && toucheAppuier[1] == -1)
         {
-            if (toucheAppuier[1] == -1)
-            {
-                toucheAppuier[1] = toucheRetour[1];
-            }
+            toucheAppuier[1] = toucheRetour[1];
         }
-         else if (source==toucheRetour[0])
+         else if (source==toucheRetour[0] && toucheAppuier[0] == -1)
         {
-            if (toucheAppuier[0] == -1)
-            {
-                toucheAppuier[0] = toucheRetour[0];
-            }
+            toucheAppuier[0] = toucheRetour[0];
+        }
+        else if (source == toucheSave[0] && toucheAppuier[0] == -1)
+        {
+            toucheAppuier[0] = source;
+        }
+        else if (source == toucheSave[1] && toucheAppuier[1] == -1)
+        {
+            toucheAppuier[1] = source;
         }
         else if(source == Integer.parseInt(prop.recupValeur("raccourci_pause")))
         {
@@ -152,13 +155,28 @@ public class EcouteurDeClavier  extends KeyAdapter{
             }
             aire2.repaint();
         }
+        else if (toucheAppuier[0] == toucheSave[0] && toucheAppuier[1] == toucheSave[1])
+        {
+            f.ChangerFenetres(NomFenetres.POPUP_SAUVEGARDE);
+			f.gestionFenetre ();
+			f.frame.repaint();
+        }
         
     }
            
     //@Override   
     public void keyReleased(KeyEvent event){
         int source = event.getKeyCode();
-        if (source == toucheRetour[0] && toucheAppuier[0] == toucheRetour[0] )
+
+        if (source == toucheAppuier[0])
+        {
+            toucheAppuier[0] = -1;
+        }
+        else if (source == toucheAppuier[1])
+        {   
+            toucheAppuier[1] = -1;
+        }
+        /*if (source == toucheRetour[0] && toucheAppuier[0] == toucheRetour[0] )
         {
             toucheAppuier[0] = -1;
         }
@@ -174,10 +192,14 @@ public class EcouteurDeClavier  extends KeyAdapter{
         {
             toucheAppuier[0] = -1;
         }
+        else if (source == toucheSave[0] && toucheAppuier[0] == toucheSave[0])
+        {
+            toucheAppuier[0] = -1;
+        }
         else if (source == 86 && toucheAppuier[1] == 86)
         {
             toucheAppuier[1] = -1;
-        }
+        }*/
     }
 
     //@Override
