@@ -53,7 +53,6 @@ public class ActionUser {
 					placerPerso (posi_final,a,true);
 				break;
 				case AFK :
-					//System.out.println("afk");
 				break;
 				default:
 					prop.envoyerLogger("action invalide",TypeLogger.WARNING);;

@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 
 public class TestCase {
     Case caseNorm;
-    //TODO
-    // test initialization
 
     @BeforeEach
     public void setup() {

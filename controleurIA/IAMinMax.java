@@ -12,6 +12,7 @@ import global.TypeLogger;
 import modele.Jeu;
 import modele.Coup;
 import structure.*;
+import global.*;
 
 public abstract class IAMinMax extends IA {
     Random r;
@@ -269,6 +270,7 @@ public abstract class IAMinMax extends IA {
             control.jouerAction(c.getConstruction(), true);
         } else {
             j.prop.envoyerLogger("Coup anormale, l'IA essaie de placer un pion", TypeLogger.SEVERE);
+
         }
     }
 }

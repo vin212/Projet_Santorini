@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import global.TypeLogger;
 import modele.Jeu;
 import structure.*;
+import global.*;
 
 public class IAPassive extends IA{
 

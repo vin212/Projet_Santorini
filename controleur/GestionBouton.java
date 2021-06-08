@@ -28,7 +28,7 @@ public class GestionBouton extends JButton implements ActionListener
 
 	Configuration prop;
 
-	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox<String> j1, JComboBox<String> j2,Configuration prop)
+	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox<String> j1, JComboBox<String> j2,Configuration prop, ActionUser action)
 	{
 		this.j1 = j1;
 		this.j2 = j2;
@@ -38,6 +38,7 @@ public class GestionBouton extends JButton implements ActionListener
 
 		this.type = type;
 		this.prop = prop;
+		this.action = action;
 	}
 
 	public GestionBouton (Bouton type, Fenetres f,Configuration prop)
@@ -47,19 +48,19 @@ public class GestionBouton extends JButton implements ActionListener
 		this.prop = prop;
 	}
 
-	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f,Configuration prop)
+	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f,Configuration prop, ActionUser action)
 	{this.type = type;
-		this.action = new ActionUser(j,prop);
+		this.action = action;;
 		this.aire2 = aire2;
 
 		this.f = f;
 		this.prop = prop;
 	}
 
-	public GestionBouton (Jeu j, Bouton type, Fenetres f, JTextArea texte, JFrame popUp, JLabel messageErreur)
+	public GestionBouton (Jeu j, Bouton type, Fenetres f, JTextArea texte, JFrame popUp, JLabel messageErreur, Configuration prop, ActionUser action)
 	{
 		this.type = type;
-		this.action = new ActionUser(j,prop);
+		this.action = action;
 
 		this.f = f;
 		this.texte = texte;
@@ -68,6 +69,7 @@ public class GestionBouton extends JButton implements ActionListener
 		this.messageErreur = messageErreur;
 
 		this.j = j;
+		this.prop = prop;
 	}
 
 	public void actionPerformed(ActionEvent e) 
@@ -133,22 +135,24 @@ public class GestionBouton extends JButton implements ActionListener
 				f.frame.repaint();
 			break;
 			case RECOMMENCER :
+				f.aire2 = null;
 				f.j = new Jeu(prop);
+				action.initActionUser(j,prop);
 
 
 				if (f.ia1 != null)
 				{
 					if (f.ia1.type().equals("IA Facile"))
 					{
-						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia1.type());
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia1.type(),prop);
 					}
 					else if (f.ia1.type().equals("IA Normal"))
 					{
-						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia1.type());
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia1.type(),prop);
 					}
 					else if (f.ia1.type().equals("IA Difficile"))
 					{
-						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia1.type());
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia1.type(),prop);
 					}
 					f.ia1.activeIA();
 				}
@@ -157,15 +161,15 @@ public class GestionBouton extends JButton implements ActionListener
 				{
 					if (f.ia2.type().equals("IA Facile"))
 					{
-						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia2.type());
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia2.type(),prop);
 					}
 					else if (f.ia2.type().equals("IA Normal"))
 					{
-						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia2.type());
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia2.type(),prop);
 					}
 					else if (f.ia2.type().equals("IA Difficile"))
 					{
-						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia2.type());
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia2.type(),prop);
 					}
 					f.ia2.activeIA();
 				}
@@ -189,33 +193,48 @@ public class GestionBouton extends JButton implements ActionListener
 
 				if (texte.getText().length() <= 0)
 				{
-					this.messageErreur.setText("Erreur fichier deja existant ou nom inccorect");
+					this.messageErreur.setText("Nom inccorect");
 				}
 				else
 				{
-					Save s = new Save(j);
-					s.sauver(texte.getText());
+					Save s = new Save(j,prop,f.ia1,f.ia2);
+					int res = s.sauver(texte.getText());
+					if (res == 0)
+					{
+						this.messageErreur.setText("");
+						popUp.setVisible(false);
+					}
+					else if (res == 1)
+					{
+						this.messageErreur.setText("Fichier déjà existant");
+					}
+					else if (res == 2)
+					{
+						this.messageErreur.setText("Fichier invalide, pas assez de coup joué");
+					}
+				
 
-					this.messageErreur.setText("");
-					popUp.setVisible(false);
+					
 				}
 
 			break;
 			case ANNULER_SAUVEGARDE :
-				popUp.setVisible(false); break;
+				popUp.setVisible(false); 
+			break;
 			case CHARGER :
 				f.ChangerFenetres(NomFenetres.CHARGER);
 				f.gestionFenetre();
 				f.frame.repaint();
 			break;
 			case NOUVELLE_PARTIE :
+				f.aire2 = null;
 				f.ChangerFenetres(NomFenetres.NOUVELLE_PARTIE);
 				f.gestionFenetre();
 				f.frame.repaint();
 			break;
 			case LANCER_PARTIE :
 				prop.envoyerLogger(j1.getSelectedItem() + " VS " + j2.getSelectedItem(),TypeLogger.INFO);
-				
+				action.initActionUser(j,prop);
 				if (gestionComboBox())
 				{
 					f.ChangerFenetres(NomFenetres.JEU);
@@ -255,34 +274,33 @@ public class GestionBouton extends JButton implements ActionListener
 
 		f.ia1 = null;
 		f.ia2 = null;
+		f.aire2 = null;
 
 		if (j1ToString == "Joueur" && j2ToString == "Joueur") { }
 		else if (j2ToString =="IA Facile") {
-			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile",prop);
 			f.ia1.activeIA();
 		} else if (j2ToString =="IA Normal") {
-			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal",prop);
 			f.ia1.activeIA();
 		} else if (j2ToString =="IA Difficile") {
- 			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
-			f.ia1 = IA.nouvelle(f.j, prop.recupValeur("IADifficile"),"IA Difficile");
+ 			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile")
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile",prop);
 			f.ia1.activeIA();
 		}
 
-
 		if (j1ToString =="IA Facile") {
-			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
+      		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IAFacile"),"IA Facile",prop);
 			f.ia2.activeIA();
 		} else if (j1ToString =="IA Normal") {
-			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
+     		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IANormal"),"IA Normal",prop);
 			f.ia2.activeIA();
 		} else if (j1ToString =="IA Difficile") {
-			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
-      		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IADifficile"),"IA Difficile");
+			f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IADifficile"),"IA Difficile",prop);
 			f.ia2.activeIA();
 		}
 		
-		System.out.println(j1ToString + " vs " + j2ToString);
+		prop.envoyerLogger(j1ToString + " vs " + j2ToString,TypeLogger.INFO);
 
 		return true;
 	} 

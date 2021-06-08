@@ -4,6 +4,7 @@ import modele.Jeu;
 import modele.Coup;
 import structure.*;
 import java.util.ArrayList;
+
 import java.util.Hashtable;
 import java.util.Random;
 import java.math.BigInteger;
@@ -22,14 +23,14 @@ public abstract class IA {
     public Random r;
 
     // Instancie l'IA demandé et la renvoie.
-    public static IA nouvelle(Jeu j, String classIaString, String type){
+    public static IA nouvelle(Jeu j, String classIaString, String type, Configuration prop){
         IA instance = null;
+        
 
         try {
             instance = (IA) ClassLoader.getSystemClassLoader().loadClass(classIaString).getDeclaredConstructor().newInstance();
             instance.type = type;
             instance.prop = j.prop;
-
         } catch(Exception e){
             System.err.println(e);
         }

@@ -31,7 +31,7 @@ public class AnimationListener{
 	{
 		this.anim = new Animation(aire,prop, posi);
 		this.e = new EcouteurTime(anim,aire);
-		this.t = new Timer(0,this.e);
+		this.t = new Timer(200,this.e);
 		anim.defTime(this.t);
 		
 		

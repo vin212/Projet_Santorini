@@ -7,6 +7,7 @@ import global.TypeLogger;
 import modele.Coup;
 import modele.Jeu;
 import structure.*;
+import global.*;
 
 public class IAAleatoire extends IA {
     Random r;

@@ -9,10 +9,10 @@ public class TestAction {
     @Test
     public void testToString() {
         Assertions.assertEquals("AFK", Action.AFK.toString());
-        Assertions.assertEquals("A_CONSTRUIRE", Action.A_CONSTRUIRE.toString());
-        Assertions.assertEquals("EN_COURS_DE_DEPLACEMENT", Action.EN_COURS_DE_DEPLACEMENT.toString());
-        Assertions.assertEquals("A_DEPLACER", Action.A_DEPLACER.toString());
-        Assertions.assertEquals("DEUXIEME_PLACEMENT", Action.DEUXIEME_PLACEMENT.toString());
-        Assertions.assertEquals("PREMIER_PLACEMENT", Action.PREMIER_PLACEMENT.toString());
+        Assertions.assertEquals("Choisir case de construction", Action.A_CONSTRUIRE.toString());
+        Assertions.assertEquals("Choisir la destination", Action.EN_COURS_DE_DEPLACEMENT.toString());
+        Assertions.assertEquals("Choisir le pion", Action.A_DEPLACER.toString());
+        Assertions.assertEquals("Placer 2nd pion", Action.DEUXIEME_PLACEMENT.toString());
+        Assertions.assertEquals("Placer 1er pion", Action.PREMIER_PLACEMENT.toString());
     }
 }

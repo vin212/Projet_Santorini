@@ -44,6 +44,7 @@ public class PlateauInterface_2 extends JComponent {
 	int posiHisto;
 
 	public boolean animFaite;
+	boolean estLancer;
 
 	public PlateauInterface_2(Jeu j,ActionUser actionUser, Configuration prop) {
 		this.j = j;
@@ -191,7 +192,7 @@ public class PlateauInterface_2 extends JComponent {
 			animFaite = true;
 		}
 
-		if (j.getAction (j.getJoueurEnJeu()) == modele.Action.A_CONSTRUIRE && animFaite == false && Boolean.parseBoolean(j.prop.recupValeur("animation_active")) && actionUser != null && actionUser.coupJouer.getDepart() != null)
+		if (j.getAction (j.getJoueurEnJeu()) == modele.Action.A_CONSTRUIRE && animFaite == false && Boolean.parseBoolean(j.prop.recupValeur("animation_active")) && actionUser != null && actionUser.coupJouer.getDepart() != null && estLancer != true)
 		{
 			int x_calcul_depart = (inter_batiment_largeur + taille_largeur) * actionUser.coupJouer.getDepart().getx() + positionPremierBatiment.getx();
 			int y_calcul_depart = (inter_batiment_hauteur + taille_hauteur) *  actionUser.coupJouer.getDepart().gety() + positionPremierBatiment.gety(); 
@@ -202,6 +203,7 @@ public class PlateauInterface_2 extends JComponent {
 			int y_calcul_Arrive = (inter_batiment_hauteur + taille_hauteur) *  actionUser.coupJouer.getArrive().gety() + positionPremierBatiment.gety(); 
 			
 			Point calcul_Arrive = new Point (x_calcul_Arrive,y_calcul_Arrive);
+			estLancer = true;
 
 			this.anim = new AnimationListener(this,j.prop ,calcul_depart,calcul_Arrive);
 		}
@@ -213,6 +215,11 @@ public class PlateauInterface_2 extends JComponent {
 		{
 			animFaite = false;
 			anim = null;
+		}
+
+		if (j.getAction (j.getJoueurEnJeu()) != modele.Action.A_CONSTRUIRE)
+		{
+			estLancer = false;
 		}
 	}
 	
@@ -336,11 +343,9 @@ public class PlateauInterface_2 extends JComponent {
 				i =  actionUser.coupJouer.getDepart().getx();
 				k =  actionUser.coupJouer.getDepart().gety();
 				joueur = j.getJoueurEnJeu();
-				//System.out.println("i : " + i + "k : " + k);
 			}
 			else if (debut != null)
 			{
-				//System.out.println("pas tout a fait");
 				i = debut.getx();
 				k = debut.gety();
 				
@@ -406,7 +411,6 @@ public class PlateauInterface_2 extends JComponent {
 			k = p.gety();
 			if (j.getJoueurEnJeu() == 1)
 			{
-				//System.out.println("i : " + i + " k : "+ k);
 				drawable.drawImage(J1,i,k, taille_largeur,taille_hauteur,null);
 			}
 			else
