@@ -54,6 +54,9 @@ public class IAForte extends IA {
             tour(c, j);
             valeur = calcul(j, horizon - 1, -valeur);
             valeur = gagnant.ajouter(valeur, c);
+                //System.out.println("C'est juste pour le bp");
+            }
+            //System.out.println(j + "  " + valeur);
             control.annulerCoup();
         }
         return gagnant.extraire();
