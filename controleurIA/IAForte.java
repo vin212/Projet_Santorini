@@ -15,7 +15,6 @@ import structure.*;
 public class IAForte extends IA {
 
     public IAForte () {
-        r = new Random((long) 0);
         horizonMax = 4;
     }
 
@@ -33,7 +32,6 @@ public class IAForte extends IA {
         ListGagnant gagnant = new ListGagnant();
         Iterator<Coup> I = successeur.iterator();
         int taille = successeur.size();
-        int valeur = Integer.MIN_VALUE;
         Coup c;
         
         int horizon = horizonMax;
@@ -54,14 +52,13 @@ public class IAForte extends IA {
         while (I.hasNext()) {
             c = I.next();
             tour(c, j);
-            valeur = calcul(j, horizon - 1, Integer.MAX_VALUE, valeur);
+            valeur = calcul(j, horizon - 1, -valeur);
             valeur = gagnant.ajouter(valeur, c);
             control.annulerCoup();
         }
         return gagnant.extraire();
     }
 
-    public int calcul(Jeu j, int horizon, int maximum, int minimum) {
         ArrayList<Coup> succ = successeur(j);
         Iterator<Coup> I = succ.iterator();
         Integer chiffrage = table.get(j.getHashCode());
@@ -69,26 +66,17 @@ public class IAForte extends IA {
         Coup c;
 
         if (chiffrage != null) {
-            return -chiffrage * 15 / 16;
         } else if (j.estGagnant() || horizon <= 0) {
-            return (int) ((int) chiffrage(j) * Math.pow(-1, horizonMax - horizon+1));
+            //return (int) ((int) chiffrage(j) * Math.pow(-1, horizonMax - horizon + 1));
         } else {
-            chiffrage = null;
-        }
-
-        if(!I.hasNext()){
-            return -minimum;
         }
 
         do {
             c = I.next();
             tour(c, j);
-            int chiffragetmp =  calcul(j, horizon - 1, (chiffrage == null) ? -minimum : (-chiffrage)-1, -maximum);
             chiffrage = max(chiffrage, chiffragetmp);
             table.put(j.getHashCode(), chiffrage);
             control.annulerCoup();
-        } while (I.hasNext() && ((maximum >= chiffrage) && (chiffrage >= minimum)));
-        return -chiffrage * 15 / 16;
     }
 
     private int max(Integer a, Integer b){
@@ -182,13 +170,10 @@ public class IAForte extends IA {
             // Le tampon recupere les constructions
             tampon = new ArrayList<Point>(successeurP1J1.get(1));
             tampon.addAll(successeurP2J1.get(1));
+
             
             // Si le joueur en jeu peu construire dessus
-            if (h.constructionAdverse(sommetsVictorieux.get(0), tampon)){
-                // Alors le joueur peut/doit construire dessus
-                return -1000;
-            } else {
-                // Sinon on va perdre forcement
+                // Alors on va perdre forcement
                 return 1000;
             }
         }
@@ -233,7 +218,6 @@ public class IAForte extends IA {
         Integer hauteurJ1 = h.evaluationHauteur(p0);
         Integer hauteurJ2 = h.evaluationHauteur(p1);
 
-        valuation -= hauteurJ1 * 5; // hauteurJ1 < 5
 //        valuation += hauteurJ2 * 3; // hauteurJ2 < 5
 
         // Calcul du nombre de case qui peuvent faire monter pour le joueur en jeu
@@ -244,7 +228,6 @@ public class IAForte extends IA {
         Integer peutMonterJ2 = h.peutMonter(p1[0], successeurP1J2.get(0));
         peutMonterJ2 += h.peutMonter(p1[1], successeurP2J2.get(0));
 
-        valuation -= peutMonterJ1 * 2;        // peutMonterJ1 < 17
 //        valuation += peutMonterJ2 * 3;        // peutMonterJ2 < 17
 
         // Tampon recupere les constructions du joueur en jeu
@@ -259,8 +242,6 @@ public class IAForte extends IA {
 
         // Si on peut bloque un 3eme etage
         if(bloquant3 == 1){
-            // Alors on doit le faire car on va potentiellement perdre sinon
-            return -1000;
         }
         /* 
          * Sinon Si il y en a plus que 1 
@@ -279,7 +260,6 @@ public class IAForte extends IA {
         // Si on peut construire un 3eme etage non contestable par l'adversaire
         if(h.nonContester(tampon2,tampon) == 1){
             // Alors c'est plus souvent que non avantageux
-            valuation -= 200;
         }
 
         /*
