@@ -61,6 +61,7 @@ public class GestionUser
 		{
             if ((ia1 == null && ia2 == null) || (ia1 != null && numJoueur == 1 && ia2 == null && ia1.estActive()) || (ia2 != null && numJoueur == 2  && ia1 == null && ia2.estActive())) 
 			{
+				//System.out.println("ici");
 				iaJoue = false;
 				for (int i = 1; i < 3; i++ )
 				{
@@ -86,15 +87,13 @@ public class GestionUser
 				}
 				else if (nbAfk == 2 && j.getTour() < 1)
 				{
-					System.out.println("je suis ici");
 					if (commencer == false)
 					{
-						System.out.println("on commence");
 						commencer = true;
 					}
 					else
 					{
-						System.out.println("on continue ");
+						//System.out.println("on continue ");
 						humainJoue = !humainJoue;
 						j.addTour();
 					}
@@ -110,11 +109,13 @@ public class GestionUser
 			}
 			else if  (numJoueur == 2 && ia1 != null && ia1.estActive()) 
 			{
+				//System.out.println("la");
 				iaJoue = true;
 				JouerIA (1);
 			}
 			else if (numJoueur == 1 && ia2 != null && ia2.estActive())	
 			{
+				//System.out.println("moi");
 				iaJoue = true;
 				JouerIA (2);
 			}

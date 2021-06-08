@@ -37,7 +37,6 @@ public class ActionUser {
 	public void jouerAction (Point posi_final)
 	{
 		Action a = j.getAction (j.getJoueurEnJeu());
-		System.out.println(a);
 
 		if (!j.estGagnant()){
 			switch (a)
@@ -59,7 +58,6 @@ public class ActionUser {
 					placerPerso (posi_final,a,true);
 				break;
 				case AFK :
-					//System.out.println("afk");
 				break;
 				default:
 					prop.envoyerLogger("action invalide",TypeLogger.WARNING);;

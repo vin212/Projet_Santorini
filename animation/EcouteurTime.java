@@ -24,7 +24,6 @@ public class EcouteurTime extends AbstractAction{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		//System.out.println("je dois avancer \n");
 		if (anim  == null)
 		{		}
 		else if (anim.getType() == TypeAnimation.AVANCER)

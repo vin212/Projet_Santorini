@@ -36,7 +36,7 @@ public class Fenetres {
 
 	Integer [] toucheAppuier;
 
-	ActionUser actionUser;
+	public ActionUser actionUser;
 
 	Configuration prop;
 
@@ -513,7 +513,7 @@ public class Fenetres {
 		int width = frame.getSize().width;
 		int height = frame.getSize().height;
 
-		Save saves = new Save(this.j,prop);
+		Save saves = new Save(this.j,prop,ia1,ia2);
 
 		ArrayList <String> nomSave;
 		nomSave = saves.lesSauvegardes();

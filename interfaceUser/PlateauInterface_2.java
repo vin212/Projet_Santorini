@@ -137,7 +137,6 @@ public class PlateauInterface_2 extends JComponent {
 
 		if (x >= positionPremierBatiment.getx() && y >= positionPremierBatiment.gety() && x_calcul >= 0 && y_calcul >= 0 && x_calcul < j.getLargeurPlateau() && y_calcul < j.getHauteurPlateau())
 		{
-			System.out.println("il joue");
 			actionUser.jouerAction(new Point(x_calcul,y_calcul));
 			this.repaint();
 		}
@@ -344,11 +343,9 @@ public class PlateauInterface_2 extends JComponent {
 				i =  actionUser.coupJouer.getDepart().getx();
 				k =  actionUser.coupJouer.getDepart().gety();
 				joueur = j.getJoueurEnJeu();
-				//System.out.println("i : " + i + "k : " + k);
 			}
 			else if (debut != null)
 			{
-				//System.out.println("pas tout a fait");
 				i = debut.getx();
 				k = debut.gety();
 				
@@ -414,7 +411,6 @@ public class PlateauInterface_2 extends JComponent {
 			k = p.gety();
 			if (j.getJoueurEnJeu() == 1)
 			{
-				//System.out.println("i : " + i + " k : "+ k);
 				drawable.drawImage(J1,i,k, taille_largeur,taille_hauteur,null);
 			}
 			else

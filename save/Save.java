@@ -2,6 +2,8 @@ package save;
 
 import modele.*;
 import global.*;
+import controleurIA.*;
+import interfaceUser.*;
 
 import java.io.File;
 import structure.*;
@@ -15,14 +17,26 @@ public class Save {
     
     Jeu jeu;
     Configuration prop;
+    IA ia1;
+    IA ia2;
+
+    Fenetres fen;
 
     /*public Save(Jeu j){
         this.jeu = j; 
     }*/
-
-    public Save(Jeu j, Configuration prop){
+    public Save(Jeu j, Configuration prop, Fenetres f)
+    {
         this.jeu = j; 
         this.prop = prop;
+        this.fen = f;
+    }
+
+    public Save(Jeu j, Configuration prop, IA ia1, IA ia2){
+        this.jeu = j; 
+        this.prop = prop;
+        this.ia1 = ia1;
+        this.ia2 = ia2;
     }
 
     public int sauver(String name){
@@ -105,8 +119,29 @@ public class Save {
                 writer.write(joueur+" ");
                 writer.write("\n");
             }
-            writer.close();
+                if (ia1 == null){
+                    writer.write(0 + "\n");
+                } else if (ia1.type().equals("IA Facile")) {
+                    writer.write(1 + "\n");
+                }else if (ia1.type().equals("IA Normal")) {
+                    writer.write(2 + "\n");
+                }else if (ia1.type().equals("IA Difficile")) {
+                    writer.write(3 + "\n");
+                }
+            
+                if (ia2 == null){
+                    writer.write(0 + "\n");
+                } else if (ia2.type().equals("IA Facile")) {
+                    writer.write(1 + "\n");
+                }else if (ia2.type().equals("IA Normal")) {
+                    writer.write(2 + "\n");
+                }else if (ia2.type().equals("IA Difficile")) {
+                    writer.write(3 + "\n");
+                }
+            
+                writer.close();
             }
+        
             else
             {
                 prop.envoyerLogger("interdi de save !",TypeLogger.WARNING);
@@ -125,10 +160,10 @@ public class Save {
         File f = new File(tmp);
         if (f.exists()){
             f.delete();
-            System.out.println("Sauvegarde "+name+" supprimée!");
+            prop.envoyerLogger("Sauvegarde "+name+" supprimée!",TypeLogger.INFO);
         }
         else{
-            System.err.println("Cette sauvegarde n'existe pas!");
+            prop.envoyerLogger("Cette sauvegarde n'existe pas!",TypeLogger.WARNING);
         }
     }
 
@@ -153,13 +188,9 @@ public class Save {
         Scanner scanner;
         try{
             scanner = new Scanner(f);
-            System.out.println("scanner init");
-
             //Initialisation du plateau
             int hauteur = scanner.nextInt();
             int largeur = scanner.nextInt();
-
-            System.out.println("1er lus");
 
             //Disposition des constructions
             for (int j = 0; j < hauteur ; j++){
@@ -171,14 +202,10 @@ public class Save {
                 }
             }
 
-            System.out.println("2nd lus");
-
             //Définition du tour
             jeu.setTour(scanner.nextInt());
             jeu.subTour();
             jeu.calculJoueurEnJeu();
-
-            System.out.println("3eme lus");
 
             //Placement des joueurs
             for (int i = 0; i < 2; i++){
@@ -191,10 +218,9 @@ public class Save {
             }
 
             int curseurHisto = scanner.nextInt();
-            scanner.nextInt();
+            int nbligne = scanner.nextInt();
 
-            while (scanner.hasNextInt()){
-                System.out.println("lecture d'une ligne hsito");
+            for(int i = 0; i < nbligne; i++){
                 Coup coup;
 
                 int xi = scanner.nextInt();
@@ -222,6 +248,50 @@ public class Save {
 
             }
             jeu.setPosition(curseurHisto);
+
+            System.out.println("nb tour : " + jeu.getTour());
+
+            int numIA1  = scanner.nextInt();
+            int numIA2  = scanner.nextInt();
+            if (numIA1 == 0){ 
+                fen.ia1 = null;
+            } else if (numIA1 == 1) {
+                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IAFacile"),"IA Facile",prop);
+                fen.ia1.activeIA();
+            } else if (numIA1 == 2){
+                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IANormal"),"IA Normal",prop);
+                fen.ia1.activeIA();
+            } else if (numIA1 == 3){
+                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IADifficile"),"IA Difficile",prop);
+                fen.ia1.activeIA();
+            }
+            if (numIA2 == 0){ 
+                fen.ia2 = null;
+            } else if (numIA2 == 1) {
+                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IAFacile"),"IA Facile",prop);
+                fen.ia2.activeIA();
+            } else if (numIA2 == 2){
+                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IANormal"),"IA Normal",prop);
+                fen.ia2.activeIA();
+            } else if (numIA2 == 3){
+                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IADifficile"),"IA Difficile",prop);
+                fen.ia2.activeIA();
+            }
+
+            if (fen.ia1 != null)
+            {
+                jeu.addTour();
+                jeu.setAction(1, Action.A_DEPLACER);
+                jeu.calculJoueurEnJeu();
+            }
+            else if (fen.ia2 != null)
+            {
+                jeu.addTour();
+                jeu.setAction(2, Action.A_DEPLACER);
+                jeu.calculJoueurEnJeu();
+            }
+
+
             scanner.close();
             
         }

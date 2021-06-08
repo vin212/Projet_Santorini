@@ -282,11 +282,9 @@ public abstract class IAMinMax extends IA {
         }
 
         if (c.estDeplacement()) {
-            // //System.out.println(c.getArrive());
             j.deplacerPersonnage(c.getArrive(), c.getDepart());
             j.detruireEtage(c.getConstruction());
         } else {
-            // //System.out.println("Annulation de placement ? Vraiment ?");
             pos = j.histoPosition();
             if (pos % 2 == 0) {
                 j.enleverPerso(c.getDepart());

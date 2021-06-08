@@ -197,7 +197,7 @@ public class GestionBouton extends JButton implements ActionListener
 				}
 				else
 				{
-					Save s = new Save(j,prop);
+					Save s = new Save(j,prop,f.ia1,f.ia2);
 					int res = s.sauver(texte.getText());
 					if (res == 0)
 					{
@@ -290,17 +290,17 @@ public class GestionBouton extends JButton implements ActionListener
 		}
 
 		if (j1ToString =="IA Facile") {
-      		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IAFacile"),"IA Difficile",prop);
+      		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IAFacile"),"IA Facile",prop);
 			f.ia2.activeIA();
 		} else if (j1ToString =="IA Normal") {
-     		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IANormal"),"IA Difficile",prop);
+     		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IANormal"),"IA Normal",prop);
 			f.ia2.activeIA();
 		} else if (j1ToString =="IA Difficile") {
 			f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IADifficile"),"IA Difficile",prop);
 			f.ia2.activeIA();
 		}
 		
-		System.out.println(j1ToString + " vs " + j2ToString);
+		prop.envoyerLogger(j1ToString + " vs " + j2ToString,TypeLogger.INFO);
 
 		return true;
 	} 

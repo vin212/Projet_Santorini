@@ -87,9 +87,11 @@ public class EcouteurDeSouris extends MouseAdapter {
 		}
 		else if (name == NomFenetres.CHARGER)
 		{
-			//j.Construire(new Point(0,0));
-			Save save = new Save(f.j,prop);
+			prop.envoyerLogger("Charger une partie", TypeLogger.INFO);
+			f.j = null;
+			Save save = new Save(f.j,prop,f);
 			f.j = save.chargerSauvegarde(nomFichier);
+			f.aire2 = null;
 			if (f.j != null)
 			{
 				f.ChangerFenetres(NomFenetres.JEU);

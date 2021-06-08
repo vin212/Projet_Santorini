@@ -1,18 +1,22 @@
 package modele;
 
+import global.Configuration;
+import global.TypeLogger;
 import structure.*;
 
 public class Plateau{
 
 	int hauteur;
 	int largeur;
+	Configuration prop;
 	public Case [][] cases;
 
-	public Plateau (int hauteur, int largeur) {
+	public Plateau (int hauteur, int largeur, Configuration prop) {
 
 		if (hauteur > 0 && largeur > 0){
 			this.hauteur = hauteur;
 			this.largeur = largeur;
+			this.prop = prop;
 			this.cases = new Case[largeur][hauteur];
 
 			for (int i = 0; i < largeur; i++){
@@ -231,11 +235,11 @@ public class Plateau{
 	public void afficher_CMD (){
 		for (int i = 0; i < hauteur; i++){
 			for (int j = 0; j < largeur; j++){
-				System.out.print(this.cases[j][i].getNbEtage ());
+				prop.envoyerLogger(""+this.cases[j][i].getNbEtage (),TypeLogger.INFO);
 			}
-			System.out.println();
+			prop.envoyerLogger("\n",TypeLogger.INFO);
 		}
-		System.out.println();
+		prop.envoyerLogger("\n",TypeLogger.INFO);
 	}
 
 	public String toString(){
