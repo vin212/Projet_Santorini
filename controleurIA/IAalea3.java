@@ -12,7 +12,6 @@ public class IAalea3 extends IA {
     Random r;
     
     public IAalea3(){
-        r = new Random((long) 0);
         r = new Random();
     }
 
