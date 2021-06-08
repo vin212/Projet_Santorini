@@ -13,6 +13,7 @@ public class IAalea3 extends IA {
     
     public IAalea3(){
         r = new Random((long) 0);
+        r = new Random();
     }
 
     @Override
