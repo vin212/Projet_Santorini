@@ -16,7 +16,7 @@ import structure.VerificateurPion;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestIAMinMax {
+public class TestIAMinMaxForte {
     IAMinMax iaMinMax;
     Jeu jeu;
     VerificateurEtage ve;
@@ -34,7 +34,7 @@ public class TestIAMinMax {
     @ParameterizedTest
     @MethodSource("pointPersonnage")
     public void testIAMinMax(Point firstPoint, Point secondPoint, Point thirdPoint, Point fourthPoint, String iaType) {
-        iaMinMax = (IAMinMax) IA.nouvelle(jeu,"controleurIA.IAMinMax", iaType, prop);
+        iaMinMax = (IAMinMax) IA.nouvelle(jeu,"controleurIA.IAPassive", iaType, prop);
 
         // simulate le jeu
         iaMinMax.activeIA();
@@ -45,27 +45,27 @@ public class TestIAMinMax {
         jeu.poserPersonnage(thirdPoint,2);
         jeu.poserPersonnage(fourthPoint, 2);
 
-        // place ai
+        // place l'ia
         iaMinMax.debuterPartie();
 
-        // check iaa is not at the same point as the personnages
+        // vérifier que iaa n'est pas au même point que le joueur
         Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(firstPoint));
         Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(secondPoint));
         Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(thirdPoint));
         Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(fourthPoint));
 
-        // check if ia place itself at negative point or bigger than board size
+        // vérifier si je me place au point négatif ou plus grand que la taille de la tableau
         Assertions.assertEquals(1,iaMinMax.debuterPartie().getDepart().compareTo(new Point(-1,-1)));
         Assertions.assertEquals(-1,iaMinMax.debuterPartie().getDepart().compareTo(new Point(6,5)));
 
-        // check if ia can find a place to move and build
+        // vérifiez si ia peut trouver un endroit pour déménager et construire
         Assertions.assertTrue(iaMinMax.getVoisin(iaMinMax.debuterPartie().getDepart(), vp).size() > 0);
         Assertions.assertTrue(iaMinMax.getVoisin(iaMinMax.debuterPartie().getDepart(), ve).size() > 0);
 
         // ia joue
         iaMinMax.joue();
 
-        // verify construction points are not equal to first personnage or second personnage or the point we arrive
+        // vérifier que les points de construction ne sont pas égaux au premier ou au deuxième personnage ou au point auquel nous arrivons
         Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(firstPoint));
         Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(secondPoint));
         Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(thirdPoint));
@@ -76,14 +76,14 @@ public class TestIAMinMax {
     private static List<Arguments> pointPersonnage() {
         return Arrays.asList(
                 Arguments.of(new Point(0,0), new Point(4,4), new Point(2,1), new Point(3,2), "IA Facile"),
-                Arguments.of(new Point(1,0), new Point(2,3), new Point(4,3), new Point(1,2), "IA Normal"),
+                Arguments.of(new Point(3,4), new Point(1,1), new Point(4,3), new Point(1,2), "IA Normal"),
                 Arguments.of(new Point(1,1), new Point(2,4), new Point(2,2), new Point(4,3), "IA Difficile"),
                 Arguments.of(new Point(1,2), new Point(4,3), new Point(1,1), new Point(3,3), "IA Facile"),
                 Arguments.of(new Point(4,2), new Point(2,1), new Point(1,0), new Point(3,0), "IA Difficile"),
                 Arguments.of(new Point(2,3), new Point(4,4), new Point(0,0), new Point(3,2), "IA Difficile"),
-                Arguments.of(new Point(1,1), new Point(0,0), new Point(4,1), new Point(1,0), "IA Normal"),
+                Arguments.of(new Point(1,1), new Point(0,0), new Point(4,1), new Point(1,1), "IA Normal"),
                 Arguments.of(new Point(4,2), new Point(3,2), new Point(1,0), new Point(2,0), "IA Facile"),
-                Arguments.of(new Point(3,3), new Point(3,1), new Point(2,0), new Point(1,3), "IA Difficile"),
+                Arguments.of(new Point(1,0), new Point(2,2), new Point(0,3), new Point(1,3), "IA Difficile"),
                 Arguments.of(new Point(4,4), new Point(2,4), new Point(1,3), new Point(1,1), "IA Normal"),
                 Arguments.of(new Point(0,0), new Point(4,4), new Point(3,1), new Point(3,2), "IA Difficile"));
     }

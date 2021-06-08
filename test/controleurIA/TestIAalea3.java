@@ -55,7 +55,7 @@ public class TestIAalea3 {
         Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().compareTo(thirdPoint));
         Assertions.assertNotEquals(0,iaa.debuterPartie().getDepart().compareTo(fourthPoint));
 
-        // vérifier si je me place au point négatif ou plus grand que la taille de la planche
+        // vérifier si je me place au point négatif ou plus grand que la taille de la tableau
         Assertions.assertEquals(1,iaa.debuterPartie().getDepart().compareTo(new Point(-1,-1)));
         Assertions.assertEquals(-1,iaa.debuterPartie().getDepart().compareTo(new Point(6,5)));
 
