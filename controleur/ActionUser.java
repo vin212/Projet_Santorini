@@ -13,34 +13,29 @@ public class ActionUser {
 	Configuration prop;
 
 
-	public ActionUser (Jeu j, Configuration prop)
-	{
+	public ActionUser (Jeu j, Configuration prop) {
 		this.j = j;
 		this.posi_init = new Point(-1,-1);
 		this.coupJouer = new Coup();
 		this.prop = prop;
 	}
 
-	public void initActionUser(Jeu j, Configuration prop)
-	{
+	public void initActionUser(Jeu j, Configuration prop){
 		this.j = j;
 		this.posi_init = new Point(-1,-1);
 		this.coupJouer = new Coup();
 		this.prop = prop;
 	}
 
-	public Point recupPosiPerso ()
-	{
+	public Point recupPosiPerso (){
 		return posi_init;
 	}
 
-	public void jouerAction (Point posi_final)
-	{
+	public void jouerAction (Point posi_final, Boolean estIA) {
 		Action a = j.getAction (j.getJoueurEnJeu());
 
-		if (!j.estGagnant()){
-			switch (a)
-			{
+		if (!j.estGagnant() || estIA){
+			switch (a) {
 				case A_DEPLACER :
 					selectionnerPerso(posi_final);
 				break;
@@ -79,61 +74,43 @@ public class ActionUser {
 		perso = j.quiEstIci (posi_final);
 		if (perso != j.getJoueurEnJeu()){
 			if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 ) {
-                if ((j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1) ||( cheat == true ))
-				{
+                if ( ( j.peutPoserUnPerso(posi_final) 
+					 && 1 >= (j.getNbEtage(posi_final)-j.getNbEtage(posi_init))   )
+					 || (cheat == true)
+				   ) {
 					deplacer(posi_final,histoActiv);
-				}
-				else
-				{
+				} else {
 					prop.envoyerLogger("Coup INVALIDE deplacer!!! " + posi_final + posi_init,TypeLogger.WARNING);
 				}
-				
-			}
-			else if ((Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1)  )
-			{
-				if ((j.peutPoserUnPerso (posi_final) && j.getNbEtage (posi_final) - j.getNbEtage (posi_init) <= 1 )|| (cheat == true))
-				{
+			} else if (   (Math.abs(posi_final.getx()-this.posi_init.getx()) == 1 
+						&& Math.abs(posi_final.gety() - this.posi_init.gety()) == 1) ){
+				if (  (j.peutPoserUnPerso (posi_final) 
+					&& 1 >= j.getNbEtage (posi_final)-j.getNbEtage (posi_init) )
+					|| (cheat == true)) {
 					deplacer(posi_final,histoActiv);
-				}
-				else
-				{
+				} else {
 					prop.envoyerLogger("Coup INVALIDE deplacer!!! " + posi_final + posi_init,TypeLogger.WARNING);
 				}
-			}
-			else if (perso == j.getJoueurEnJeu())
-			{
+			} else if (perso == j.getJoueurEnJeu()) {
 				this.posi_init = posi_final;
-			}
-			else
-			{
+			} else {
 				prop.envoyerLogger("Coup INVALIDE autre!!! " + posi_final + posi_init,TypeLogger.WARNING);
 			}
-		}
-        else if (perso == j.getJoueurEnJeu())
-        {
+		} else if (perso == j.getJoueurEnJeu()) {
 			this.posi_init = posi_final;
         }
 	}
 
-	public void construireIci (Point posi_final, boolean histoActiv)
-	{
-		if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
-		{
-			if (j.Constructible (posi_final))
-			{
+	public void construireIci (Point posi_final, boolean histoActiv) {
+		if (Math.abs(posi_final.getx() - this.posi_init.getx()) + Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 ) {
+			if (j.Constructible (posi_final)) {
 				construire(posi_final,histoActiv);
-			}
-			else
-			{
+			} else {
 				prop.envoyerLogger("Coup INVALIDE !!! " + posi_final + posi_init,TypeLogger.WARNING);
 			}
-		}
-		else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 )
-		{
+		} else if (Math.abs(posi_final.getx() - this.posi_init.getx()) == 1 && Math.abs(posi_final.gety() - this.posi_init.gety()) == 1 ) {
 			construire(posi_final,histoActiv);
-		}
-		else
-		{
+		} else {
 			prop.envoyerLogger("Coup INVALIDE !!! " + posi_final + posi_init,TypeLogger.WARNING);
 		}
 	}
@@ -189,39 +166,37 @@ public class ActionUser {
 		int pos;
 		Coup c;
 		try{
-				c = j.histoAnnulerCoup();
-			} catch(IndexOutOfBoundsException e){
-				prop.envoyerLogger("Plus de coup a annuler",TypeLogger.WARNING);
-				return;
-			}
-			int nbJ2 = c.getJoueur() %2 + 1;
-		
-			if(c.estDeplacement()){
-
-				this.posi_init = c.getArrive();
-				j.setAction(c.getJoueur(), Action.EN_COURS_DE_DEPLACEMENT);
-				avancerPerso(c.getDepart(),false,true);
-				j.detruireEtage(c.getConstruction());
-				
-				j.setAction(c.getJoueur(), Action.A_DEPLACER);
+			c = j.histoAnnulerCoup();
+		} catch(IndexOutOfBoundsException e){
+			prop.envoyerLogger("Plus de coup a annuler",TypeLogger.WARNING);
+			return;
+		}
+		int nbJ2 = c.getJoueur() %2 + 1;
+	
+		if(c.estDeplacement()){
+			this.posi_init = c.getArrive();
+			j.setAction(c.getJoueur(), Action.EN_COURS_DE_DEPLACEMENT);
+			avancerPerso(c.getDepart(),false,true);
+			j.detruireEtage(c.getConstruction());
+			
+			j.setAction(c.getJoueur(), Action.A_DEPLACER);
+			j.setAction(nbJ2, Action.AFK);
+            j.subTour();
+		}else{
+			pos = j.histoPosition();
+			if(pos % 2 == 0){
+				j.enleverPerso(c.getDepart());
+				j.setAction(c.getJoueur(), Action.PREMIER_PLACEMENT);
 				j.setAction(nbJ2, Action.AFK);
-                                j.subTour();
-			}else{
-				pos = j.histoPosition();
-				if(pos % 2 == 0){
-					j.enleverPerso(c.getDepart());
-					j.setAction(c.getJoueur(), Action.PREMIER_PLACEMENT);
-					j.setAction(nbJ2, Action.AFK);
-					//j.subTour();
-				}
-				else{
-					j.enleverPerso(c.getDepart());
-					j.setAction(c.getJoueur(), Action.DEUXIEME_PLACEMENT);
-					j.setAction(nbJ2, Action.AFK);
-					j.subTour();
-				
-				}
+				//j.subTour();
 			}
+			else{
+				j.enleverPerso(c.getDepart());
+				j.setAction(c.getJoueur(), Action.DEUXIEME_PLACEMENT);
+				j.setAction(nbJ2, Action.AFK);
+				j.subTour();
+			}
+		}
 	}
 
 	public void retablirCoup(){
@@ -270,10 +245,8 @@ public class ActionUser {
 		}
 	}
 
-	public void deplacer (Point posi_final, boolean histoActiv)
-	{
-		if (histoActiv)
-		{
+	public void deplacer (Point posi_final, boolean histoActiv) {
+		if (histoActiv) {
 			coupJouer.setJoueur(j.getJoueurEnJeu());
 			coupJouer.setDeplacement(posi_init,posi_final);
 		}
@@ -284,24 +257,18 @@ public class ActionUser {
 		prop.envoyerLogger("Joueur " + j.getJoueurEnJeu() + " a avancer sur la case " + posi_final ,TypeLogger.SEVERE);
 	}
 
-	public void construire (Point posi_final, boolean histoActiv)
-	{
-		if (j.Constructible (posi_final))
-		{
-			j.setAction (j.getJoueurEnJeu(),Action.AFK);
-			j.Construire (posi_final);
+	public void construire(Point posi_final, boolean histoActiv) {
+		if (j.Constructible(posi_final)) {
+			j.setAction(j.getJoueurEnJeu(),Action.AFK);
+			j.Construire(posi_final);
 			prop.envoyerLogger("le joueur : " + j.getJoueurEnJeu() + " a construit en " + posi_final,TypeLogger.SEVERE);
-			if (histoActiv)
-			{
+			if (histoActiv) {
 				coupJouer.setConstruction (posi_final);
 				j.histoAjouterCoup(coupJouer);
 				prop.envoyerLogger(coupJouer.toString(),TypeLogger.INFO);
 				coupJouer = new Coup();
-
 			}
-		}
-		else
-		{
+		} else {
 			prop.envoyerLogger("Coup INVALIDE !!! " + posi_final + posi_init,TypeLogger.WARNING);
 		}
 	}

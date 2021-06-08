@@ -142,7 +142,7 @@ public class Heuristique {
         int res = 0;
         while (it.hasNext()) {
             c = it.next();
-            if ((j.getNbEtage(c) == 3) && (j.peutPoserUnPerso(pionAdverse[0], c) || j.peutPoserUnPerso(pionAdverse[1], c))) {
+            if ((j.getNbEtage(c) == 3) && (j.peutPoserUnPerso(pionAdverse[0], c) || j.peutPoserUnPerso(pionAdverse[1], c)) ) {
                 res++;
             }
         }

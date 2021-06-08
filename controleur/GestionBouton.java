@@ -284,7 +284,7 @@ public class GestionBouton extends JButton implements ActionListener
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal",prop);
 			f.ia1.activeIA();
 		} else if (j2ToString =="IA Difficile") {
- 			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
+ 			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile")
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile",prop);
 			f.ia1.activeIA();
 		}

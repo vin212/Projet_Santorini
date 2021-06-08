@@ -2,7 +2,7 @@ package modele;
 
 import java.util.ArrayList;
 
-public class Historique{
+public class Historique implements Cloneable {
     int taille = 0;
     int position = 0;
     ArrayList<Coup> historique;
@@ -80,6 +80,24 @@ public class Historique{
             return historique.get(n);
         }
         throw new IndexOutOfBoundsException();
+    }
+
+    @Override
+    public Historique clone(){
+        try{
+            Historique resultat = (Historique) super.clone();
+            resultat.taille = taille;
+            resultat.position = position;
+            ArrayList<Coup> histo = new ArrayList<Coup>(0);
+            for(int i = 0; i<taille; i++){
+                histo.add(i, historique.get(i).clone());
+            }
+            resultat.historique = histo;
+            return resultat;
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Bug interne, historique non clonable");
+        }
+        return null;
     }
 
     public String toString(){

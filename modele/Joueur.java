@@ -3,7 +3,7 @@ package	modele;
 import structure.*;
 
 
-public class Joueur {
+public class Joueur implements Cloneable { 
 	int nbPersoPlacer;
 
 	Point perso1;
@@ -126,8 +126,22 @@ public class Joueur {
 		}
 	}
 
+	@Override
+	public Joueur clone(){
+		try{
+			Joueur resultat = (Joueur) super.clone();
+			resultat.perso1 = perso1.clone();
+			resultat.perso2 = perso2.clone();
+			resultat.actionEnCours = actionEnCours;
+			return resultat;
+		} catch (CloneNotSupportedException e) {
+			System.out.println("Impossible de cloner joueur");
+		}
+		return null;
+ 	}
+
 	public String toString(){
-		return "Etat : " + actionEnCours + "Pion 1 : " + perso1 + "\n Pion 2 : " + perso2;
+		return "Etat : " + actionEnCours + "\nPion 1 : " + perso1 + "\n Pion 2 : " + perso2;
 	}
 
 	public void setAction (Action a){
