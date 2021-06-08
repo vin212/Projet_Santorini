@@ -249,32 +249,30 @@ public class Save {
             }
             jeu.setPosition(curseurHisto);
 
-            System.out.println("nb tour : " + jeu.getTour());
-
             int numIA1  = scanner.nextInt();
             int numIA2  = scanner.nextInt();
             if (numIA1 == 0){ 
                 fen.ia1 = null;
             } else if (numIA1 == 1) {
-                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IAFacile"),"IA Facile",prop);
+                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IAFacile"),"IA Facile");
                 fen.ia1.activeIA();
             } else if (numIA1 == 2){
-                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IANormal"),"IA Normal",prop);
+                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IANormal"),"IA Normal");
                 fen.ia1.activeIA();
             } else if (numIA1 == 3){
-                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IADifficile"),"IA Difficile",prop);
+                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IADifficile"),"IA Difficile");
                 fen.ia1.activeIA();
             }
             if (numIA2 == 0){ 
                 fen.ia2 = null;
             } else if (numIA2 == 1) {
-                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IAFacile"),"IA Facile",prop);
+                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IAFacile"),"IA Facile");
                 fen.ia2.activeIA();
             } else if (numIA2 == 2){
-                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IANormal"),"IA Normal",prop);
+                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IANormal"),"IA Normal");
                 fen.ia2.activeIA();
             } else if (numIA2 == 3){
-                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IADifficile"),"IA Difficile",prop);
+                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IADifficile"),"IA Difficile");
                 fen.ia2.activeIA();
             }
 

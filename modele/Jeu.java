@@ -124,7 +124,6 @@ public class Jeu implements Cloneable {
 	public void addTour(){
 		this.t++;
 		calculJoueurEnJeu();
-		System.out.println("nb tour : " + t);
 	}
 
 	public void histoAjouterCoup(Coup c){

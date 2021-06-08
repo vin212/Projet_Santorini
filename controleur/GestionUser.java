@@ -231,7 +231,7 @@ public class GestionUser
 		}
 		else if  (aire1.anim == null && j.getAction(numJoueur) == modele.Action.A_CONSTRUIRE)
 		{
-			actionUser.jouerAction(coupIA.getConstruction());
+			actionUser.jouerAction(coupIA.getConstruction(),false);
 			j.addTour();
 			//actionUser.initActionUser (j,prop);
 			numJoueur = j.getJoueurEnJeu();

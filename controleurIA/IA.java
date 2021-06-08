@@ -23,7 +23,7 @@ public abstract class IA {
     public Random r;
 
     // Instancie l'IA demandé et la renvoie.
-    public static IA nouvelle(Jeu j, String classIaString, String type, Configuration prop){
+    public static IA nouvelle(Jeu j, String classIaString, String type){
         IA instance = null;
         
 

@@ -144,15 +144,15 @@ public class GestionBouton extends JButton implements ActionListener
 				{
 					if (f.ia1.type().equals("IA Facile"))
 					{
-						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia1.type(),prop);
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia1.type());
 					}
 					else if (f.ia1.type().equals("IA Normal"))
 					{
-						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia1.type(),prop);
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia1.type());
 					}
 					else if (f.ia1.type().equals("IA Difficile"))
 					{
-						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia1.type(),prop);
+						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia1.type());
 					}
 					f.ia1.activeIA();
 				}
@@ -161,15 +161,15 @@ public class GestionBouton extends JButton implements ActionListener
 				{
 					if (f.ia2.type().equals("IA Facile"))
 					{
-						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia2.type(),prop);
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia2.type());
 					}
 					else if (f.ia2.type().equals("IA Normal"))
 					{
-						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia2.type(),prop);
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia2.type());
 					}
 					else if (f.ia2.type().equals("IA Difficile"))
 					{
-						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia2.type(),prop);
+						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia2.type());
 					}
 					f.ia2.activeIA();
 				}
@@ -278,25 +278,25 @@ public class GestionBouton extends JButton implements ActionListener
 
 		if (j1ToString == "Joueur" && j2ToString == "Joueur") { }
 		else if (j2ToString =="IA Facile") {
-			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile",prop);
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
 			f.ia1.activeIA();
 		} else if (j2ToString =="IA Normal") {
-			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal",prop);
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
 			f.ia1.activeIA();
 		} else if (j2ToString =="IA Difficile") {
  			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile")
-			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile",prop);
+			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
 			f.ia1.activeIA();
 		}
 
 		if (j1ToString =="IA Facile") {
-      		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IAFacile"),"IA Facile",prop);
+      		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IAFacile"),"IA Facile");
 			f.ia2.activeIA();
 		} else if (j1ToString =="IA Normal") {
-     		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IANormal"),"IA Normal",prop);
+     		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IANormal"),"IA Normal");
 			f.ia2.activeIA();
 		} else if (j1ToString =="IA Difficile") {
-			f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IADifficile"),"IA Difficile",prop);
+			f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IADifficile"),"IA Difficile");
 			f.ia2.activeIA();
 		}
 		

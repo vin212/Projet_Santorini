@@ -7,46 +7,30 @@ import java.util.Iterator;
 import java.lang.Math;
 import java.math.BigInteger;
 
-import controleur.ActionUser;
 import global.TypeLogger;
 import modele.Jeu;
 import modele.Coup;
 import structure.*;
-import global.*;
 
 public abstract class IAMinMax extends IA {
     Random r;
     int horizonMax;
     Hashtable<BigInteger, Integer> table;
-    ActionUser control;
+    //Jeu j;
 
     //TODO les ia devront le faire elles-mêmes si besoin.
     public IAMinMax() {
         r = new Random((long) 0);
         horizonMax = 4;
-        control = new ActionUser(j, j.prop);
-    }
-
-    public static IA nouveau(Jeu j, String classIAString, String type){
-        IA instance = null;
-
-        try {
-            instance = (IA) ClassLoader.getSystemClassLoader().loadClass("controleurIA.IAFortes").getDeclaredConstructor().newInstance();
-            instance.j = j;
-            instance.type = type;
-        } catch(Exception e){
-            System.err.println(e);
-        }
-        return instance;
     }
 
     @Override
     public void initialise() {
-        j.prop.envoyerLogger("IA MinMax activée", TypeLogger.INFO);
+        prop.envoyerLogger("IA MinMax activée", TypeLogger.INFO);
     }
 
     @Override
-    public Coup debuterPartie() {
+    public Coup debuterPartie(Jeu j) {
         ArrayList<Point> liste = new ArrayList<Point>(0);
         for (int i = 0; i < j.getLargeurPlateau(); i++) {
             for (int k = 0; k < j.getHauteurPlateau(); k++) {
@@ -65,7 +49,7 @@ public abstract class IAMinMax extends IA {
 
     @Override
     public Coup joue(Jeu jeu) {
-        j = jeu.clone();
+        Jeu j = jeu.clone();
         table = new Hashtable<BigInteger, Integer>();
         ArrayList<Coup> successeur = successeur(j);
         ListGagnant gagnant = new ListGagnant();
@@ -269,7 +253,7 @@ public abstract class IAMinMax extends IA {
             control.jouerAction(c.getArrive(), true);
             control.jouerAction(c.getConstruction(), true);
         } else {
-            j.prop.envoyerLogger("Coup anormale, l'IA essaie de placer un pion", TypeLogger.SEVERE);
+            prop.envoyerLogger("Coup anormale, l'IA essaie de placer un pion", TypeLogger.SEVERE);
 
         }
     }
