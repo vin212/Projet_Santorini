@@ -45,27 +45,27 @@ public class TestIAMinMaxForte {
         jeu.poserPersonnage(thirdPoint,2);
         jeu.poserPersonnage(fourthPoint, 2);
 
-        // place ai
+        // place l'ia
         iaMinMax.debuterPartie();
 
-        // check iaa is not at the same point as the personnages
+        // vérifier que iaa n'est pas au même point que le joueur
         Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(firstPoint));
         Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(secondPoint));
         Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(thirdPoint));
         Assertions.assertNotEquals(0,iaMinMax.debuterPartie().getDepart().compareTo(fourthPoint));
 
-        // check if ia place itself at negative point or bigger than board size
+        // vérifier si je me place au point négatif ou plus grand que la taille de la tableau
         Assertions.assertEquals(1,iaMinMax.debuterPartie().getDepart().compareTo(new Point(-1,-1)));
         Assertions.assertEquals(-1,iaMinMax.debuterPartie().getDepart().compareTo(new Point(6,5)));
 
-        // check if ia can find a place to move and build
+        // vérifiez si ia peut trouver un endroit pour déménager et construire
         Assertions.assertTrue(iaMinMax.getVoisin(iaMinMax.debuterPartie().getDepart(), vp).size() > 0);
         Assertions.assertTrue(iaMinMax.getVoisin(iaMinMax.debuterPartie().getDepart(), ve).size() > 0);
 
         // ia joue
         iaMinMax.joue();
 
-        // verify construction points are not equal to first personnage or second personnage or the point we arrive
+        // vérifier que les points de construction ne sont pas égaux au premier ou au deuxième personnage ou au point auquel nous arrivons
         Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(firstPoint));
         Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(secondPoint));
         Assertions.assertNotEquals(0, iaMinMax.joue().getConstruction().compareTo(thirdPoint));

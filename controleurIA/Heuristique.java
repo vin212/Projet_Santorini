@@ -1,14 +1,14 @@
 package controleurIA;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.concurrent.ConcurrentSkipListSet;
-
 import modele.Jeu;
 import structure.Point;
 import structure.VerificateurEtage;
 import structure.VerificateurPion;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class Heuristique {
     Jeu j;

@@ -25,11 +25,11 @@ public class TestAnimation {
 
     @Test
     public void test() {
-        // check for type
+        // vérifier le type
         Assertions.assertEquals("CLIGNOTER",animationClignoter.getType().toSrting());
         Assertions.assertEquals("AVANCER",animationAvancer.getType().toSrting());
 
-        // check for final positions
+        // vérifier les positions finales
         Assertions.assertNull(animationClignoter.getPointFinal());
         Assertions.assertEquals(0,animationAvancer.getPointFinal().compareTo(new Point(2,2)));
 
