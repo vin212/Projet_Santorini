@@ -26,7 +26,6 @@ public class Fenetres {
 	Timer chrono;
 
 	public JFrame frame;
-	PlateauInterface_1 aire1;
 	public PlateauInterface_2 aire2;
 
 	EcouteurDeClavier clavier;
@@ -160,13 +159,7 @@ public class Fenetres {
 				frame.repaint();
 			break;
 			case AUTRE :	
-			    //Toolkit.getDefaultToolkit().getScreenSize();
-				prop.envoyerLogger("easter egg",TypeLogger.INFO);
-    			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
-				frame.setLocation(tailleEcran.width/2 - frame.getSize().width/2,tailleEcran.height/2 - frame.getSize().height/2);
-				aire1 = new PlateauInterface_1 (j);
-				frame.add(aire1);
-				frame.setVisible(true);
+			    
 			break;
 			default :
 				prop.envoyerLogger("Fenetre non defini",TypeLogger.WARNING);
