@@ -1,6 +1,10 @@
 package save;
 
 import modele.*;
+import global.*;
+import controleurIA.*;
+import interfaceUser.*;
+
 import java.io.File;
 import structure.*;
 import java.io.FileWriter;
@@ -12,35 +16,57 @@ import java.util.Scanner;
 public class Save {
     
     Jeu jeu;
+    Configuration prop;
+    IA ia1;
+    IA ia2;
 
-    public Save(Jeu j){
+    Fenetres fen;
+
+    /*public Save(Jeu j){
         this.jeu = j; 
+    }*/
+    public Save(Jeu j, Configuration prop, Fenetres f)
+    {
+        this.jeu = j; 
+        this.prop = prop;
+        this.fen = f;
     }
 
-    public void sauver(String name){
+    public Save(Jeu j, Configuration prop, IA ia1, IA ia2){
+        this.jeu = j; 
+        this.prop = prop;
+        this.ia1 = ia1;
+        this.ia2 = ia2;
+    }
+
+    public int sauver(String name){
         String tmp = "sauvegardes/"+name+".data";
         File saveFile = new File(tmp);
         try{
             boolean res = saveFile.createNewFile();
             if(!res){
-                System.out.println("Erreur à la création! Le fichier existe-t'il déjà?");
+                prop.envoyerLogger("Erreur à la création! Le fichier existe-t'il déjà?",TypeLogger.WARNING);
+                return 1;
             }
         }
         catch(Exception e){
-            System.err.println("Erreur à la création!");
+            prop.envoyerLogger("Erreur à la création!",TypeLogger.WARNING);
+            return -1;
         }
 
         FileWriter writer;
 
         try{
+            if (jeu.getTour() >= 2)
+            {
             writer = new FileWriter(tmp);
 
             //Ecriture du plateau
             int hauteur = jeu.getHauteurPlateau();
             int largeur = jeu.getLargeurPlateau();
             writer.write(hauteur+" "+largeur + "\n");
-            for (int i = 0; i < hauteur; i++){
-                for(int j = 0; j < largeur; j++){
+            for (int j = 0; j < hauteur; j++){
+                for(int i = 0; i < largeur; i++){
                     Point p = new Point(i,j);
                     int tailleTour = jeu.getNbEtage(p);
                     writer.write(tailleTour+" ");
@@ -56,7 +82,7 @@ public class Save {
             //Ecriture de la pos des joueurs
             for (int i = 1; i <= 2; i++){
                 Point[] pts = jeu.getPosiPions(i);
-                System.out.println("pts : " + pts + "writer : "+ writer);
+                
                 writer.write(pts[0].getx()+ " "+ pts[0].gety()+"  ");
                 writer.write(pts[1].getx()+ " "+ pts[1].gety());
                 writer.write("\n");
@@ -64,7 +90,6 @@ public class Save {
             
             //Ecriture de l'histo
             Integer posHisto = jeu.histoPosition();
-            //System.out.println("\nPosition de l'histo : "+ posHisto+"\n");
             Historique histo = jeu.histo();
             writer.write(posHisto+"\n");
             Integer tailleHisto = histo.getTaille();
@@ -84,7 +109,6 @@ public class Save {
                 else
                     pc = new Point(-1,-1);
                 joueur = (Integer)coup.getJoueur();
-                //System.out.println("\nJoueur : "+ joueur+" \n");
                 writer.write(pi.getx()+" "+pi.gety()+"  ");
                 if (pa != null && pc != null)
                 {
@@ -95,11 +119,40 @@ public class Save {
                 writer.write(joueur+" ");
                 writer.write("\n");
             }
-            writer.close();
+                if (ia1 == null){
+                    writer.write(0 + "\n");
+                } else if (ia1.type().equals("IA Facile")) {
+                    writer.write(1 + "\n");
+                }else if (ia1.type().equals("IA Normal")) {
+                    writer.write(2 + "\n");
+                }else if (ia1.type().equals("IA Difficile")) {
+                    writer.write(3 + "\n");
+                }
+            
+                if (ia2 == null){
+                    writer.write(0 + "\n");
+                } else if (ia2.type().equals("IA Facile")) {
+                    writer.write(1 + "\n");
+                }else if (ia2.type().equals("IA Normal")) {
+                    writer.write(2 + "\n");
+                }else if (ia2.type().equals("IA Difficile")) {
+                    writer.write(3 + "\n");
+                }
+            
+                writer.close();
+            }
+        
+            else
+            {
+                prop.envoyerLogger("interdi de save !",TypeLogger.WARNING);
+                return 2;
+            }
         }
         catch(java.io.IOException e){
-            new RuntimeException("Erreur", e).printStackTrace();    
+            new RuntimeException("Erreur", e).printStackTrace(); 
+            return -1;  
         }
+        return 0;
     }
 
     public void supprSave(String name){
@@ -107,10 +160,10 @@ public class Save {
         File f = new File(tmp);
         if (f.exists()){
             f.delete();
-            System.out.println("Sauvegarde "+name+" supprimée!");
+            prop.envoyerLogger("Sauvegarde "+name+" supprimée!",TypeLogger.INFO);
         }
         else{
-            System.err.println("Cette sauvegarde n'existe pas!");
+            prop.envoyerLogger("Cette sauvegarde n'existe pas!",TypeLogger.WARNING);
         }
     }
 
@@ -120,8 +173,7 @@ public class Save {
 
         for (File file : dossier.listFiles()){
             String nom = file.getName();
-            System.out.println("nom : " + nom.split(".d"));
-            String[] nameCut = nom.split(".d");
+            String[] nameCut = nom.split("\\.data");
             saves.add(nameCut[0]);
         }
 
@@ -130,83 +182,121 @@ public class Save {
 
     public Jeu chargerSauvegarde(String name){
         String save = "sauvegardes/"+name+".data";
-        Jeu jeu = new Jeu();
+        Jeu jeu = new Jeu(prop);
 
         File f = new File (save);
         Scanner scanner;
         try{
             scanner = new Scanner(f);
-
             //Initialisation du plateau
             int hauteur = scanner.nextInt();
             int largeur = scanner.nextInt();
-            Plateau p = new Plateau(hauteur, largeur);
 
             //Disposition des constructions
-            for (int i = 0; i < 5 ; i++){
-                for (int j = 0; j < 5 ; j++){
-                    Case nvCase = new Case();
+            for (int j = 0; j < hauteur ; j++){
+                for (int i = 0; i < largeur ; i++){
                     int constru = scanner.nextInt();
                     for (int k = 0; k < constru; k++){
-                        nvCase.ajoutEtage();
+                        jeu.Construire(new Point(i,j));
                     }
-                    p.cases[i][j] = nvCase;
                 }
             }
 
             //Définition du tour
             jeu.setTour(scanner.nextInt());
+            jeu.subTour();
+            jeu.calculJoueurEnJeu();
 
             //Placement des joueurs
             for (int i = 0; i < 2; i++){
-                Joueur joueur = new Joueur();
-                for (int j = 0; j < 1; j++){
+                for (int j = 0; j < 2; j++){
                     int x = scanner.nextInt();
                     int y = scanner.nextInt();
                     Point pt = new Point(x,y);        
-                    if (i == 0)
-                        joueur.placerPerso1(pt);
-                    else
-                        joueur.placerPerso2(pt);
-                    jeu.poserPersonnage(pt, i);        
+                    jeu.poserPersonnage (pt,i+1);       
                 }
-                jeu.setJoueur(i, joueur);
             }
 
-            //Chargement de l'historique
-            Historique histo = new Historique();
+            int curseurHisto = scanner.nextInt();
+            int nbligne = scanner.nextInt();
 
-            while (scanner.hasNextInt()){
+            for(int i = 0; i < nbligne; i++){
                 Coup coup;
+
                 int xi = scanner.nextInt();
                 int yi = scanner.nextInt();
                 Point Pti = new Point(xi, yi);
+
                 int xa = scanner.nextInt();
                 int ya = scanner.nextInt();
-
                 Point Pta = new Point(xa, ya);
+
                 int xc = scanner.nextInt();
                 int yc = scanner.nextInt();
                 Point Ptc = new Point(xc, yc);
+
                 int numJoueur = scanner.nextInt();
                 if(!(xa == -1 || ya == -1)){
                     coup = new Coup(Pti, Pta, Ptc, numJoueur);
                 }
                 else
+                {
                     coup = new Coup(Pti, numJoueur);
-
-                histo.ajouteCoup(coup);
-
                 }
-            jeu.setHisto(histo);
+
+                jeu.histoAjouterCoup(coup);
+
+            }
+            jeu.setPosition(curseurHisto);
+
+            int numIA1  = scanner.nextInt();
+            int numIA2  = scanner.nextInt();
+            if (numIA1 == 0){ 
+                fen.ia1 = null;
+            } else if (numIA1 == 1) {
+                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IAFacile"),"IA Facile");
+                fen.ia1.activeIA();
+            } else if (numIA1 == 2){
+                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IANormal"),"IA Normal");
+                fen.ia1.activeIA();
+            } else if (numIA1 == 3){
+                fen.ia1 = IA.nouvelle(jeu,prop.recupValeur("IADifficile"),"IA Difficile");
+                fen.ia1.activeIA();
+            }
+            if (numIA2 == 0){ 
+                fen.ia2 = null;
+            } else if (numIA2 == 1) {
+                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IAFacile"),"IA Facile");
+                fen.ia2.activeIA();
+            } else if (numIA2 == 2){
+                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IANormal"),"IA Normal");
+                fen.ia2.activeIA();
+            } else if (numIA2 == 3){
+                fen.ia2 = IA.nouvelle(jeu,prop.recupValeur("IADifficile"),"IA Difficile");
+                fen.ia2.activeIA();
+            }
+
+            if (fen.ia1 != null)
+            {
+                jeu.addTour();
+                jeu.setAction(1, Action.A_DEPLACER);
+                jeu.calculJoueurEnJeu();
+            }
+            else if (fen.ia2 != null)
+            {
+                jeu.addTour();
+                jeu.setAction(2, Action.A_DEPLACER);
+                jeu.calculJoueurEnJeu();
+            }
+
+
             scanner.close();
-
-        }
             
-        catch(Exception e){
-            System.err.println("Erreur lors de la lecture du fichier");
-        }       
-
+        }
+        catch (Exception expt)
+        {
+            System.err.println("Erreur lors de la lecture du fichier : " + expt);
+        }
         return jeu;
     }
 

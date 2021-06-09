@@ -1,6 +1,6 @@
 package modele;
 
-public class Case {
+public class Case implements Cloneable {
 
 	int nbEtage;
 	int nbPerso;
@@ -70,6 +70,19 @@ public class Case {
 
 	public int getNbPerso (){
 		return nbPerso;
+	}
+
+	@Override
+	public Case clone(){
+		try{
+			Case resultat = (Case) super.clone();
+			resultat.nbEtage = nbEtage;
+			resultat.nbPerso = nbPerso;
+			return resultat;
+		} catch (CloneNotSupportedException e){
+			System.err.println("Bug interne, case non clonable");
+		}
+		return null;
 	}
 
 	public String toString(){

@@ -1,6 +1,7 @@
 package test.controleurIA;
 
 import controleurIA.IA;
+import global.Configuration;
 import modele.Jeu;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,11 +12,12 @@ import structure.VerificateurPion;
 
 public class TestIA extends IA{
     IA ia;
+    Configuration prop = new Configuration();
 
     @BeforeEach
     public void setup() {
         j = new Jeu();
-        ia = IA.nouvelle(j,"controleurIA.IAAleatoire", "IA Facile");
+        ia = IA.nouvelle(j,"controleurIA.IAAleatoire", "IA Facile", prop);
         ia.activeIA();
     }
 
@@ -42,11 +44,11 @@ public class TestIA extends IA{
         Assertions.assertEquals(expectedVE,ia.getVoisin(new Point(2,1), ve).toString());
         Assertions.assertEquals(expectedVP,ia.getVoisin(new Point(2,1), ve).toString());
 
-        // test after place personnages
+        // tester après avoir placé les joueurs
         j.poserPersonnage(new Point(1,1),1);
         j.poserPersonnage(new Point(2,2),1);
 
-        // test after contruire
+        // test apres contruire
         j.Construire(new Point(3,1));
         j.Construire(new Point(1,0));
 

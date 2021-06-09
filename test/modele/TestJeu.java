@@ -18,15 +18,10 @@ public class TestJeu {
     public void setup() {
         jeu = new Jeu();
 
-        // test for creation jeu class
+        //test pour la classe de jeu de création
         Assertions.assertEquals(5,jeu.getHauteurPlateau());
         Assertions.assertEquals(5,jeu.getLargeurPlateau());
         Assertions.assertEquals(1,jeu.getJoueurEnJeu());
-    }
-
-    @Test
-    public void testAfficherPlateau() {
-        // a tester
     }
 
     @Test
@@ -34,22 +29,22 @@ public class TestJeu {
         Point point = new Point(1,1);
         jeu.Construire(point);
 
-        // check if Constructible returns true
-        // check nb etage
+        // vérifier si Constructible renvoie vrai
+        // vérifier nb etage
         Assertions.assertTrue(jeu.Constructible(point));
         Assertions.assertEquals(1,jeu.getNbEtage(point));
 
         jeu.Construire(point);
         jeu.Construire(point);
 
-        //check nb etage
+        //vérifier nb etage
         Assertions.assertEquals(3,jeu.getNbEtage(point));
 
         jeu.Construire(point);
         jeu.Construire(point);
 
-        // check if construction returns false after etage 4
-        // check etage after etage > 4
+        // vérifier si la construction retourne false après l'étage 4
+        // vérifier etage après etage > 4
         Assertions.assertFalse(jeu.Constructible(point));
         Assertions.assertEquals(4,jeu.getNbEtage(point));
     }
@@ -60,8 +55,8 @@ public class TestJeu {
 
         jeu.Construire(point);
 
-        // check if Constructible returns false
-        // check nb etage
+        // vérifier si Constructible renvoie false
+        // vérifier nb etage
         Assertions.assertFalse(jeu.Constructible(point));
         Assertions.assertEquals(-1,jeu.getNbEtage(point));
     }
@@ -72,8 +67,8 @@ public class TestJeu {
 
         jeu.Construire(point);
 
-        // check if Constructible returns false
-        // check nb etage
+        // vérifier si Constructible renvoie false
+        // vérifier nb etage
         Assertions.assertFalse(jeu.Constructible(point));
         Assertions.assertEquals(-1,jeu.getNbEtage(point));
     }
@@ -82,7 +77,7 @@ public class TestJeu {
     public void testDetruireEtage() {
         Point point = new Point(1,1);
 
-        // detruire etage before Construire
+        // detruire etage avant Construire
         jeu.detruireEtage(point);
 
         Assertions.assertEquals(0, jeu.getNbEtage(point));
@@ -108,18 +103,18 @@ public class TestJeu {
 
         jeu.detruireEtage(point);
 
-        // check after running Construire method over etage > 4
+        // vérifier après avoir exécuté la méthode Construire apres etage > 4
         Assertions.assertEquals(3,jeu.getNbEtage(point));
     }
 
     @Test
     public void testConstructible() {
-        // test negative values
+        // tester les valeurs négatives
         Point pointNegative = new Point(-1,-1);
 
         Assertions.assertFalse(jeu.Constructible(pointNegative));
 
-        // test bigger than board values
+        //test plus grand que les valeurs de la plateau
         Point pointEnorme = new Point(7,7);
 
         Assertions.assertFalse(jeu.Constructible(pointEnorme));
@@ -133,23 +128,23 @@ public class TestJeu {
         jeu.poserPersonnage(new Point(2,3), 2);
         jeu.poserPersonnage(new Point(4,4), 2);
 
-        //check if person can be placed after poserPersonnage
+        //vérifier si la personne peut être placée après poserPersonnage
         Assertions.assertFalse(jeu.peutPoserUnPerso(new Point(1,1)));
         Assertions.assertFalse(jeu.peutPoserUnPerso(new Point(3,3)));
 
-        // change position of the person
+        // changer la position de la joueur
         jeu.deplacerPersonnage(new Point(1,1), new Point(2,2));
 
         // checks if new position is available to poser personnage
         Assertions.assertFalse(jeu.peutPoserUnPerso(new Point(2,2)));
 
-        //checks if old position is placable for poser personnage
+        //vérifie si l'ancienne position est plausible pour poseur personnage
         Assertions.assertTrue(jeu.peutPoserUnPerso(new Point(1,3)));
 
-        // check for out of border
+        // vérifier hors frontière
         Assertions.assertFalse(jeu.peutPoserUnPerso(new Point(7,7)));
 
-        // check for negative values
+        // vérifier les valeurs négatives
         Assertions.assertFalse(jeu.peutPoserUnPerso(new Point(-2,-2)));
     }
 
@@ -161,24 +156,24 @@ public class TestJeu {
         jeu.poserPersonnage(new Point(2,2), 2);
         jeu.poserPersonnage(new Point(4,3), 2);
 
-        //check if there is a person
+        // vérifier s'il y a une personne
         Assertions.assertTrue(jeu.aPersonnage(new Point(2,1)));
         Assertions.assertTrue(jeu.aPersonnage(new Point(4,3)));
         Assertions.assertFalse(jeu.aPersonnage(new Point(1,2)));
 
-        // change position of the person
+        // changer la position de la personne
         jeu.deplacerPersonnage(new Point(1,3), new Point(2,2));
 
-        // checks old position
+        // vérifie l'ancienne position
         Assertions.assertTrue(jeu.aPersonnage(new Point(2,2)));
 
-        //checks new position
+        // vérifie la nouvelle position
         Assertions.assertFalse(jeu.aPersonnage(new Point(1,4)));
 
-        // check for out of border
+        // vérifier hors frontière
         Assertions.assertFalse(jeu.aPersonnage(new Point(7,7)));
 
-        // check for negative values
+        // vérifier les valeurs négatives
         Assertions.assertFalse(jeu.aPersonnage(new Point(-1,-3)));
     }
 
@@ -199,7 +194,7 @@ public class TestJeu {
 
     @Test
     public void testEnleverPerso() {
-        // check before poser personnage
+        // vérifier avant poser personnage
         Assertions.assertEquals(-1,jeu.enleverPerso(new Point(3,2)));
 
         jeu.poserPersonnage(new Point(3,1),1);
@@ -208,19 +203,19 @@ public class TestJeu {
         jeu.poserPersonnage(new Point(3,3),2);
         jeu.poserPersonnage(new Point(4,3),2);
 
-        // check if person exists in that position before enlever person
+        // vérifier si la personne existe dans cette position avant de retirer la personne
         Assertions.assertEquals(2, jeu.quiEstIci(new Point(4,3)));
 
         // enlever personnage
         jeu.enleverPerso(new Point(4,3));
 
-        // check if person removed
+        // vérifier si la personne a été supprimée
         Assertions.assertEquals(0,jeu.quiEstIci(new Point(4,3)));
 
         // poser le personnage
         jeu.poserPersonnage(new Point(4,3),2);
 
-        // change position of the person
+        // changer la position de la personne
         jeu.deplacerPersonnage(new Point(2,1), new Point(2,2));
 
         // enlever personnage apres deplacer
@@ -229,13 +224,13 @@ public class TestJeu {
         Assertions.assertEquals(0,jeu.quiEstIci(new Point(2,2)));
         Assertions.assertEquals(0,jeu.quiEstIci(new Point(2,1)));
 
-        // check for negative values
+        // vérifier les valeurs négatives
         jeu.poserPersonnage(new Point(-1,-2),1);
         jeu.enleverPerso(new Point(-1, -2));
 
         Assertions.assertEquals(-1,jeu.quiEstIci(new Point(-1,-2)));
 
-        // check for big numbers
+        // vérifier les grands nombres
         jeu.poserPersonnage(new Point(50000,60000),1);
         jeu.enleverPerso(new Point(50000,60000));
 
@@ -244,17 +239,17 @@ public class TestJeu {
 
     @Test
     public void testQuiEstIci() {
-        // test before poser personnage
+        // test avant poseur personnage
         Assertions.assertEquals(0,jeu.quiEstIci(new Point(1,2)));
 
-        //poser les personnages
+        // poser les personnages
         jeu.poserPersonnage(new Point(1,1),1);
         jeu.poserPersonnage(new Point(2,1),1);
 
         jeu.poserPersonnage(new Point(3,2),2);
         jeu.poserPersonnage(new Point(4,1),2);
 
-        // check for positions
+        // vérifier les postes
         Assertions.assertEquals(1,jeu.quiEstIci(new Point(2,1)));
         Assertions.assertEquals(1,jeu.quiEstIci(new Point(1,1)));
         Assertions.assertEquals(2,jeu.quiEstIci(new Point(3,2)));
@@ -264,21 +259,21 @@ public class TestJeu {
         jeu.deplacerPersonnage(new Point(2,1), new Point(2,2));
         jeu.deplacerPersonnage(new Point(4,1), new Point(4,2));
 
-        // check for new position
+        // vérifier un nouveau poste
         Assertions.assertEquals(1,jeu.quiEstIci(new Point(2,2)));
         Assertions.assertEquals(2,jeu.quiEstIci(new Point(4,2)));
 
-        // check for old positions
+        // vérifier les anciens postes
         Assertions.assertEquals(0,jeu.quiEstIci(new Point(2,1)));
         Assertions.assertEquals(0, jeu.quiEstIci(new Point(4,1)));
 
         // deplacer a la position negative
         jeu.deplacerPersonnage(new Point(1,1), new Point(-1,-1));
 
-        // check if position is the same
+        // vérifier si la position est la même
         Assertions.assertEquals(1,jeu.quiEstIci(new Point(1,1)));
 
-        // check negative deplacement is false
+        // vérifier que le déplacement négatif est faux
         Assertions.assertEquals(-1, jeu.quiEstIci(new Point(-1,-1)));
     }
 
@@ -291,7 +286,7 @@ public class TestJeu {
 
         jeu.subTour();
 
-        // check if returns negative
+        // vérifier si renvoie négatif
         Assertions.assertEquals(0,jeu.getTour());
 
         jeu.addTour();
@@ -306,37 +301,37 @@ public class TestJeu {
         jeu.subTour();
         jeu.subTour();
 
-        // check if returns negative
+        //vérifier si renvoie négatif
         Assertions.assertEquals(0,jeu.getTour());
     }
 
     @Test
     public void testgetPosiPions() {
-        // check before poser les personnages
+        // vérifier avant de poser les personnages
         Assertions.assertNull(jeu.getPosiPions(1));
         Assertions.assertNull(jeu.getPosiPions(2));
 
-        //poser les personnages
+        // poser les personnages
         jeu.poserPersonnage(new Point(1,1),1);
         jeu.poserPersonnage(new Point(2,1),1);
 
         jeu.poserPersonnage(new Point(3,2),2);
         jeu.poserPersonnage(new Point(4,1),2);
 
-        // check for posi pions
-        Assertions.assertEquals(0, jeu.getPosiPions(1)[0].CompareTo(new Point(1,1)));
-        Assertions.assertEquals(0, jeu.getPosiPions(1)[1].CompareTo(new Point(2,1)));
-        Assertions.assertEquals(0, jeu.getPosiPions(2)[0].CompareTo(new Point(3,2)));
-        Assertions.assertEquals(0, jeu.getPosiPions(2)[1].CompareTo(new Point(4,1)));
+        // vérifier posiPions
+        Assertions.assertEquals(0, jeu.getPosiPions(1)[0].compareTo(new Point(1,1)));
+        Assertions.assertEquals(0, jeu.getPosiPions(1)[1].compareTo(new Point(2,1)));
+        Assertions.assertEquals(0, jeu.getPosiPions(2)[0].compareTo(new Point(3,2)));
+        Assertions.assertEquals(0, jeu.getPosiPions(2)[1].compareTo(new Point(4,1)));
 
-        // check for empty position
-        Assertions.assertEquals(-1, jeu.getPosiPions(2)[0].CompareTo(new Point(3,4)));
+        // vérifier la position vide
+        Assertions.assertEquals(-1, jeu.getPosiPions(2)[0].compareTo(new Point(3,4)));
 
-        // check for negative position after deplacer
+        // vérifier la position négative après le deplacer
         jeu.deplacerPersonnage(new Point(3,2), new Point(-1,-2));
 
-        Assertions.assertEquals(1, jeu.getPosiPions(2)[0].CompareTo(new Point(-1,-2)));
-        Assertions.assertEquals(0, jeu.getPosiPions(2)[0].CompareTo(new Point(3,2)));
+        Assertions.assertEquals(1, jeu.getPosiPions(2)[0].compareTo(new Point(-1,-2)));
+        Assertions.assertEquals(0, jeu.getPosiPions(2)[0].compareTo(new Point(3,2)));
     }
 
     @Test
@@ -370,10 +365,10 @@ public class TestJeu {
         // test retablir coup
         Assertions.assertEquals(2,jeu.histoPosition());
 
-        // try with inexisting value
+        // avec une valeur inexistante
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> jeu.histoRetablir());
 
-        // check if annuler throws error
+        // vérifier si annuler lancer une erreur
         jeu.histoAnnulerCoup();
         jeu.histoAnnulerCoup();
 
@@ -382,7 +377,7 @@ public class TestJeu {
 
     @Test
     public void testGagnant() {
-        //check before start game
+        // vérifier avant de commencer le jeu
         Assertions.assertEquals(0,jeu.quiGagnant());
         Assertions.assertFalse(jeu.estGagnant());
 
@@ -398,7 +393,7 @@ public class TestJeu {
         jeu.Construire(new Point(3,4));
         jeu.Construire(new Point(3,4));
 
-        //check random time in game
+        // vérifier le temps aléatoire dans le jeu
         Assertions.assertEquals(0,jeu.quiGagnant());
         Assertions.assertFalse(jeu.estGagnant());
 
@@ -409,7 +404,7 @@ public class TestJeu {
 
         jeu.deplacerPersonnage(new Point(3,4),new Point(2,3));
 
-        // after perso1 wins
+        // après que perso1 gagne
         Assertions.assertEquals(1,jeu.quiGagnant());
         Assertions.assertTrue(jeu.estGagnant());
     }
@@ -454,11 +449,11 @@ public class TestJeu {
 
         Assertions.assertEquals(4, jeu.getNbVoisin(new Point(3,4), ve));
 
-        // test with negative values
+        // test avec des valeurs négatives
         Assertions.assertEquals(0, jeu.getNbVoisin(new Point(1,-2), vp));
         Assertions.assertEquals(0, jeu.getNbVoisin(new Point(-3,4), ve));
 
-        // test with bigger than board values
+        // tester avec des valeurs supérieures à celles de la carte
         Assertions.assertEquals(0, jeu.getNbVoisin(new Point(7,8), vp));
         Assertions.assertEquals(0, jeu.getNbVoisin(new Point(9,8), ve));
     }
@@ -466,19 +461,19 @@ public class TestJeu {
     @Test
     public void testToStringEtgetJoueurEnJeu() {
         Plateau p = new Plateau(5, 5);
-        // before placing personnages
+        // avant de placer des personnages
         String expected = "Au joueur " + jeu.getJoueurEnJeu() + " de jouer sur le plateau :\n" + p;
 
         Assertions.assertEquals(expected, jeu.toString());
 
-        //poser les personnages sur le plateau
+        // poser les personnages sur le plateau
         p.poserPersonnage(new Point(1,1),1);
         p.poserPersonnage(new Point(2,1),1);
 
         p.poserPersonnage(new Point(3,2),2);
         p.poserPersonnage(new Point(4,1),2);
 
-        //poser les personnages
+        // poser les personnages
         jeu.poserPersonnage(new Point(1,1),1);
         jeu.poserPersonnage(new Point(2,1),1);
 

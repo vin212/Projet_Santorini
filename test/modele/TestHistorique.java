@@ -33,7 +33,7 @@ public class TestHistorique {
 
     @Test
     public void testAnnulerCoup() {
-        // test annuler before init
+        //test annuler avant initialisation
         Assertions.assertFalse(historique.verifAnnulerCoup());
 
         Coup coup1 = new Coup(new Point(2,1), 1);
@@ -44,7 +44,7 @@ public class TestHistorique {
         historique.ajouteCoup(coup2);
         historique.ajouteCoup(coup3);
 
-        // verify if can annuler
+        // vérifier si peut annuler
         Assertions.assertTrue(historique.verifAnnulerCoup());
 
         // annuler coups
@@ -53,7 +53,7 @@ public class TestHistorique {
 
         Assertions.assertEquals(1,historique.positionnement());
 
-        // annuler more than ajoute coups
+        // annuler plus qu'ajouter des coups
         historique.annuler();
 
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> historique.annuler());
@@ -78,7 +78,7 @@ public class TestHistorique {
         Assertions.assertEquals(expected, historique.obtenirCoup(1).toString());
         Assertions.assertFalse(historique.existeCoup(2));
 
-        // test retablir more than coups
+        // test retablir plus que coups
         historique.retablir();
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> historique.retablir());
     }

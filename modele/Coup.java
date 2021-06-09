@@ -2,7 +2,7 @@ package modele;
 
 import structure.*;
 
-public class Coup {
+public class Coup implements Cloneable{
     Point initial;
     Point arrive;
     Point construction;
@@ -72,6 +72,17 @@ public class Coup {
     // Permet de mettre le numero d'un joueur dans un coup.
     public void setJoueur (int joueur){
         this.joueur = joueur;
+    }
+
+    @Override
+    public Coup clone(){
+        Coup resultat;
+        if (this.estDeplacement()){
+            resultat = new Coup(initial.clone(),arrive.clone(),construction.clone(),joueur);
+        } else {
+            resultat = new Coup(initial.clone(), joueur);
+        }
+        return resultat;
     }
 
     public String toString(){

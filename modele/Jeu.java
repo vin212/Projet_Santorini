@@ -8,25 +8,23 @@ import java.util.ArrayList;
 import global.*;
 
 
-public class Jeu{
+public class Jeu implements Cloneable {
 	Plateau p;
 	int t;
 	Joueur []joueurs;
 	int joueurEnJeu;
 	public Historique historique;
 	public BigInteger hashCode;
-	//TODO hash code à partir d'une base 5 (5^33 au max)
-
 	boolean aideActiver;
-	Configuration prop;
+	public Configuration prop;
 
 
 	public Jeu (Configuration prop){
-		this.p = new Plateau (5,5);
-
+		this.p = new Plateau (5,5,prop);
+		
 		this.prop = prop;
 		historique = new Historique();
-		System.out.println("Init plateau : " + this.p);
+		prop.envoyerLogger("Init plateau : " + this.p, TypeLogger.INFO);
 		this.t = 0;
 		this.joueurs = new Joueur [2];
 		this.joueurEnJeu = 1;
@@ -39,10 +37,11 @@ public class Jeu{
 				this.joueurs[i] = new Joueur();
 			}
 		}
+		//setAction (1, Action.PREMIER_PLACEMENT);
 	}
 
 	public Jeu (){
-		this.p = new Plateau (5,5);
+		this.p = new Plateau (5,5, prop);
 
 		historique = new Historique();
 		System.out.println("Init plateau : " + this.p);
@@ -58,6 +57,10 @@ public class Jeu{
 				this.joueurs[i] = new Joueur();
 			}
 		}
+	}
+
+	public Plateau plateau(){
+		return p;
 	}
 
 	public int getHauteurPlateau(){
@@ -128,17 +131,19 @@ public class Jeu{
 	}
 
 	public Coup histoAnnulerCoup() throws IndexOutOfBoundsException{
-		System.out.println("historique : "+historique);
 		return historique.annuler();
 	}
 
 	public Coup histoRetablir() throws IndexOutOfBoundsException{
-		System.out.println("historique : "+historique);
 		return historique.retablir();
 	}
 
 	public int histoPosition(){
 		return historique.positionnement();
+	}
+
+	public void setPosition (int i){
+		historique.setPosition(i);
 	}
 
 
@@ -211,7 +216,7 @@ public class Jeu{
 			else
 				decalage = BigInteger.valueOf((long) 5).pow(29);
 
-			if (posi[0].CompareTo(posi[1]) == -1){
+			if (posi[0].compareTo(posi[1]) == -1){
 				x0 = posi[0].getx();
 				y0 = posi[0].gety();
 				x1 = posi[1].getx();
@@ -383,6 +388,25 @@ public class Jeu{
 		}
 }
 
+	@Override
+	public Jeu clone() {
+		try{
+			Jeu resultat = (Jeu) super.clone();
+			resultat.p = p.clone();
+			resultat.t = t;
+			resultat.joueurs = new Joueur [2];
+			resultat.joueurs[0] = joueurs[0].clone();
+			resultat.joueurs[1] = joueurs[1].clone();
+			resultat.joueurEnJeu = joueurEnJeu;
+			resultat.historique = historique.clone();
+			resultat.hashCode = new BigInteger(hashCode.toString());
+			resultat.prop = prop;
+			return resultat;
+		} catch (CloneNotSupportedException e){
+			System.err.println("Bug interne, plateau non clonable");
+		}
+		return null;
+	}
 
 	public boolean aideEstActiver ()
 	{
@@ -427,6 +451,11 @@ public class Jeu{
                 voisins.add(new Point(x-1, y+1));
         }
         return voisins;
+    }
+
+    public void reactuProp ()
+    {
+    	this.aideActiver = Boolean.valueOf(prop.recupValeur("aide")).booleanValue();
     }
 
    

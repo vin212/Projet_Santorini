@@ -3,8 +3,11 @@ package controleurIA;
 import java.util.ArrayList;
 import java.util.Random;
 
+import global.TypeLogger;
 import modele.Coup;
+import modele.Jeu;
 import structure.*;
+import global.*;
 
 public class IAAleatoire extends IA {
     Random r;
@@ -15,11 +18,11 @@ public class IAAleatoire extends IA {
 
     @Override
     public void initialise(){
-        System.err.println("Systeme de log absent, IA Aléatoire activée");
+        prop.envoyerLogger("IA Aléatoire activée", TypeLogger.INFO);
     }
 
     @Override
-    public Coup debuterPartie(){
+    public Coup debuterPartie(Jeu j){
         ArrayList<Point> liste = new ArrayList<Point>(0);
         for(int i = 0; i < j.getLargeurPlateau(); i++){
             for(int k = 0; k < j.getHauteurPlateau(); k++){
@@ -32,7 +35,7 @@ public class IAAleatoire extends IA {
     }
 
     @Override
-    public Coup joue(){
+    public Coup joue(Jeu j){
         ArrayList<Point> liste = new ArrayList<Point>(0);
         VerificateurPion vp = new VerificateurPion(j);
         VerificateurEtage ve = new VerificateurEtage(j);
@@ -49,7 +52,7 @@ public class IAAleatoire extends IA {
         // Pion 2 qui joue
         else
             pion = p[1];
-        liste = getVoisin(pion, vp);
+        liste = j.getVoisin(pion, vp);
         taille = liste.size();
         if(taille == 0){
             // On regarde l'autre pion
@@ -60,7 +63,7 @@ public class IAAleatoire extends IA {
                 pion = p[0];
             else
                 pion = p[1];
-            liste = getVoisin(pion, vp);
+            liste = j.getVoisin(pion, vp);
             taille = liste.size();
             if (taille == 0){
                 // Ne devrait pas arriver. Seul le futur nous dira si c'est vrai ou pas.
@@ -68,7 +71,7 @@ public class IAAleatoire extends IA {
             }
         }
         deplacement = liste.get(r.nextInt(taille));
-        liste = getVoisin(deplacement, ve);
+        liste = j.getVoisin(deplacement, ve);
         taille = liste.size();
         // Si on a pu bouger, c'est qu'on peut poser de là d'où on vient.
         if (taille == 0){

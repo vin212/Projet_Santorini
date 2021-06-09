@@ -3,7 +3,6 @@ package controleur;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.concurrent.TimeUnit;
 
 import modele.*;
 import interfaceUser.*;
@@ -24,12 +23,12 @@ public class GestionBouton extends JButton implements ActionListener
 	JFrame popUp;
 	JLabel messageErreur;
 
-	JComboBox j1;
-	JComboBox j2;
+	JComboBox<String> j1;
+	JComboBox<String> j2;
 
 	Configuration prop;
 
-	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox j1, JComboBox j2,Configuration prop)
+	public GestionBouton (Jeu j, Bouton type, Fenetres f,JComboBox<String> j1, JComboBox<String> j2,Configuration prop, ActionUser action)
 	{
 		this.j1 = j1;
 		this.j2 = j2;
@@ -39,6 +38,7 @@ public class GestionBouton extends JButton implements ActionListener
 
 		this.type = type;
 		this.prop = prop;
+		this.action = action;
 	}
 
 	public GestionBouton (Bouton type, Fenetres f,Configuration prop)
@@ -48,20 +48,19 @@ public class GestionBouton extends JButton implements ActionListener
 		this.prop = prop;
 	}
 
-	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f,Configuration prop)
+	public GestionBouton (Jeu j, PlateauInterface_2 aire2, Bouton type, Fenetres f,Configuration prop, ActionUser action)
 	{this.type = type;
-		this.action = new ActionUser(j);
+		this.action = action;;
 		this.aire2 = aire2;
 
 		this.f = f;
 		this.prop = prop;
 	}
 
-	public GestionBouton (Jeu j, Bouton type, Fenetres f, JTextArea texte, JFrame popUp, JLabel messageErreur)
+	public GestionBouton (Jeu j, Bouton type, Fenetres f, JTextArea texte, JFrame popUp, JLabel messageErreur, Configuration prop, ActionUser action)
 	{
 		this.type = type;
-		this.action = new ActionUser(j);
-		this.aire2 = aire2;
+		this.action = action;
 
 		this.f = f;
 		this.texte = texte;
@@ -70,11 +69,12 @@ public class GestionBouton extends JButton implements ActionListener
 		this.messageErreur = messageErreur;
 
 		this.j = j;
+		this.prop = prop;
 	}
 
 	public void actionPerformed(ActionEvent e) 
 	{
-		System.out.println("Le bouton : " + type + " a ete presser");
+		prop.envoyerLogger("Le bouton : " + type + " a ete presser",TypeLogger.INFO);
 		switch (this.type)
 		{
 			case RETOUR :
@@ -82,38 +82,33 @@ public class GestionBouton extends JButton implements ActionListener
 				{
 					if (f.ia1 != null && f.ia2 != null && (f.ia1.estActive() || f.ia2.estActive()) )
 					{
-						System.out.println("je passe ici");
                         f.g.iaJoue = true;
                         action.annulerCoup();
                         f.ia1.desactiverIA();
                         f.ia2.desactiverIA();
-                        System.out.println(f.g.iaJoue);
 					}
                     else if (f.ia1 != null && f.ia1.estActive() && f.ia2 == null)
                     {
-                        System.out.println("je passe ici");
                         f.g.iaJoue = true;
                         action.annulerCoup();
                         f.ia1.desactiverIA();
-                        System.out.println(f.g.iaJoue);
                     }
                      else if (f.ia2 != null && f.ia2.estActive() && f.ia1 == null)
                     {
-                        System.out.println("je passe ici");
                         f.g.iaJoue = true;
                         action.annulerCoup();
                         f.ia2.desactiverIA();
-                        System.out.println(f.g.iaJoue);
                     }
                     else
                     {
                         action.annulerCoup();
                     }
+                    prop.envoyerLogger("coup annuler",TypeLogger.INFO);
 					
 				}
 				catch (IndexOutOfBoundsException except)
 				{
-					System.err.println("Impossible d'annuler");
+					prop.envoyerLogger("Impossible d'annuler",TypeLogger.WARNING);
 				}
 				aire2.repaint();
 			break;
@@ -121,10 +116,11 @@ public class GestionBouton extends JButton implements ActionListener
 				try
 				{
 					action.retablirCoup();
+					prop.envoyerLogger("coup reatbli",TypeLogger.INFO);
 				}
 				catch (IndexOutOfBoundsException except)
 				{
-					System.err.println("Impossible de rétablir");
+					prop.envoyerLogger("Impossible de reatblir",TypeLogger.WARNING);
 				}
 				aire2.repaint();
 			break;
@@ -139,25 +135,23 @@ public class GestionBouton extends JButton implements ActionListener
 				f.frame.repaint();
 			break;
 			case RECOMMENCER :
+				f.aire2 = null;
 				f.j = new Jeu(prop);
+				action.initActionUser(j,prop);
 
 
 				if (f.ia1 != null)
 				{
-					System.out.println("type ia : " + f.ia1.type());
 					if (f.ia1.type().equals("IA Facile"))
 					{
-						System.out.println("ia1 : Facile");
 						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia1.type());
 					}
 					else if (f.ia1.type().equals("IA Normal"))
 					{
-						System.out.println("ia1 : Normal");
 						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia1.type());
 					}
 					else if (f.ia1.type().equals("IA Difficile"))
 					{
-						System.out.println("ia1 : Difficile	");
 						f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia1.type());
 					}
 					f.ia1.activeIA();
@@ -165,20 +159,16 @@ public class GestionBouton extends JButton implements ActionListener
 
 				if (f.ia2 != null)
 				{
-					System.out.println("type ia : " + f.ia2.type());
 					if (f.ia2.type().equals("IA Facile"))
 					{
-						System.out.println("ia2 : Facile");
 						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),f.ia2.type());
 					}
 					else if (f.ia2.type().equals("IA Normal"))
 					{
-						System.out.println("ia2 : Normal");
 						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),f.ia2.type());
 					}
 					else if (f.ia2.type().equals("IA Difficile"))
 					{
-						System.out.println("ia2 : Difficile");
 						f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),f.ia2.type());
 					}
 					f.ia2.activeIA();
@@ -203,45 +193,73 @@ public class GestionBouton extends JButton implements ActionListener
 
 				if (texte.getText().length() <= 0)
 				{
-					this.messageErreur.setText("Erreur fichier deja existant ou nom inccorect");
+					this.messageErreur.setText("Nom inccorect");
 				}
 				else
 				{
-					Save s = new Save(j);
-					s.sauver(texte.getText());
+					Save s = new Save(j,prop,f.ia1,f.ia2);
+					int res = s.sauver(texte.getText());
+					if (res == 0)
+					{
+						this.messageErreur.setText("");
+						popUp.setVisible(false);
+					}
+					else if (res == 1)
+					{
+						this.messageErreur.setText("Fichier déjà existant");
+					}
+					else if (res == 2)
+					{
+						this.messageErreur.setText("Fichier invalide, pas assez de coup joué");
+					}
+				
 
-					System.out.println(texte.getText());
-					this.messageErreur.setText("");
-					popUp.setVisible(false);
+					
 				}
 
 			break;
 			case ANNULER_SAUVEGARDE :
-				popUp.setVisible(false); break;
+				popUp.setVisible(false); 
+			break;
 			case CHARGER :
 				f.ChangerFenetres(NomFenetres.CHARGER);
 				f.gestionFenetre();
 				f.frame.repaint();
 			break;
 			case NOUVELLE_PARTIE :
+				f.aire2 = null;
 				f.ChangerFenetres(NomFenetres.NOUVELLE_PARTIE);
 				f.gestionFenetre();
 				f.frame.repaint();
 			break;
 			case LANCER_PARTIE :
-				System.out.println("j1 : " + j1.getSelectedItem());
-				System.out.println("j2 : " + j2.getSelectedItem());
-				
+				prop.envoyerLogger(j1.getSelectedItem() + " VS " + j2.getSelectedItem(),TypeLogger.INFO);
+				action.initActionUser(j,prop);
 				if (gestionComboBox())
 				{
-					
 					f.ChangerFenetres(NomFenetres.JEU);
 					f.gestionFenetre();
 					f.frame.repaint();
 				}
-				/*f.ChangerFenetres(NomFenetres.JEU);
+
+			break;
+			case QUITTER :
+				f.frame.dispose();
+			break;
+			case OPTION :
+				f.ChangerFenetres(NomFenetres.OPTION,f.f);
+				f.gestionFenetre ();
+				f.frame.repaint();
+			break;
+			case RETOUR_OPTION:
+				f.ChangerFenetres(f.f_avant);
 				f.gestionFenetre();
-				f.frame.repaint();*/
+				f.frame.repaint();
+			break;
+			case RETABLIR_DEFAUT :
+				prop.retablirDefaut();
+				f.gestionFenetre();
+				f.frame.repaint();
 			break;
 
 		}
@@ -252,62 +270,38 @@ public class GestionBouton extends JButton implements ActionListener
 		String j1ToString = j1.getSelectedItem().toString();
 		String j2ToString = j2.getSelectedItem().toString();
 
-		boolean retour = false;
 		f.j = new Jeu(prop);
 
 		f.ia1 = null;
 		f.ia2 = null;
+		f.aire2 = null;
 
-		if (j1ToString == "Joueur" && j2ToString == "Joueur")
-		{
-			System.out.println("joueur vs joueur");
-			retour = true;
-		}
-		else if (j2ToString =="IA Facile")
-		{
+		if (j1ToString == "Joueur" && j2ToString == "Joueur") { }
+		else if (j2ToString =="IA Facile") {
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
 			f.ia1.activeIA();
-			System.out.println("joueur vs ia facile");
-			retour = true;
-		}
-		else if (j2ToString =="IA Normal")
-		{
+		} else if (j2ToString =="IA Normal") {
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
 			f.ia1.activeIA();
-			System.out.println("joueur vs ia normal");
-			retour = true;
-		}
-		else if (j2ToString =="IA Difficile")
-		{
+		} else if (j2ToString =="IA Difficile") {
+ 			//f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile")
 			f.ia1 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
 			f.ia1.activeIA();
-			System.out.println("joueur vs ia difficile");
-			retour = true;
 		}
 
+		if (j1ToString =="IA Facile") {
+      		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IAFacile"),"IA Facile");
+			f.ia2.activeIA();
+		} else if (j1ToString =="IA Normal") {
+     		f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IANormal"),"IA Normal");
+			f.ia2.activeIA();
+		} else if (j1ToString =="IA Difficile") {
+			f.ia2 = IA.nouvelle(f.j, prop.recupValeur("IADifficile"),"IA Difficile");
+			f.ia2.activeIA();
+		}
+		
+		prop.envoyerLogger(j1ToString + " vs " + j2ToString,TypeLogger.INFO);
 
-		if (j1ToString =="IA Facile")
-		{
-			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IAFacile"),"IA Facile");
-			f.ia2.activeIA();
-			System.out.println("joueur vs ia facile");
-			retour = true;
-		}
-		else if (j1ToString =="IA Normal")
-		{
-			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IANormal"),"IA Normal");
-			f.ia2.activeIA();
-			System.out.println("joueur vs ia facile");
-			retour = true;
-		}
-		else if (j1ToString =="IA Difficile")
-		{
-			f.ia2 = IA.nouvelle(f.j,prop.recupValeur("IADifficile"),"IA Difficile");
-			f.ia2.activeIA();
-			System.out.println("joueur vs ia facile");
-			retour = true;
-		}
-
-		return retour;
+		return true;
 	} 
 }

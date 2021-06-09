@@ -2,7 +2,7 @@ package modele;
 
 import java.util.ArrayList;
 
-public class Historique{
+public class Historique implements Cloneable {
     int taille = 0;
     int position = 0;
     ArrayList<Coup> historique;
@@ -32,10 +32,8 @@ public class Historique{
 
     // Reviens en arrière de un coup.
     public Coup annuler(){
-        System.out.println(historique);
         if (verifAnnulerCoup()){
             position --;
-            System.out.println(historique);
             return historique.get(position);
         }
         throw new IndexOutOfBoundsException();
@@ -44,8 +42,6 @@ public class Historique{
     // Rétablie un coup, aucune robustesse.
     public Coup retablir(){
         Coup c;
-        System.out.println("position : " + position);
-        System.out.println("taille : " + taille);
         if(verifRetablirCoup()){
              c = historique.get(position);
             position ++; 
@@ -69,7 +65,7 @@ public class Historique{
         return position;
     }
 
-    public ArrayList getHisto(){
+    public ArrayList<Coup> getHisto(){
         return this.historique;
     }
 
@@ -86,11 +82,34 @@ public class Historique{
         throw new IndexOutOfBoundsException();
     }
 
+    @Override
+    public Historique clone(){
+        try{
+            Historique resultat = (Historique) super.clone();
+            resultat.taille = taille;
+            resultat.position = position;
+            ArrayList<Coup> histo = new ArrayList<Coup>(0);
+            for(int i = 0; i<taille; i++){
+                histo.add(i, historique.get(i).clone());
+            }
+            resultat.historique = histo;
+            return resultat;
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Bug interne, historique non clonable");
+        }
+        return null;
+    }
+
     public String toString(){
         String msg = "Historique :\n";
         for(int i = 0; i < taille; i++){
             msg += historique.get(i) + "\n";
         }
         return msg;
+    }
+
+    public void setPosition (int i)
+    {
+        this.position = i;
     }
 }

@@ -1,6 +1,6 @@
 package structure;
 
-public class Point {
+public class Point implements Comparable<Point>, Cloneable{
 	int x;
 	int y;
 
@@ -28,7 +28,19 @@ public class Point {
 		return this.y;
 	}
 
-	public int CompareTo (Point p){
+	@Override
+	public boolean equals(Object o){
+		if (o == this){
+			return true;
+		} else if (!( o instanceof Point)) {
+			return false;
+		}
+		Point p = (Point) o; 
+		return (p.x == this.x && this.y == p.y);
+	}
+
+	@Override
+	public int compareTo(Point p) {
 		if (p.x == this.x && p.y == this.y){
 			return 0;
 		} else if (this.x < p.x) {
@@ -44,7 +56,14 @@ public class Point {
 		}
 	}
 
+	@Override
+	public Point clone(){
+		Point resultat = new Point(x,y);
+		return resultat;
+	}
+
 	public String toString (){
 		return ("( " + this.x + ", " + this.y + ")");
 	}
+
 }

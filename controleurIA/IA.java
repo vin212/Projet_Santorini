@@ -5,19 +5,32 @@ import modele.Coup;
 import structure.*;
 import java.util.ArrayList;
 
+import java.util.Hashtable;
+import java.util.Random;
+import java.math.BigInteger;
+
+import controleur.ActionUser;
+import global.Configuration;
+import global.TypeLogger;
+
 public abstract class IA {
-    public Jeu j;
     private boolean active = false;
-    public String type; 
+    public Configuration prop;
+    public String type;
+    public int horizonMax;
+    public Hashtable<BigInteger, Integer> table;
+    public ActionUser control;
+    public Random r;
 
     // Instancie l'IA demandé et la renvoie.
     public static IA nouvelle(Jeu j, String classIaString, String type){
         IA instance = null;
+        
 
         try {
             instance = (IA) ClassLoader.getSystemClassLoader().loadClass(classIaString).getDeclaredConstructor().newInstance();
-            instance.j = j;
             instance.type = type;
+            instance.prop = j.prop;
         } catch(Exception e){
             System.err.println(e);
         }
@@ -44,71 +57,85 @@ public abstract class IA {
     public void initialise(){}
 
     // Fonction à Override pour qu'elle pose un pion à un endroit valide.
-    public Coup debuterPartie(){
-        return null;
+    public Coup debuterPartie(Jeu j) {
+        ArrayList<Point> liste = new ArrayList<Point>(0);
+        for (int i = 0; i < j.getLargeurPlateau(); i++) {
+            for (int k = 0; k < j.getHauteurPlateau(); k++) {
+                if (!(j.aPersonnage(new Point(i, k)))) {
+                    liste.add(new Point(i, k));
+                }
+            }
+        }
+        return new Coup(liste.get(r.nextInt(liste.size())), j.getJoueurEnJeu());
     }
 
     // Fonction a Override pour qu'elle retourne un coup valide.
-    public Coup joue(){
+    public Coup joue(Jeu j){
         return null;
     }
 
-    // Retourne les voisins p en fonction de v.
-    public ArrayList<Point> getVoisin(Point p, Verificateur v){
-        int x = p.getx(), y = p.gety();
-        int xmax = j.getLargeurPlateau();
-        int ymax = j.getHauteurPlateau();
-        ArrayList<Point> voisins = new ArrayList<Point>(0); 
-        if (0 < x){
-            if (v.verifie(p, new Point(x-1, y)))
-                voisins.add(new Point(x-1, y));
+    public final String type() {
+        return this.type;
+    }
+
+    public void tour(Coup c, Jeu j) {
+        if (c.estDeplacement()) {
+            control.jouerAction(c.getDepart(), true);
+            control.jouerAction(c.getArrive(), true);
+            control.jouerAction(c.getConstruction(), true);
+			j.addTour();
+			control.initActionUser (j, j.prop);
+			int numJoueur = j.getJoueurEnJeu();
+			j.setAction (numJoueur, modele.Action.A_DEPLACER);
+        } else {
+            j.prop.envoyerLogger("Coup anormale, l'IA essaie de placer un pion dans un deplacement", TypeLogger.SEVERE);
         }
-        if (0 < y){
-            if (v.verifie(p, new Point(x, y-1)))
-                voisins.add(new Point(x, y-1));
-        }
-        if (x < xmax){
-            if (v.verifie(p, new Point(x+1, y)))
-                voisins.add(new Point(x+1, y));
-        }
-        if (y < ymax){
-            if (v.verifie(p, new Point(x, y+1)))
-                voisins.add(new Point(x, y+1));
-        }
-        if (0 < x && 0 < y){
-            if (v.verifie(p, new Point(x-1, y-1)))
-                voisins.add(new Point(x-1, y-1));
-        }
-        if (x < xmax && y < ymax){
-            if (v.verifie(p, new Point(x+1, y+1)))
-                voisins.add(new Point(x+1, y+1));
-        }
-        if (x < xmax && 0 < y){
-            if (v.verifie(p, new Point(x+1, y-1)))
-                voisins.add(new Point(x+1, y-1));
-        }
-        if (0 < x && y < ymax){
-            if (v.verifie(p, new Point(x-1, y+1)))
-                voisins.add(new Point(x-1, y+1));
-        }
-        return voisins;
     }
 
     public String toString(){
         String msg ="";
 
         if (active){
-            msg += "L'IA est active et " + j;
+            msg += "L'IA est active et est de type " + type;
         } else {
-            msg += "L'IA est désactive et " + j;
+            msg += "L'IA est désactivée et est de type " + type;
         }
 
         return msg;
     }
 
-    public final String type()
-    {
-        return this.type;
+}
+
+class ListGagnant {
+    int max;
+    ArrayList<Coup> gagnant;
+    Random r;
+
+    public ListGagnant() {
+        max = Integer.MIN_VALUE;
+        gagnant = new ArrayList<Coup>();
+        r = new Random((long) 0);
     }
 
+    public ListGagnant(int m, Coup c) {
+        r = new Random((long) 0);
+        max = m;
+        gagnant = new ArrayList<Coup>(0);
+        gagnant.add(c);
+    }
+
+    public int ajouter(int m, Coup c) {
+        if (m == max) {
+            gagnant.add(c);
+        } else if (m > max) {
+            max = m;
+            gagnant = new ArrayList<Coup>(0);
+            gagnant.add(c);
+        }
+        return max;
+    }
+
+    public Coup extraire() {
+        return gagnant.get(r.nextInt(gagnant.size()));
+    }
 }
