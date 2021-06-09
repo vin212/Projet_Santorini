@@ -261,7 +261,7 @@ public class IAForte extends IA {
 
         // Si on peut bloque un 3eme etage
         if(bloquant3 == 1){
-            valuation += 15;
+            valuation -= 15;
         }
         /* 
          * Sinon Si il y en a plus que 1 
