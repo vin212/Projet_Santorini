@@ -173,7 +173,7 @@ public class Save {
 
         for (File file : dossier.listFiles()){
             String nom = file.getName();
-            String[] nameCut = nom.split("\\.");
+            String[] nameCut = nom.split("\\.data");
             saves.add(nameCut[0]);
         }
 

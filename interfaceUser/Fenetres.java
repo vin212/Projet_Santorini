@@ -10,7 +10,7 @@ import modele.*;
 import controleur.*;
 import controleurIA.*;
 import global.*;
-import jdk.jfr.ContentType;
+//import jdk.jfr.ContentType;
 import save.*;
 import javax.swing.border.Border;
 import java.awt.event.KeyEvent;
